@@ -1,0 +1,1494 @@
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | A P P L I C A T I O N S                                   [APP] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup APP Application coding
+ *
+ * A Qgar application is a piece of code to be run either from a
+ * command line or from the QgarGui user interface. It <b>must</b> be
+ * associated with a XML file describing the application itself
+ * (basic method, results, etc.) and its parameters. Once both code
+ * and XML files are stored into a specific subdirectory of 
+ * directory <tt>QgarApps</tt>, the application is automatically
+ * integrated into the user's environment when the QgarGui user
+ * interface is launched.
+ *
+ * qgar::QgarApp and qgar::QgarArgs are the classes to get acquainted
+ * with. See class qgar::QgarApp (or any application in the
+ * <tt>QgarApps</tt> directory) for an example of the way to code
+ * a Qgar application.
+ *
+ * Users are not concerned with the other classes and data
+ * (qgar::QgarAppDescr, qgar::QgarAppParamDescr, inner classes...)
+ */
+
+
+// +-----------------------------------------------------------------+ 
+// |                E N D   A P P L I C A T I O N S                  |
+// +-----------------------------------------------------------------+ 
+
+
+
+
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | D A T A   S T R U C T U R E S                              [DS] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup DS Data structures
+ *
+ * Basic objects and data structures:
+ *
+ * <ul>
+ * <li><p>
+ *   <a href="group__DS__IMG.html">images</a> and related objects,
+ *   like <a href="group__DS__MASK.html">masks</a>
+ *   and <a href="group__DS__HISTO.html">histograms</a>,
+ * </p></li>
+ * <li><p>
+ *   <a href="group__DS__POINT.html">points</a> and chains of points,
+ *   which are used to represent contours, skeletons, and so on,
+ * </p></li>
+ * <li><p>
+ *   graphical <a href="group__DS__PRIM.html">primitives</a>, like
+ *   points, segments, arcs of circle, polygons, etc.
+ * </p></li>
+ * <li><p>
+ *   as well as miscellaneous data structures of general interest, like
+ *   <a href="group__DS__GRAPH.html">graphs</a>,
+ *   <a href="group__DS__TREES.html">trees</a>,
+ *   and <a href="group__DS__MISC.html">others</a>.
+ * </p></li>
+ * </ul>
+ */
+
+
+  // -----------------------------------------------------------------
+  // G R A P H S   A N D    T R E E S                       [DS_GRAPH]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup DS_GRAPH Graphs and trees
+   * @ingroup  DS
+   *
+   * Structures including nodes connected by edges.
+   *
+   * <b>Graphs:</b>
+   *
+   * <ul>
+   * <li><p>
+   * Template class qgar::GenUGraph defines an undirected graph
+   * whose nodes (see class qgar::GenNode) and edges (see class
+   * qgar::GenEdge) contain data of a given type and an integer flag
+   * at user's disposal.
+   * </p></li>
+   * </ul>
+   *
+   * <b>Trees:</b>
+   *
+   * <ul>
+   * <li><p>
+   * Template class qgar::GenTree defines a tree whose nodes (see class
+   * qgar::GenTreeNode) contain data of a given type.
+   * </p></li>
+   * </ul>
+   */
+
+
+  // -----------------------------------------------------------------
+  // H I S T O G R A M S                                    [DS_HISTO]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup DS_HISTO Histograms
+   * @ingroup  DS
+   *
+   * General representation of a histogram.
+   *
+   * There is only one class, qgar::Histogram, to construct a histogram.
+   */
+
+
+  // -----------------------------------------------------------------
+  // I M A G E S                                              [DS_IMG]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup DS_IMG Images
+   * @ingroup  DS
+   *
+   * Single- and multi-layered images.
+   *
+   * <ul>
+   * <li><p>
+   * Single-layered images include a single pixel map. They are defined
+   * by template class qgar::GenImage, which is instantiated using a
+   * policy (class) to check that operations on images conform to given
+   * properties. There are two predefined policies, defined by
+   * classes qgar::GenImage_NoCheck (no checking, which is the default)
+   * and qgar::GenImage_BoundCheck (pixel values must be within given
+   * bounds).
+   * </p></li>
+   * <li><p>
+   * Multi-layered images include more than one pixel map and derive
+   * from class qgar::AbstractMultiImage. A gradient image is a typical
+   * example of this kind of image: It includes two pixel maps, one for
+   * x derivatives, the other for y derivatives
+   * (see class qgar::AbstractGradientImage).
+   * </p></li>
+   * </ul>
+   *
+   * Basic and bounded image type names are predefined to make
+   * image declarations easier when coding.
+   */
+
+
+  // -----------------------------------------------------------------
+  // M A S K S                                               [DS_MASK]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup DS_MASK Masks
+   * @ingroup  DS
+   *
+   * 1D and 2D masks, to be typically used for convolutions.
+   *
+   * <ul>
+   * <li><p>
+   * Template class qgar::GenMask1d defines a generic one-dimensional
+   * mask. Some Gaussian 1D convolution masks are defined by its derived
+   * classes: 
+   * qgar::Mask1dGauss (1D Gaussian mask),
+   * qgar::Mask1dGaussD1 (first derivative of a 1D Gaussian mask),
+   * qgar::Mask1dGaussD2 (second derivative of a 1D Gaussian mask).
+   * </p></li>
+   * <li><p>
+   * Template class qgar::GenMask2d defines a generic two-dimensional
+   * mask.
+   * </p></li>
+   * </ul>
+   *
+   * Mask type names are predefined to make declarations easier
+   * when coding.
+   */
+
+
+  // -----------------------------------------------------------------
+  // P O I N T S                                            [DS_POINT]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup DS_POINT Points & chains of points
+   * @ingroup  DS
+   *
+   * <ul>
+   * <li><p>
+   * Points are defined using template class qgar::GenPoint.
+   * </p></li>
+   * <li><p>
+   * Chains of points are useful to represent contours, skeletons,
+   * and so on.
+   * qgar::AbstractGenPointChain is the corresponding generic type
+   * (i.e. base class).
+   * Derived class qgar::GenPointChain defines a chain of effective
+   * points, instances of class qgar::GenPoint,
+   * whereas derived class qgar::FreemanChain defines a chain
+   * of Freeman codes, instances of class qgar::FreemanCode.
+   * </p></li>
+   * <li><p>
+   * qgar::LinkedChainList defines a STL list of <b>integer</b> point
+   * chains, that may be a useful data structure in some cases.
+   * See some exampls in applications <b>QAedgesDetection</b>
+   * or <b>QAvectorizationRW</b> in the QgarApps API.
+   * </p></li>
+   * </ul>
+   *
+   * Some point type names, as well as chain of points type names, are
+   * predefined to make declarations easier when coding.
+   */
+
+
+  // -----------------------------------------------------------------
+  // P R I M I T I V E S                                     [DS_PRIM]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup DS_PRIM Primitives & abstract primitives
+   * @ingroup  DS 
+   *
+   * Basic primitives used by image and graphics processings.
+   *
+   * All primitives are provided with a so-called <i>source point</i>
+   * (head) and a so-called <i>target point</i> (tail), arbitrarily
+   * defined. They are divided into two categories:
+   *
+   * <ul>
+   * <li><p>
+   * So-called <i>geometrical primitives</i> :
+   * line segments, polylines, polygons, and arcs of circle.
+   * An attributed version is available for each one (see next item).
+   * </p></li>
+   * <li><p>
+   * So-called <i>Qgar primitives</i>, or graphical primitives,
+   * which are in fact geometrical primitives (see previous item)
+   * provided with extra attributes for color, thickness, and outline.
+   * </p></li>
+   * </ul>
+   *
+   * All primitive classes (resp. Qgar primitive classes) have an
+   * abstract class, called qgar::AbstractGenPrimitive
+   * (resp.  qgar::AbstractGenQgarPrimitive),
+   * as common root base class.
+   * Some abstract primitive type names (resp. Qgar primitive type names)
+   * are predefined to make declarations easier when coding.
+   *
+   * This root base class allows dynamic binding when using collections
+   * of heterogeneous primitives. For example:
+@code
+#include <list>
+#include <qgarlib/primitives.H>
+
+using namespace std;
+
+...
+
+// A list of pointers to primitives with integer coordinates
+list<IPrimitive*> primList;
+
+...
+
+// Add a segment to the list
+primList.push_back(new ISegment(1,2,3,4));
+...
+// Add an arc to the list
+primList.push_back(new IArc(IPoint(10,0),IPoint(0,10),IPoint(0,0)));
+
+...
+
+// Translate all the primitives of the list
+for(list<IPrimitive*>::iterator it = primlist.begin();
+    it != primList.end();
+    ++it)
+{
+  (*it)->translate(50,90);
+}
+@endcode
+   * 
+   */
+
+
+    // G E O M E T R I C A L   P R I M I T I V E S      [DS_PRIM_GEOM]
+    // ---------------------------------------------------------------
+    /**
+     * @defgroup DS_PRIM_GEOM Geometrical primitives
+     * @ingroup  DS_PRIM
+     *
+     * Geometrical primitives.
+     *
+     * They include line segments, polylines, polygons, and arcs of
+     * circle, all provided with a so-called <i>source point</i>
+     * (head) and a so-called <i>target point</i> (tail), arbitrarily
+     * defined. All the corresponding classes derive from base class
+     * qgar::AbstractGenPrimitive.
+     *
+     * An attributed version is available for each such primitive
+     * (see module <a href="group__DS__PRIM__QGAR.html">Qgar (graphical) primitives</a>).
+     *
+     * Some geometrical primitive type names are predefined to make
+     * primitive declarations easier when coding.
+     */
+
+
+    // Q G A R   G R A P H I C A L   P R I M I T I V E S[DS_PRIM_QGAR]
+    // ---------------------------------------------------------------
+    /**
+     * @defgroup DS_PRIM_QGAR Qgar (graphical) primitives
+     * @ingroup  DS_PRIM
+     *
+     * Graphical primitives, so-called <i>Qgar primitives</i>.
+     *
+     * Such a primitive is a geometrical primitive
+     * (see module <a href="group__DS__PRIM__GEOM.html">Geometrical primitives</a>)
+     * provided with extra attributes for
+     * color (see enum type qgar::QGEcolor),
+     * thickness (an integer number),
+     * and outline (see enum type qgar::QGEoutline).
+     *
+     * Qgar primitives thus include line segments, polylines, polygons,
+     * and arcs of circles, also provided with a so-called
+     * <i>source point</i> (head) and a so-called <i>target point</i>
+     * (tail), arbitrarily defined.
+     * All the corresponding classes derive from base class
+     * qgar::AbstractGenQgarPrimitive.
+     *
+     * Some Qgar primitive type names are predefined to make
+     * primitive declarations easier when coding.
+     */
+
+
+  // -----------------------------------------------------------------
+  // M I S C                                                 [DS_MISC]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup DS_MISC Misc.
+   * @ingroup  DS
+   *
+   * Miscellaneous data structures.
+   *
+   * <b>Bounding boxes:</b>
+   *
+   * <ul>
+   * <li><p>
+   * A bounding box is a rectangle with sides parallel to the coordinate
+   * axis (see class qgar::BoundingBox).
+   * </p></li>
+   * </ul>
+   *
+   * <b>Lists:</b>
+   *
+   * <ul>
+   * <li><p>
+   * Template classes qgar::GenQgarList and qgar::GenListItem have
+   * been designed when library STL was not available. They should be
+   * removed in a near future. Do not use them!
+   * </p></li>
+   * </ul>
+   */
+
+
+
+// +-----------------------------------------------------------------+ 
+// |              E N D   D A T A   S T R U C T U R E S              |
+// +-----------------------------------------------------------------+ 
+
+
+
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | D E S C R I P T O R S                                   [DESCR] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup DESCR Descriptors
+ *
+ * Data structures used to characterize a shape, typically an image
+ * of a symbol to be matched against a basis of known shapes.
+ *
+ * Available decriptors:
+ *
+ * <ul>
+ * <li><p>
+ * Class qgar::DesShapeContext implements the so-called
+ * <i>shape context</i> descriptor, as defined in
+ * [<a href="Bibliography.html#Belongie-et-al-2002">Belongie&nbsp;et&nbsp;al,&nbsp;2002</a>].
+ * </p></li>
+ * </ul>
+ */
+
+
+// +-----------------------------------------------------------------+ 
+// |                   E N D   D E S C R I P T O R S                 |
+// +-----------------------------------------------------------------+ 
+
+
+
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | E R R O R   H A N D L I N G                             [ERROR] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup ERROR Qgar specific exceptions
+ *
+ * Each Qgar exception class derives from:
+ *
+ * <ul>
+ *
+ * <li>
+ * <p>
+ *   class qgar::AbstractQgarError, which defines the format of error
+ *   messages and provides a flag to enable/disable the display of
+ *   error messages at runtime,
+ * </p>
+ * </li>
+ *
+ * <li>
+ * <p>
+ *   a STL standard class of exception, so that the user can also
+ *   catch Qgar exceptions in the STL way.
+ * </p>
+ * </li>
+ *
+ * </ul>
+ *
+ * Qgar exception classes:
+ *
+ * <ul>
+ *
+ * <li>
+ * <p>qgar::QgarErrorAlgorithm derives from std::runtime_error:<br>
+ *  algorithm failures that cannot be anticipated by the user</p>
+ * </li>
+ *
+ * <li>
+ * <p>qgar::QgarErrorDeveloper derives from std::logic_error:<br>
+ * errors in code being developed</p>
+ * </li>
+ *
+ * <li>
+ * <p>qgar::QgarErrorDomain derives from std::domain_error:<br>
+ * functions called with arguments on which they are not defined</p>
+ * </li>
+ *
+ * <li>
+ * <p>qgar::QgarErrorIO derives from std::runtime_error:<br>
+ * Input/Output exceptions</p>
+ * </li>
+ *
+ * <li>
+ * <p>qgar::QgarErrorInvalidArg derives from std::invalid_argument:<br>
+ * function calls with invalid arguments</p>
+ * </li>
+ *
+ * <li>
+ * <p>qgar::QgarErrorUser derives from std::logic_error:<br>
+ * wrong use of QgarLib functions by the programmer</p>
+ * </li>
+ *
+ * </ul>
+ */
+
+
+// +-----------------------------------------------------------------+ 
+// |               E N D   E R R O R   H A N D L I N G               |
+// +-----------------------------------------------------------------+ 
+
+
+
+
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | G L O B A L S                                            [GLOB] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup GLOB Global data & functions
+ *
+ * QgarLib global specific types, enums, constants
+ * and functions of general interest, as well as some STL add-ons.
+ *
+ * See the
+ * <a href="../../developerGuide/codingStandards.html#doxymodules">coding standards</a>
+ * for module labelling.
+ */
+
+
+  // -----------------------------------------------------------------
+  // A R R A Y                                            [GLOB_ARRAY]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GLOB_ARRAY Array
+   * @ingroup  GLOB
+   *
+   * Global utilities for arrays.
+   *
+@code 
+#include <qgarlib/array.H>
+@endcode
+   *
+   * They include:
+   *
+   * <ul>
+   * <li><p>
+   * Functions to get the index of the minimum and maximum elements,
+   * </p></li>
+   * <li><p>
+   * Functions to initialize an array with a given value,
+   * </p></li>
+   * <li><p>
+   * Mapping functions (to perform a given operation between all elements
+   * of two given arrays).
+   * </p></li>
+   * </ul>
+   */
+
+
+  // -----------------------------------------------------------------
+  // A S S E R T I O N S                                 [GLOB_ASSERT]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GLOB_ASSERT Assertions
+   * @ingroup  GLOB
+   * 
+   * Macros to define assertions, supposedly for debugging purpose.
+   *
+@code
+#include <qgarlib/assert.H>
+@endcode
+   *
+   * <p>Assertions are compiled into a program:</p>
+   *
+   * <ul>
+   * <li>either when providing the (preprocessor) option <b>-DQGARDEBUG</b>
+   *   in the command line invoking the compiler,</li>
+   * <li>or when defining <b>QGARDEBUG</b> as a macro name in the source
+   *   code, before the inclusion of the <b>assert.H</b> header file:
+@code
+...
+#define QGARDEBUG // To be imperatively placed ahead of the #include below
+...
+...
+#include <qgarlib/assert.H>
+...
+@endcode
+   * </li>
+   * </ul>
+   *
+   * <br>
+   * <p>Assertions are used in a similar way as standard macro <b>assert()</b>
+   * (see standard header file <b>assert.h</b>).</p>
+   *
+   * <ul>
+   *
+   * <li><p><b>void qgarAssert(int EX)</b>
+   * 
+   * If <b>EX</b> is <b>false</b>, print a diagnostic
+   * message on the standard error output and abort.
+   *
+   * Execution of a user-defined function may be substituted
+   * for abortion: See macro <b>setQgarAssertHandler</b>.
+   * </p></li>
+   *
+   * <li><p><b>void qgarAssertAndEval(EX, EX2)</b>
+   *
+   * Same as <b>qgarAssert(EX)</b>, but <b>EX2</b> is evaluated
+   * before abortion..bé¿ : 
+dsi.ed@lists-sop.inria.fr
+   * </p></li>
+   *
+   * <li><p><b>void qgarAssertAndCatch(EX, EX2)</b>
+   *
+   * Same as <b>qgarAssertAndEval(EX, EX2)</b>, but does not abort:
+   * Execution proceeds sequentially when returning from the macro.
+   * </p></li>
+   *
+   * <li><p><b>void setQgarAssertHandler(void (*HANDLER)(int))</b>
+   *
+   * Substitute the execution of a user-defined function for abortion
+   * in case of assertion failer. The function must conform to the
+   * following pattern:
+@code
+#include <qgarlib/assert.H>
+
+...
+
+void userHandler(int i)
+{
+  signal(SIGABRT, SIG_IGN);
+  ...
+  ...  // user-specific code
+  ...
+  signal(SIGABRT, userHandler);
+}
+@endcode
+   * See macro <b>resetQgarAssertHandler</b>.
+   * </p></li>
+   *
+   * <li><p><b>void resetQgarAssertHandler()</b>
+   *
+   * Restore abortion in case of assertion failer.
+   * See macro <b>setQgarAssertHandler</b>.
+   * </p></li>
+   *
+   * </ul>
+   */
+
+
+    // A U X I L I A R I E S                           [GLOB_ASSERT_AUX]
+    // -----------------------------------------------------------------
+    /**
+     * @defgroup GLOB_ASSERT_AUX Auxiliaries
+     * @ingroup  GLOB_ASSERT
+     *
+     * Global functions to define assertions,
+     * <b>not to be used by external clients!</b>
+     */
+
+
+  // -----------------------------------------------------------------
+  // H E L P E R S                                       [GLOB_HELPER]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GLOB_HELPER Helpers
+   * @ingroup  GLOB
+   *
+   * Global helpers.
+   *
+   * Such a function constructs an object of a QgarLib class
+   * (for example a partition of clusters using a distance function),
+   * without explicitely invoking the corresponding constructor.
+   *
+   * Helpers allow a functional programming style, whereas Qgar coding
+   * philosophy is rather based on a constructor-call programming style,
+   * as emphasized in
+   * <a href="../../bibliography.html#Rendek-et-al-04a">[&nbsp;Rendek-et-al-04a&nbsp;]</a>
+   * and
+   * <a href="../../bibliography.html#Tombre-et-al-98">[&nbsp;Tombre-et-al-98&nbsp;]</a>.
+   */
+
+
+  // -----------------------------------------------------------------
+  // I M A G E                                              [GLOB_IMG]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GLOB_IMG Image
+   * @ingroup  GLOB
+   * 
+   * Global utilities and types for images.
+   *
+@code
+#include <qgarlib/image.H>
+@endcode
+   *
+   * They include:
+   * 
+   * <ul>
+   * <li><p>
+   * Predefined type names to shorten declarations.
+   * See class qgar::GenImage.
+   * </p></li>
+   * <li><p>
+   * Enums for various image features: Coordinate axis, binary pixel
+   * values, directions, orientations, and relative positions.
+   * </p></li>
+   * <li><p>
+   * Functions dealing with directions, for example to get
+   * the direction of a <b>(X,Y)</b> translation, and to get
+   * the opposite of a given direction.
+   * </p></li>
+   * </ul>
+   */
+
+
+  // -----------------------------------------------------------------
+  // M A T H                                               [GLOB_MATH]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GLOB_MATH Math
+   * @ingroup  GLOB
+   * 
+   * Global mathematical constants and functions.
+   *
+@code
+#include <qgarlib/math.H>
+@endcode
+   *
+   * Constants are defined as static members of class qgar::Math.
+   * They include:
+   *
+   * <ul>
+   * <li><p>
+   * Constants of general interest, like values related to number
+   * \f$ \pi \f$, which are public data members of class qgar::Math,
+   * and are therefore accessed using the scope resolution operator,
+   * for example:
+@code
+Math::QG_2_SQRT_PI
+Math::QG_DOUBLE_MAX
+Math::QG_SQRT_1_2
+@endcode
+   * </p></li>
+   * <li><p>
+   * Thresholds (or whatsoever) used by library QgarLib,
+   * in particular for arithmetic based on <b>float</b> and
+   * <b>double</b> numbers. Such a threshold can be accessed or
+   * modified using only dedicated static public function members.
+   * </p></li>
+   * </ul>
+   *
+   * Global functions include:
+   * 
+   * <ul>
+   * <li><p>
+   * Comparison functions, to test approximate equality and inequality
+   * between numbers, using thresholds defined by class qgar::Math
+   * (see above).
+   * </p></li>
+   * <li><p>
+   * Conversion functions, to convert angles from radians to degrees,
+   * and conversely.
+   * </p></li>
+   * <li><p>
+   * Functions to get the module of <b>int</b>, <b>float</b>
+   * and <b>double</b> numbers.
+   * </p></li>
+   * </ul>
+   */
+
+
+  // -----------------------------------------------------------------
+  // P R I M I T I V E S                                   [GLOB_PRIM]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GLOB_PRIM Primitives
+   * @ingroup  GLOB
+   *
+   * Global utilities dealing with points and primitives.
+   *
+@code
+#include <qgarlib/primitives.H>
+@endcode
+   */
+
+
+    // A N G L E S                                       [GLOB_PRIM_ANG]
+    // -----------------------------------------------------------------
+    /**
+     * @defgroup GLOB_PRIM_ANG Angles
+     * @ingroup  GLOB_PRIM
+     *
+     * Global functions to compute angles between vectors.
+@code
+#include <qgarlib/primitives.H>
+@endcode
+     */
+
+
+    // D I S T A N C E S                                [GLOB_PRIM_DIST]
+    // -----------------------------------------------------------------
+    /**
+     * @defgroup GLOB_PRIM_DIST Distances
+     * @ingroup  GLOB_PRIM
+     *
+     * Global functions to compute distances between primitives.
+@code
+#include <qgarlib/primitives.H>
+@endcode
+     */
+
+
+    // P O I N T S                                        [GLOB_PRIM_PT]
+    // -----------------------------------------------------------------
+    /**
+     * @defgroup GLOB_PRIM_PT Points
+     * @ingroup  GLOB_PRIM
+     *
+     * Global functions to compute points.
+@code
+#include <qgarlib/primitives.H>
+@endcode
+     */
+
+
+    // S E G M E N T S                                   [GLOB_PRIM_SEG]
+    // -----------------------------------------------------------------
+    /**
+     * @defgroup GLOB_PRIM_SEG Segments
+     * @ingroup  GLOB_PRIM
+     *
+     * Global functions to compute segments.
+@code
+#include <qgarlib/primitives.H>
+@endcode
+     */
+
+
+    // T R A N S L A T I O N S                         [GLOB_PRIM_TRANS]
+    // -----------------------------------------------------------------
+    /**
+     * @defgroup GLOB_PRIM_TRANS Translations
+     * @ingroup  GLOB_PRIM
+     *
+     * Global functions to translate points and primitives.
+@code
+#include <qgarlib/primitives.H>
+@endcode
+     */
+
+
+  // -----------------------------------------------------------------
+  // S T L   A D D - O N S                                  [GLOB_STL]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GLOB_STL STL add-ons
+   * @ingroup  GLOB
+   *
+   * Some extensions to the STL library.
+   *
+@code
+#include <qgarlib/stl.H>
+@endcode
+   *
+   * Useful auxiliaries (structs, classes, and functions)
+   * to make STL-based programming easier.
+   */
+
+
+// +-----------------------------------------------------------------+ 
+// |                   E N D   G L O B A L S                         |
+// +-----------------------------------------------------------------+ 
+
+
+
+
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | G R A P H I C S   P R O C E S S I N G               [GRAPHPROC] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup GRAPHPROC Graphics processing
+ *
+ * Tools for graphics processing work on binary images or data to
+ * produce higher-level data to be used for graphics analysis or
+ * interpretation.
+ */
+
+
+  // -----------------------------------------------------------------
+  // C O N N E C T E D   C O M P O N E N T S            [GRAPHPROC_CC]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GRAPHPROC_CC Connected components
+   * @ingroup  GRAPHPROC
+   *
+   * A (connected) component is a homogeneous region of black
+   * or white connected pixels.
+   *
+   * <ul>
+   *
+   * <li>
+   * <p>
+   * See class qgar::ConnectedComponents to extract (and then use)
+   * connected components from a binary image. A component is an
+   * instance of class qgar::Component. The construction of black
+   * components is based on 8-connexity while the construction of
+   * white components is based on 4-connexity.
+   * </p>
+   * <p>
+   * In fact, the construction of the connected components is performed
+   * by the constructor of class qgar::ConnectedComponentsImpl.
+   * Only (Qgar) developers are concerned with this class. Ordinary
+   * clients of library QgarLib do not have to worry about it.
+   * </p>
+   * </li>
+   *
+   * <li>
+   * <p>
+   * See class qgar::PruneSmallCCBinaryImage for a fast method to prune
+   * small (connected) components of a binary image, without actually
+   * constructing any component.
+   * </p>
+   * </li>
+   *
+   * </ul>
+   */
+
+
+  // -----------------------------------------------------------------
+  // D R A W I N G                                    [GRAPHPROC_DRAW]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GRAPHPROC_DRAW Graphics drawing
+   * @ingroup  GRAPHPROC
+   *
+   * Techniques and algorithms to draw primitive elements (as lines and
+   * and circles) ir order to form a close aproximation to the continuous
+   * objects.
+   *
+   * <b>Warning: This is an experimental version. NO GARANTEE about bugs, errors
+   * or any problems of it's use. Please, report problems to class author.</b>
+   *
+   * <ul>
+   *
+   * <li>
+   * <p> 
+   * See class qgar::BresenhamLine to draw lines between two points.
+   * The algorithm works in all octants. 
+   *
+   * </p>
+   * </li>
+   *
+   * <li>
+   * <p>
+   * See class qgar::BresenhamCircle to draw circles. One point and 
+   * the ray must be passed to constructor.
+   *
+   * </p>
+   * </li>
+   *
+   * </ul>
+   */
+
+
+  // -----------------------------------------------------------------
+  // P O L Y G O N A L   A P P R O X I M A T I O N      [GRAPHPROC_CC]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GRAPHPROC_POLYAPPROX Polygonal approximations
+   * @ingroup  GRAPHPROC
+   *
+   * Polygonal approximation of a drawing represented by
+   * a chain of points.
+   *
+   * A chain of points is an object of a class deriving from
+   * qgar::AbstractGenPointChain.
+   *
+   * Two polygonal approximation methods are available:
+   *
+   * <ul>
+   *
+   * <li>
+   * <p>
+   * The Rosin & West's method is implemented by class
+   * qgar::RWSegmentVector. It defines a STL vector of line segments,
+   * instances of class qgar::GenSegment, obtained from a chain of
+   * points.
+   * </p>
+   * <p>
+   * Thanks to class qgar::RWArcVector, Qgar arcs of circle (instances
+   * of class qgar::GenQgarArc) may be extracted from a RW vector
+   * of segments (instance of class qgar::RWSegmentVector).
+   * </p>
+   * <p>
+   * Class qgar::RWTree is used for private purposes by class
+   * qgar::RWSegmentVector. Ordinary clients of library QgarLib are not
+   * concerned with it.
+   * </p>
+   * </li>
+   *
+   * <li>
+   * <p>
+   * The Wall & Danielsson's method is implemented by class
+   * qgar::WDSegmentList. It defines a STL list of line segments,
+   * instances of class qgar::WDSegment, obtained from a chain of
+   * points.
+   * </p>
+   * </li>
+   *
+   * </ul>
+   */
+
+
+  // -----------------------------------------------------------------
+  // V E C T O R I Z A T I O N                       [GRAPHPROC_VECTO]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GRAPHPROC_VECTO Vectorization
+   * @ingroup  GRAPHPROC
+   *
+   * Tools related to vectorization.
+   *
+   * <ul>
+   *
+   * <li>
+   * <p>
+   * See class qgar::SegmentGraph to get vectors (in the meaning of
+   * graphics processing) from Qgar segments extracted from a binary
+   * image.
+   * The vectors are stored in an undirected graph, in which a node
+   * is a point (instance of class qgar::GenPoint) and an edge is
+   * a Qgar segment (instance of class qgar::GenQgarSegment).
+   * </p>
+   * <p>
+   * <b>Warning:</b> Class qgar::SegmentGraph seems to be still
+   * in a draft state!
+   * </p>
+   * </li>
+   *
+   * </ul>
+   */
+
+
+// +-----------------------------------------------------------------+ 
+// |          E N D   G R A P H I C S   P R O C E S S I N G          |
+// +-----------------------------------------------------------------+ 
+
+
+
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | I M A G E   P R O C E S S I N G                       [IMGPROC] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup IMGPROC Image processing
+ *
+ * Tools for image processing are all implemented in classes
+ * deriving from qgar::GenImage or qgar::AbstractMultiImage.
+ */
+
+
+  // -----------------------------------------------------------------
+  // B I N A R I Z A T I O N                             [IMGPROC_BIN]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IMGPROC_BIN Binarization
+   * @ingroup  IMGPROC 
+   *
+   * Binarization techniques which are not based on
+   * Mathematical Morphology.
+   *
+   * grey-level image \f$\longrightarrow\f$ binary image:
+   *
+   * - elementary binarization using a constant threshold
+   *   (class qgar::ThresBinaryImage).
+   * - adaptive thresholding based on Niblack's method
+   *   (class qgar::NiblackBinaryImage).
+   * - thresholding based on Trier's method
+   *   (class qgar::TTBinaryImage)
+   *
+   * Gradient (local maxima) image \f$\longrightarrow\f$ binary image:
+   *
+   * - hysteresis thresholding
+   *  (class qgar::HysteresisBinaryImage)
+   */
+
+
+  // -----------------------------------------------------------------
+  // C O N V O L U T I O N S                          [IMGPROC_CONVOL]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IMGPROC_CONVOL Convolutions
+   * @ingroup  IMGPROC
+   *
+   * Convolutions of an image and 1D and 2D masks.
+   *
+   * General methods:
+   *
+   * - convolution of an image and a 1D or 2D mask
+   *   (class qgar::GenConvolImage)
+   *
+   * binary image --\> binary image:
+   *
+   * - remove one-pixel barbs and holes from a binary image
+   *   (class qgar::CleanedBinaryImage)
+   *
+   * float image --\> float image:
+   *
+   * - standard deviation (class qgar::StandardDeviationImage)
+   */
+
+
+  // -----------------------------------------------------------------
+  // D I S T A N C E S                                  [IMGPROC_DIST]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IMGPROC_DEG Image degradation
+   * @ingroup  IMGPROC
+   *
+   * Tools related to image degradation.
+   *
+   * - binary image degradation (class qgar::KanungoBinaryImage)
+   */
+
+
+  // -----------------------------------------------------------------
+  // D I S T A N C E S                                  [IMGPROC_DIST]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IMGPROC_DIST Distance transformations
+   * @ingroup  IMGPROC
+   *
+   * Transformations using a distance.
+   *
+   * For black components only (binary image --\> grey-level image):
+   *
+   * - using a 8-connected distance (class qgar::DistBlackCCImage)
+   * - using a 3-4 Chamfer distance (class qgar::Dist34BlackCCImage)
+   *
+   * For all (black and white) components only
+   * (binary image --\> integer image):
+   *
+   * - using a 3-4 Chamfer distance (class qgar::Dist34IntImage)
+   */
+
+
+  // -----------------------------------------------------------------
+  // G R A D I E N T   A N D   L A P L A C I A N        [IMGPROC_GRAD]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IMGPROC_GRAD Gradients and Laplacians
+   * @ingroup  IMGPROC
+   *
+   * <ul>
+   * <li><p>
+   * Gradient images derive from class qgar::AbstractGradientImage.
+   * They include two layers (pixel maps) for X and Y derivatives.
+   * They can be computed from grey-level or float images, using:
+   * </p>
+   *
+   * - Canny's method (class qgar::CannyGradientImage)
+   * - Deriche's method (class qgar::DericheGradientImage)
+   *
+   * <p>
+   * From a Gradient image, we can get a grey-level image representing:
+   * </p>
+   *
+   * - the local maxima of the Gradient
+   *   (class qgar::GradientLocalMaxImage)
+   * - the module of the Gradient (class qgar::GradientModuleImage)
+   *
+   * </li>
+   * <li><p>
+   * Laplacian of Gaussian images can be computed from grey-level or
+   * float images thanks to class qgar::LaplacianOfGaussianImage.
+   * </p></li>
+   * </ul>
+   */
+
+
+  // -----------------------------------------------------------------
+  // M A T H M O R P H O                               [IMGPROC_MORPH]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IMGPROC_MORPH Mathematical Morphology
+   * @ingroup  IMGPROC
+   *
+   * Image processing based on Mathematical Morphology.
+   *
+   * binary image --\> binary image:
+   *
+   * - closing, using a square structural element (class qgar::CloseBinaryImage)
+   * - 1D dilatation using a line segment (class qgar::LinDilatedBinaryImage)
+   * - 2D dilatation (classes qgar::DilatedBinaryImage
+   *                  and qgar::IsotropicDilatedBinaryImage)
+   * - 1D erosion using a line segment (class qgar::LinErodedBinaryImage)
+   * - 2D erosion (class qgar::ErodedBinaryImage)
+   * - ultimate erosion (class qgar::UltimateErodedBinaryImage)
+   * - geodesic reconstruction by dilation (class qgar::GeodesicRecBinaryImage)
+   * - geodesic reconstruction by erosion (class qgar::GeodesicRecEroBinaryImage)
+   * - opening, using a square structural element (class qgar::OpenBinaryImage)
+   * - regional maxima (class qgar::RegionalMaxBinaryImage)
+   * - regional minima (class qgar::RegionalMinBinaryImage)
+   *
+   * grey-level image --\> grey-level image:
+   *
+   * - closing, using a square structural element (class qgar::CloseImage)
+   * - contrast enhancement (class qgar::ContrastEnhancedImage)
+   * - 1D dilatation using a line segment (class qgar::LinDilatedImage)
+   * - 2D dilatation (class qgar::DilatedImage)
+   * - 1D erosion using a line segment (class qgar::LinErodedImage)
+   * - 2D erosion (class qgar::ErodedImage)
+   * - geodesic reconstruction by dilation (class qgar::GeodesicRecImage)
+   * - geodesic reconstruction by erosion (class qgar::GeodesicRecEroImage)
+   * - opening, using a square structural element (class qgar::OpenImage)
+   * - regional maxima (class qgar::RegionalMaxImage)
+   * - regional minima (class qgar::RegionalMinImage)
+   */
+
+
+  // -----------------------------------------------------------------
+  // S K E L E T O N I Z A T I O N                      [IMGPROC_SKEL]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IMGPROC_SKEL Skeletonization
+   * @ingroup  IMGPROC
+   *
+   * Skeletonization techniques which are not based on
+   * Mathematical Morphology.
+   *
+   * Class qgar::LabeledSkeletonImage provides a skeleton computed
+   * from an image of the (3,4)-distance transform
+   * (see class qgar::DistanceTransform34Image).
+   */
+
+
+// +-----------------------------------------------------------------+ 
+// |             E N D   I M A G E   P R O C E S S I N G             |
+// +-----------------------------------------------------------------+ 
+
+
+
+
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | I N P U T / O U T P U T                                    [IO] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup IO Input/Output
+ *
+ * The QgarLib library provides I/O facilities for various
+ * kinds of files:
+ *
+ * - ordinary files, typically for ASCII texts, including serialized
+ *   objects.
+ * - files to store graphics, in either DXF or Tgif formats,
+ * - files to store images, in Pbm+ format,
+ * - files to store Maple programs, to display the surface of
+ *   a grey-level image, for example.
+ *
+ * Moreover, all primitives, as well as some other objects like
+ * boundingboxes, may be serialized (i.e. write on an output stream,
+ * possibly a file) and deserialized (i.e. read from an input stream,
+ * possibly a file) using I/O stream operators
+ * qgar::operator<<() and qgar::operator>>(), respectively.
+ */
+
+
+  // -----------------------------------------------------------------
+  // F I L E S                                               [IO_FILE]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IO_FILE Files
+   * @ingroup  IO
+   *
+   * The QgarLib library provides I/O facilities for various
+   * kinds of files.
+   *
+   * Classes for files are organized as a tree including:
+   *
+   * <ul>
+   * <li><p>
+   * Class qgar::File for ordinary files, to store ASCII texts,
+   * serialized objects, etc.
+   * </p></li>
+   * <li><p>
+   * Classes qgar::DxfFile and qgar::TgifFile to store graphical
+   * objects (like point chains, line segments, arcs of circle, etc.)
+   * in DXF and Tgif formats, respectively. Both classes derive from
+   * the qgar::AbstractGraphicsFile abstract base class.
+   * </p></li>
+   * <li><p>
+   * Classes qgar::PbmFile and qgar::PgmFile to store binary and
+   * greylevel images, in PBM and PGM format, respectively.
+   * Both classes derive from the qgar::AbstractPbmPlusFile abstract
+   * base class.
+   * </p></li>
+   * <li><p>
+   * Class qgar::MapleFile to store a Maple program, to display
+   * the surface of a grey-level image, for example.
+   * </p></li>
+   * </ul>
+   *
+   * The root (i.e. common base class) of the hierarchy of file
+   * classes is the qgar::AbstractFile abstract class.
+   */
+
+
+  // -----------------------------------------------------------------
+  // O B J E C T   S E R I A L I Z A T I O N               [IO_SERIAL]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IO_SERIAL Object serialiazation
+   * @ingroup  IO
+   *
+   * Write and read objects using I/O streams.
+   *
+   * The Qgar library provides means to serialize (i.e. write on an
+   * output stream) and deserialize (i.e. read from an input file)
+   * an object, instance of a class.
+   *
+   * The class of such an object must derive from class
+   * qgar::ISerializable and implement the two pure virtual functions
+   * qgar::ISerializable::read and qgar::ISerializable::write,
+   * using global functions qgar::qgReadObjName and
+   * qgar::qgReadObjData. See class qgar::GenSegment for an example.
+   *
+   * An object of the class may then be write on an output stream
+   * and read from an output stream using stream operators
+   * qgar::operator<<() and qgar::operator>>(), respectively.
+   *
+   * The following objects may be serialized/deserialized:
+   *
+   * - all geometrical and Qgar primitives
+   *   (line segments, arcs of circle, polylines, and polygons,
+   *   see module
+   *   <a href="group__DS__PRIM.html">Primitives</a>),
+   * - bounding boxes,
+   * - convex hulls,
+   * - Freeman codes,
+   * - as well as points, instances of class qgar::GenPoint.
+   *   <br><b>Warning:</b> Point serialization is not implemented
+   *   in the described way for efficiency reasons. Thus, class
+   *   qgar::GenPoint does not derive from class qgar::ISerializable.
+   */
+
+
+// +-----------------------------------------------------------------+ 
+// |                E N D   I N P U T / O U T P U T                  |
+// +-----------------------------------------------------------------+ 
+
+
+
+
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | T O O L S                                                [TOOL] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup TOOL Tools
+ *
+ * Tools of general interest, which are not especially related
+ * to image or graphics processing.
+ */
+
+
+  // -----------------------------------------------------------------
+  // C L A S S I F I C A T I O N                        [TOOL_CLASSIF]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup TOOL_CLASSIF Classification
+   * @ingroup  TOOL
+   *
+   * Tools for object classification.
+   *
+   * <ul>
+   *
+   * <li>
+   * <p>
+   * <b>k-means</b>
+   * </p>
+   * <p>
+   * See class qgar::GenKMeans to partition objects stored in a
+   * STL vector into a (given) number of clusters, using a k-means 
+   * algorithm. A cluster is an instance of class qgar::GenCluster.
+   * </p>
+   * </li>
+   *
+   * </ul>
+   */
+
+
+  // -----------------------------------------------------------------
+  // C O N V E X   H U L L S                               [TOOL_HULL]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup TOOL_HULL Convex hulls
+   * @ingroup  TOOL
+   *
+   * Tools for convex hull construction.
+   *
+   * <ul>
+   *
+   * <li>
+   * <p>
+   * <b>k-means</b>
+   * </p>
+   * <p>
+   * See class qgar::GenConvexHull to construct the convex hull of
+   * points (instances of class qgar::GenPoint) stored into a STL list,
+   * using Graham's scan.
+   * </p>
+   * </li>
+   *
+   * </ul>
+   */
+
+
+// +-----------------------------------------------------------------+ 
+// |                        E N D   T O O L S                        |
+// +-----------------------------------------------------------------+ 
+
+
+
+
+// +-----------------------------------------------------------------+ 
+// |                                                                 |
+// | X M L                                                     [XML] |
+// |                                                                 |
+// +-----------------------------------------------------------------+ 
+
+
+/**
+ * @defgroup XML XML SAX Module
+ *
+ * A simple XML API embedding a SAX parser.
+ *
+ * This module provides the Qgar library user with a SAX parser to
+ * process XML documents. It does not directly implement the
+ * parser, but rather offers a set of interfaces and wrappers allowing
+ * to plug any external SAX parser.
+ *
+ * The choice of the parser implementation depends on the configuration
+ * options set when building the library. It is completely invisible
+ * to the user. The user creates a parser with the qgxml::XMLReaderFactory
+ * factory class and registers call back functions using the appropriate
+ * interfaces.
+ *
+ * For more information about SAX parsers, see the documentation to
+ * the orginal SAX parser at
+ * <a href="http://www.saxproject.org" target="_blank">www.saxproject.org</a>.
+ *
+ * Here is a basic example of the way to use this module.
+@code
+// STL
+#include <fstream>
+#include <iostream>
+
+// QGAR
+#include <sax/Attributes.H>
+#include <sax/DefaultHandler.H>
+#include <sax/InputSource.H>
+#include <sax/XMLReaderFactory.H>
+#include <sax/XMLReader.H>
+ 
+using namespace qgxml;
+using namespace std;
+ 
+// The class handling the parsing events. 
+class MyHandler
+
+       : public DefaultHandler
+
+{
+
+  // Method called by the parser every time beginning tag is found.
+  // The local name of the tag is printed.
+  void startElement(const std::string& uri,
+                    const std::string& localName,
+                    const std::string& qName,
+                    const Attributes& atts)
+  {
+    cout << "Found tag: " <<  localName << endl;
+  }
+};
+
+
+int main(int argc, char **argv)
+{
+  // Create input source from file
+  ifstream stream(argv[1]);
+  InputSource source(stream);
+   
+  // Create XML reader.
+  XMLReader * reader = XMLReaderFactory::createXMLReader();
+
+  // Register our own content handler
+  MyHandler * handler = new MyHandler();
+  reader->setContentHandler(handler);
+  try
+  {
+    reader->parse(source);
+  }
+  catch(...)
+  {
+    cout << "Error while parsing document" << endl;
+  }
+  delete handler;
+  delete reader;
+}
+@endcode
+ */
+
+
+// +-----------------------------------------------------------------+ 
+// |                          E N D   X M L                          |
+// +-----------------------------------------------------------------+ 

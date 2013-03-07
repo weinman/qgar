@@ -1,0 +1,394 @@
+#*---------------------------------------------------------------------+
+#| QGAR                                                                |
+#| Copyright (C) 2003  Qgar Project, LORIA                             |
+#|                                                                     |
+#| This script is free software; you can redistribute it and/or        |
+#| modify it under the terms of the GNU Lesser General Public          |
+#| License version 2.1, as published by the Free Software Foundation.  |
+#|                                                                     |
+#| This script is distributed in the hope that it will be useful,      |
+#| but WITHOUT ANY WARRANTY; without even the implied warranty of      |
+#| MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                |
+#| See the GNU Lesser General Public License for more details.         |
+#|                                                                     |
+#| The GNU Lesser General Public License is included in the file       |
+#| LICENSE.LGPL, in the root directory of the Qgar packaging. See      |
+#| http://www.gnu.org/licenses/lgpl.html for the terms of the licence. |
+#| To receive a paper copy, write to the Free Software Foundation,     |
+#| Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
+#|                                                                     |
+#| Contact Project Qgar for any information:                           |
+#|   LORIA - équipe Qgar                                               |
+#|   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+#|   email: qgar-contact@loria.fr                                      |
+#|   http://www.qgar.org/                                              |
+#*---------------------------------------------------------------------*
+
+# Author: Jan Rendek
+# Date: June 3, 2004 07:56
+# Revision: $Revision: 1.9 $
+
+
+%define name    qgar
+%define version @qgar_version@
+%define release 1mdk
+%define _prefix  /usr/local
+
+
+# --------------------------------------------------------------------
+# P A C K A G E   I N F O R M A T I O N
+# --------------------------------------------------------------------
+
+Name:           %{name} 
+Summary:        Qgar graphical documents analysis package
+Version:        %{version}
+Release:        %{release}
+Vendor:         Project Qgar
+Packager:       Project Qgar <qgar-develop@loria.fr>
+Source:         http://www.qgar.org/download/src/qgar-2.2.tar.gz
+Group:          Multimedia
+URL:            http://www.qgar.org/
+Prefix:         %{_prefix}
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot 
+License:        LGPL/QPL
+
+%description
+The Qgar software system is aimed at the design of document analysis
+applications and is currently developed inside the QGAR Project at
+LORIA (France).
+
+This package includes two components:
+  - QgarApps: an applicative layer, including graphics recognition
+    applications. All such applications are independent programs: They
+    can be run using a command line (outside of the system) and be
+    easily replaced when a more efficient algorithm is implemented.
+       
+  - QgarGui: a graphical user interface, developed using Qt. It
+    provides an interactive access to all applications as well as
+    means to display and manipulate (intermediate) results of graphics
+    processings. his description is not yet written but needs to be.
+
+Requires: libqt3 >= 3.0.0 sed 
+
+# --------------------------------------------------------------------
+# S U B P A C K A G E   D E F I N I T I O N S
+# --------------------------------------------------------------------
+
+#-- devel: the QgarLib header files and archive.
+
+%package devel
+Summary: Qgar library
+Group:   Multimedia
+
+%description devel
+QgarLib is a library including a set of C++ components implementing
+basic graphics analysis and recognition methods.
+
+
+# --------------------------------------------------------------------
+# P R E P A R A T I O N 
+# --------------------------------------------------------------------
+%prep 
+%setup -q
+
+
+
+# --------------------------------------------------------------------
+# B U I L D
+# --------------------------------------------------------------------
+%build 
+%configure --enable-gui --enable-xml --with-qtdir="$QTDIR"
+%make CXXFLAGS=-O3
+
+
+
+# --------------------------------------------------------------------
+# I N S T A L L
+# --------------------------------------------------------------------
+%install
+rm -rf $RPM_BUILD_ROOT
+%makeinstall
+
+
+# --------------------------------------------------------------------
+# C L E A N
+# --------------------------------------------------------------------
+%clean 
+rm -rf $RPM_BUILD_ROOT 
+
+
+# --------------------------------------------------------------------
+# P O S T   I N S T A L L
+# --------------------------------------------------------------------
+%post
+sed -e "s|@DESCR_INSTALL_DIR@|$RPM_INSTALL_PREFIX/share/qgar|g" -e "s|@BIN_INSTALL_DIR@|$RPM_INSTALL_PREFIX/lib/qgar|g" $RPM_INSTALL_PREFIX/share/qgar/qgarguicfg.xml.in > $RPM_INSTALL_PREFIX/share/qgar/qgarguicfg.xml
+
+sed -i -e "s|/usr/local|$RPM_INSTALL_PREFIX|g" $RPM_INSTALL_PREFIX/bin/qgar
+
+rm $RPM_INSTALL_PREFIX/bin/qgarGui
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/qgarGui $RPM_INSTALL_PREFIX/bin/qgarGui
+rm $RPM_INSTALL_PREFIX/bin/QAdist34Skeletonization
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAdist34Skeletonization $RPM_INSTALL_PREFIX/bin/QAdist34Skeletonization
+rm $RPM_INSTALL_PREFIX/bin/QAedgesCanny
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAedgesCanny $RPM_INSTALL_PREFIX/bin/QAedgesCanny
+rm $RPM_INSTALL_PREFIX/bin/QAedgesDeriche
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAedgesDeriche $RPM_INSTALL_PREFIX/bin/QAedgesDeriche
+rm $RPM_INSTALL_PREFIX/bin/QAkanungoDegrade
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAkanungoDegrade $RPM_INSTALL_PREFIX/bin/QAkanungoDegrade
+rm $RPM_INSTALL_PREFIX/bin/QAmorphoClosing
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAmorphoClosing $RPM_INSTALL_PREFIX/bin/QAmorphoClosing
+rm $RPM_INSTALL_PREFIX/bin/QAmorphoOpening
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAmorphoOpening $RPM_INSTALL_PREFIX/bin/QAmorphoOpening
+rm $RPM_INSTALL_PREFIX/bin/QApruneSmallCC
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QApruneSmallCC $RPM_INSTALL_PREFIX/bin/QApruneSmallCC
+rm $RPM_INSTALL_PREFIX/bin/QAtextExtraction
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAtextExtraction $RPM_INSTALL_PREFIX/bin/QAtextExtraction
+rm $RPM_INSTALL_PREFIX/bin/QAtextGraphicSeparation
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAtextGraphicSeparation $RPM_INSTALL_PREFIX/bin/QAtextGraphicSeparation
+rm $RPM_INSTALL_PREFIX/bin/QAthickThinSeparation
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAthickThinSeparation $RPM_INSTALL_PREFIX/bin/QAthickThinSeparation
+rm $RPM_INSTALL_PREFIX/bin/QAthrsBinarization
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAthrsBinarization $RPM_INSTALL_PREFIX/bin/QAthrsBinarization
+rm $RPM_INSTALL_PREFIX/bin/QAtrierBinarization
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAtrierBinarization $RPM_INSTALL_PREFIX/bin/QAtrierBinarization
+rm $RPM_INSTALL_PREFIX/bin/QAvectorizationRW
+ln -s $RPM_INSTALL_PREFIX/lib/qgar/QAvectorizationRW $RPM_INSTALL_PREFIX/bin/QAvectorizationRW
+
+
+# --------------------------------------------------------------------
+# F I L E   P A C K A G I N G
+# --------------------------------------------------------------------
+
+#-- Main package
+
+%files 
+%defattr(-,root,root,0755) 
+#%docdir %{_prefix}/doc
+#%doc README NEWS COPYING AUTHORS 
+
+%{_prefix}/bin/qgar
+%{_prefix}/bin/qgarGui
+%{_prefix}/bin/QAdist34Skeletonization
+%{_prefix}/bin/QAedgesCanny
+%{_prefix}/bin/QAedgesDeriche
+%{_prefix}/bin/QAkanungoDegrade
+%{_prefix}/bin/QAmorphoClosing
+%{_prefix}/bin/QAmorphoOpening
+%{_prefix}/bin/QApruneSmallCC
+%{_prefix}/bin/QAtextExtraction
+%{_prefix}/bin/QAtextGraphicSeparation
+%{_prefix}/bin/QAthickThinSeparation
+%{_prefix}/bin/QAthrsBinarization
+%{_prefix}/bin/QAtrierBinarization
+%{_prefix}/bin/QAvectorizationRW
+
+%{_prefix}/lib/qgar/qgarGui
+%{_prefix}/lib/qgar/QAdist34Skeletonization
+%{_prefix}/lib/qgar/QAedgesCanny
+%{_prefix}/lib/qgar/QAedgesDeriche
+%{_prefix}/lib/qgar/QAkanungoDegrade
+%{_prefix}/lib/qgar/QAmorphoClosing
+%{_prefix}/lib/qgar/QAmorphoOpening
+%{_prefix}/lib/qgar/QApruneSmallCC
+%{_prefix}/lib/qgar/QAtextExtraction
+%{_prefix}/lib/qgar/QAtextGraphicSeparation
+%{_prefix}/lib/qgar/QAthickThinSeparation
+%{_prefix}/lib/qgar/QAthrsBinarization
+%{_prefix}/lib/qgar/QAtrierBinarization
+%{_prefix}/lib/qgar/QAvectorizationRW
+
+%{_prefix}/share/qgar
+
+
+#-- devel package
+
+%files devel
+
+# Library
+%{_prefix}/lib/libqgar.a
+
+
+# Library core headers
+%{_prefix}/include/qgarlib/_QGAR_AbstractGenPrimitive.TCC
+%{_prefix}/include/qgarlib/_QGAR_AbstractGenQgarPrimitive.TCC
+%{_prefix}/include/qgarlib/_QGAR_angle.TCC
+%{_prefix}/include/qgarlib/_QGAR_distance.TCC
+%{_prefix}/include/qgarlib/_QGAR_GenArc.TCC
+%{_prefix}/include/qgarlib/_QGAR_GenPoint.TCC
+%{_prefix}/include/qgarlib/_QGAR_GenPolygon.TCC
+%{_prefix}/include/qgarlib/_QGAR_GenPolyline.TCC
+%{_prefix}/include/qgarlib/_QGAR_GenQgarArc.TCC
+%{_prefix}/include/qgarlib/_QGAR_GenQgarPolygon.TCC
+%{_prefix}/include/qgarlib/_QGAR_GenQgarPolyline.TCC
+%{_prefix}/include/qgarlib/_QGAR_GenQgarSegment.TCC
+%{_prefix}/include/qgarlib/_QGAR_GenSegment.TCC
+%{_prefix}/include/qgarlib/_QGAR_point.TCC
+%{_prefix}/include/qgarlib/_QGAR_segment.TCC
+%{_prefix}/include/qgarlib/_QGAR_translation.TCC
+%{_prefix}/include/qgarlib/AbstractGenPointChain.TCC
+%{_prefix}/include/qgarlib/GenConvexHull.TCC
+%{_prefix}/include/qgarlib/GenConvolImage.TCC
+%{_prefix}/include/qgarlib/GenEdge.TCC
+%{_prefix}/include/qgarlib/GenImage.TCC
+%{_prefix}/include/qgarlib/GenKMeans.TCC
+%{_prefix}/include/qgarlib/GenMask1d.TCC
+%{_prefix}/include/qgarlib/GenMask2d.TCC
+%{_prefix}/include/qgarlib/GenNode.TCC
+%{_prefix}/include/qgarlib/GenPointChain.TCC
+%{_prefix}/include/qgarlib/GenTree.TCC
+%{_prefix}/include/qgarlib/GenUGraph.TCC
+%{_prefix}/include/qgarlib/_QGAR_AbstractGenQgarPrimitive.H
+%{_prefix}/include/qgarlib/_QGAR_GenArc.H
+%{_prefix}/include/qgarlib/_QGAR_GenPoint.H
+%{_prefix}/include/qgarlib/_QGAR_GenPolygon.H
+%{_prefix}/include/qgarlib/_QGAR_GenPolyline.H
+%{_prefix}/include/qgarlib/_QGAR_GenQgarArc.H
+%{_prefix}/include/qgarlib/_QGAR_GenQgarPolygon.H
+%{_prefix}/include/qgarlib/_QGAR_GenQgarPolyline.H
+%{_prefix}/include/qgarlib/_QGAR_GenQgarSegment.H
+%{_prefix}/include/qgarlib/_QGAR_GenSegment.H
+%{_prefix}/include/qgarlib/_QGAR_angle.H
+%{_prefix}/include/qgarlib/_QGAR_distance.H
+%{_prefix}/include/qgarlib/_QGAR_point.H
+%{_prefix}/include/qgarlib/_QGAR_primitiveTypes.H
+%{_prefix}/include/qgarlib/_QGAR_segment.H
+%{_prefix}/include/qgarlib/_QGAR_translation.H
+%{_prefix}/include/qgarlib/AbstractFile.H
+%{_prefix}/include/qgarlib/AbstractGenPointChain.H
+%{_prefix}/include/qgarlib/AbstractGradientImage.H
+%{_prefix}/include/qgarlib/AbstractGraphicsFile.H
+%{_prefix}/include/qgarlib/AbstractMultiImage.H
+%{_prefix}/include/qgarlib/AbstractPbmPlusFile.H
+%{_prefix}/include/qgarlib/AbstractQgarError.H
+%{_prefix}/include/qgarlib/array.H
+%{_prefix}/include/qgarlib/assert.H
+%{_prefix}/include/qgarlib/BoundingBox.H
+%{_prefix}/include/qgarlib/CannyGradientImage.H
+%{_prefix}/include/qgarlib/CleanedBinaryImage.H
+%{_prefix}/include/qgarlib/CloseBinaryImage.H
+%{_prefix}/include/qgarlib/CloseImage.H
+%{_prefix}/include/qgarlib/Component.H
+%{_prefix}/include/qgarlib/ConnectedComponents.H
+%{_prefix}/include/qgarlib/ConnectedComponentsImpl.H
+%{_prefix}/include/qgarlib/ContrastEnhancedImage.H
+%{_prefix}/include/qgarlib/DericheGradientImage.H
+%{_prefix}/include/qgarlib/DilatedBinaryImage.H
+%{_prefix}/include/qgarlib/DilatedImage.H
+%{_prefix}/include/qgarlib/Dist34BlackCCImage.H
+%{_prefix}/include/qgarlib/Dist34Image.H
+%{_prefix}/include/qgarlib/Dist8cBlackCCImage.H
+%{_prefix}/include/qgarlib/DxfFile.H
+%{_prefix}/include/qgarlib/ErodedBinaryImage.H
+%{_prefix}/include/qgarlib/ErodedImage.H
+%{_prefix}/include/qgarlib/File.H
+%{_prefix}/include/qgarlib/FreemanChain.H
+%{_prefix}/include/qgarlib/FreemanCode.H
+%{_prefix}/include/qgarlib/GenConvexHull.H
+%{_prefix}/include/qgarlib/GenConvolImage.H
+%{_prefix}/include/qgarlib/GenEdge.H
+%{_prefix}/include/qgarlib/GenImage.H
+%{_prefix}/include/qgarlib/GenKMeans.H
+%{_prefix}/include/qgarlib/GenMask1d.H
+%{_prefix}/include/qgarlib/GenMask2d.H
+%{_prefix}/include/qgarlib/GenNode.H
+%{_prefix}/include/qgarlib/GenPointChain.H
+%{_prefix}/include/qgarlib/GenTree.H
+%{_prefix}/include/qgarlib/GenUGraph.H
+%{_prefix}/include/qgarlib/GeodesicRecBinaryImage.H
+%{_prefix}/include/qgarlib/GeodesicRecEroBinaryImage.H
+%{_prefix}/include/qgarlib/GeodesicRecEroImage.H
+%{_prefix}/include/qgarlib/GeodesicRecImage.H
+%{_prefix}/include/qgarlib/GradientLocalMaxImage.H
+%{_prefix}/include/qgarlib/GradientModuleImage.H
+%{_prefix}/include/qgarlib/Histogram.H
+%{_prefix}/include/qgarlib/HysteresisBinaryImage.H
+%{_prefix}/include/qgarlib/image.H
+%{_prefix}/include/qgarlib/ISerializable.H
+%{_prefix}/include/qgarlib/IsotropicDilatedBinaryImage.H
+%{_prefix}/include/qgarlib/KanungoBinaryImage.H
+%{_prefix}/include/qgarlib/LabeledSkeletonImage.H
+%{_prefix}/include/qgarlib/LaplacianOfGaussianImage.H
+%{_prefix}/include/qgarlib/LinDilatedBinaryImage.H
+%{_prefix}/include/qgarlib/LinDilatedImage.H
+%{_prefix}/include/qgarlib/LinErodedBinaryImage.H
+%{_prefix}/include/qgarlib/LinErodedImage.H
+%{_prefix}/include/qgarlib/LinkedChainList.H
+%{_prefix}/include/qgarlib/Maer.H
+%{_prefix}/include/qgarlib/MapleFile.H
+%{_prefix}/include/qgarlib/Mask1dGauss.H
+%{_prefix}/include/qgarlib/Mask1dGaussD1.H
+%{_prefix}/include/qgarlib/Mask1dGaussD2.H
+%{_prefix}/include/qgarlib/math.H
+%{_prefix}/include/qgarlib/NiblackBinaryImage.H
+%{_prefix}/include/qgarlib/OpenBinaryImage.H
+%{_prefix}/include/qgarlib/OpenImage.H
+%{_prefix}/include/qgarlib/PbmFile.H
+%{_prefix}/include/qgarlib/PgmFile.H
+%{_prefix}/include/qgarlib/primitives.H
+%{_prefix}/include/qgarlib/PruneSmallCCBinaryImage.H
+%{_prefix}/include/qgarlib/QgarApp.H
+%{_prefix}/include/qgarlib/QgarAppDescr.H
+%{_prefix}/include/qgarlib/QgarAppParamDescr.H
+%{_prefix}/include/qgarlib/QgarArgs.H
+%{_prefix}/include/qgarlib/QgarErrorAlgorithm.H
+%{_prefix}/include/qgarlib/QgarErrorDeveloper.H
+%{_prefix}/include/qgarlib/QgarErrorDomain.H
+%{_prefix}/include/qgarlib/QgarErrorInvalidArg.H
+%{_prefix}/include/qgarlib/QgarErrorIO.H
+%{_prefix}/include/qgarlib/QgarErrorUser.H
+%{_prefix}/include/qgarlib/RegionalMaxBinaryImage.H
+%{_prefix}/include/qgarlib/RegionalMaxImage.H
+%{_prefix}/include/qgarlib/RegionalMinBinaryImage.H
+%{_prefix}/include/qgarlib/RegionalMinImage.H
+%{_prefix}/include/qgarlib/RWArcVector.H
+%{_prefix}/include/qgarlib/RWSegmentVector.H
+%{_prefix}/include/qgarlib/StandardDeviationImage.H
+%{_prefix}/include/qgarlib/stl.H
+%{_prefix}/include/qgarlib/TgifFile.H
+%{_prefix}/include/qgarlib/ThresBinaryImage.H
+%{_prefix}/include/qgarlib/TTBinaryImage.H
+%{_prefix}/include/qgarlib/UltimateErodedBinaryImage.H
+%{_prefix}/include/qgarlib/WDSegmentList.H
+
+# SAX Module
+%{_prefix}/include/qgarlib/sax/Attributes.H
+%{_prefix}/include/qgarlib/sax/ContentHandler.H
+%{_prefix}/include/qgarlib/sax/DefaultHandler.H
+%{_prefix}/include/qgarlib/sax/DTDHandler.H
+%{_prefix}/include/qgarlib/sax/EntityResolver.H
+%{_prefix}/include/qgarlib/sax/ErrorHandler.H
+%{_prefix}/include/qgarlib/sax/InputSource.H
+%{_prefix}/include/qgarlib/sax/Locator.H
+%{_prefix}/include/qgarlib/sax/SAXException.H
+%{_prefix}/include/qgarlib/sax/SAXParseException.H
+%{_prefix}/include/qgarlib/sax/XMLReaderFactory.H
+%{_prefix}/include/qgarlib/sax/XMLReader.H
+
+# --------------------------------------------------------------------
+# C H A N G E   L O G
+# --------------------------------------------------------------------
+%changelog 
+
+* Wed Oct 26 2005 Gérald Masini <qgar-develop@loria.fr>
+  - Added packaging of subdirectory bin, which contains symbolic links
+    to Qgar applications
+  - Added reinstallation of symbolic links to Qgar applications
+    in the post-installation section
+
+* Wed Oct 05 2005 Gérald Masini <qgar-develop@loria.fr>
+  - Added _QGAR_*, QAdist34Skeletonization
+  - Substitute Dist34IntImage.H for Dist34Image.H,
+    DistBlackCCImage.H for Dist8cBlackCCImage.H,
+    ThresholdedBinaryImage.H for ThresBinaryImage.H,
+    HysteresisThresholdedBinaryImage.H for HysteresisBinaryImage.H.
+
+* Mon Aug 30 2004 Jan Rendek <qgar-develop@loria.fr>
+  - Added QAedgesCanny, QAedgesDeriche, and QAkanungoDegrade
+    directories 
+  - Removed QAedgesDetection directory
+
+* Thu Jun 24 2004 Jan Rendek <qgar-develop@loria.fr>
+  - Made the package relocatable.
+
+* Fri May 28 2004 Jan Rendek <qgar-develop@loria.fr>
+  - Initial revision.

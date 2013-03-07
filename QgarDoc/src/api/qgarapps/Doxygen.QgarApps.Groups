@@ -1,0 +1,513 @@
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// B I N A R I Z A T I O N                                       [BIN]
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+/**
+ * @defgroup BIN Binarizations
+ *
+ * To binarize images using different methods.
+ */
+
+
+  // -----------------------------------------------------------------
+  // B A S I C   B I N A R I Z A T I O N                   [BIN_BASIC]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup BIN_BASIC Basic binarization
+   * @ingroup  BIN
+   * @brief Simple binarization, using a constant threshold.
+   *
+   * All pixels having a grey-level number greater than the given
+   * threshold are turned to 0 (white), the others are turned
+   * to 1 (black).
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source grey-level image.
+   * The file must be in PGM format.
+   * - <b>-out</b><br>
+   * Full pathname of the file to store the binarized images.
+   * The format of the file is raw PBM.
+   * - <b>-t</b><br>
+   * Binarization threshold (grey-level number).
+   */
+
+
+  // -----------------------------------------------------------------
+  // T R I E R ' S   B I N A R I Z A T I O N               [BIN_TRIER]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup BIN_TRIER Trier-&-Taxt-based binarization
+   * @ingroup  BIN
+   * @brief Binarization based on Trier & Taxt's method.
+   *
+   * See
+   * [<a href="Bibliography.html#Trier-and-Taxt-1995">Trier&nbsp;and&nbsp;Taxt,&nbsp;1995</a>].
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source grey-level image.
+   * The file must be in PGM format.
+   * - <b>-out</b><br>
+   * Full pathname of the file to store the binarized image.
+   * The format of the file is raw PBM.
+   * - <b>-sigma</b><br>
+   * Sigma of the Gaussian of the Canny's operator.
+   * - <b>-act</b><br>
+   * Activity threshold.
+   * - <b>-prune</b><br>
+   * Post-processing threshold to discard fake black (connected)
+   * components.
+   */
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// C O N N E C T E D   C O M P O N E N T S                        [CC]
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+/**
+ * @defgroup CC Connected components
+ *
+ * Tools to process and use (connected) components.
+ *
+ * A component is a region defined by a set of connected
+ * pixels having the same color.
+ */
+
+
+  // -----------------------------------------------------------------
+  // S M A L L   C C   P R U N I N G                       [BIN_TRIER]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup CC_PRUNE Prune small black components
+   * @ingroup  CC
+   * @brief Prune small black components of a binary image.
+   *
+   * Flags to introduce parameter values in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source binary image.
+   * The format of the file must be one of the binary formats described
+   * by the PBM+ specification (either raw or ASCII).
+   * - <b>-outscc</b><br>
+   * Full pathname of the file to store <i>small</i> components,
+   * i.e. components with a size smaller or equal to the value
+   * introduced by flag <b>-prune</b>.
+   * The format of the file is raw PBM.
+   * - <b>-outbcc</b><br>
+   * Full pathname of the file to store <i>big</i> components,
+   * i.e. components with a size greater than the value introduced
+   * by flag <b>-prune</b>.
+   * The format of the file is raw PBM.
+   * - <b>-prune</b><br>
+   * Maximum size (in pixels) of a black component to be pruned. All the
+   * components having a size smaller or equal to the given maximum are
+   * considered as ''small'' and stored into the file for <i>small</i>
+   * components. The remaining components are stored into the file for
+   * <i>big</i> components.
+   */
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// E D G E S   D E T E C T I O N                               [EDGES]
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+/**
+ * @defgroup EDGES Edges detection
+ *
+ * Tools for detection of edges/contours.
+ */
+
+
+  // -----------------------------------------------------------------
+  // C A N N Y                                           [EDGES_CANNY]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup EDGES_CANNY Canny-based edges detection
+   * @ingroup  EDGES
+   * @brief Edges detection using operator proposed by John F. Canny.
+   *
+   * An image of the local maxima of the Gradient is first computed,
+   * using Canny's operator. A hysteresis thresholding is then
+   * performed on this image.
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source image.
+   * The format of the file must be PGM.
+   * - <b>-out</b><br>
+   * Full pathname of the file to store the image of edges.
+   * The format of the file is raw PBM.
+   * - <b>-low</b><br>
+   * Low hysteresis threshold.
+   * - <b>-high</b><br>
+   * High hysteresis threshold.
+   */
+
+
+  // -----------------------------------------------------------------
+  // D E R I C H E                                     [EDGES_DERICHE]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup EDGES_DERICHE Deriche-based edges detection
+   * @ingroup  EDGES
+   * @brief Edges detection using operator proposed by Rachid Deriche.
+   *
+   * An image of the local maxima of the Gradient is first computed,
+   * using a Deriche's filter as described in
+   * [<a href="Bibliography.html#Deriche-1987">Deriche,&nbsp;1987</a>].
+   * A hysteresis thresholding is then performed on this image.
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source image.
+   * The format of the file must be PGM.
+   * - <b>-out</b><br>
+   * Full pathname of the file to store the image of edges.
+   * The format of the file is raw PBM.
+   * - <b>-low</b><br>
+   * Low hysteresis threshold.
+   * - <b>-high</b><br>
+   * High hysteresis threshold.
+   */
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// G R A P H I C S   P R O C E S S I N G                      [GRAPHX]
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+/**
+ * @defgroup GRAPHX Graphics processing
+ *
+ * Tools to extract graphical parts (vectors, line segments,
+ *   arcs of circle, polygons, etc.) from a binary image.
+ */
+
+
+  // -----------------------------------------------------------------
+  // T H I C K - T H I N   S E P A R A T I O N      [GRAPHX_THINTHICK]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GRAPHX_THINTHICK Thick-thin separation
+   * @ingroup  GRAPHX
+   * @brief Separate thick line segments (or thick components)
+   *   from thin line segments (or thin components).
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source binary image.
+   * The format of the file must be one of the binary formats described
+   * by the PBM+ specification (either raw or ASCII).
+   * - <b>-outhick</b><br>
+   * Full pathname of the file to store the thick line segments.
+   * The format of the file is raw PBM.
+   * - <b>-outhin</b><br>
+   * Full pathname of the file to store the thin line segments.
+   * The format of the file is raw PBM.
+   * - <b>-size</b><br>
+   * Maximum size (i.e. width) of a thin line segment.
+   * Line segments whose width is greater than the given value are
+   * classified as ''thick'', the others are classified as ''thin''.
+   */
+
+
+  // -----------------------------------------------------------------
+  // S K E L E T O N I Z A T I O N                       [GRAPHX_SKEL]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GRAPHX_SKEL Skeletonization of a binary image
+   * @ingroup  GRAPHX
+   * @brief The skeletonization uses the 3-4 Chamfer distance.
+   *
+   * The result is an <b>image</b> of the corresponding skeleton:
+   * The chains of points (of the skeleton) cannot be saved in a file.
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source binary image.
+   * The format of the file must be one of the binary formats
+   * described by the PBM+ specification (either raw or ASCII).
+   * - <b>-out</b><br>
+   * Full pathname of the file to store the <b>image</b>
+   * of the resulting skeleton. The format of the file is raw PBM.
+   * - <b>-prune</b><br>
+   * Maximum size (in pixels) of black components which are pruned.
+   */
+
+
+  // -----------------------------------------------------------------
+  // V E C T O R I Z A T I O N                          [GRAPHX_VECTO]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup GRAPHX_VECTO Rosin-&-West-based vectorization
+   * @ingroup  GRAPHX
+   * @brief Vectorization using a polygonal approximation as proposed
+   *   by Rosin & West.
+   *
+   * The polygonal approximation is performed with the algorithm
+   * proposed by David Lowe and further refined by P. Rosin and G. West
+   * [<a href="Bibliography.html#Rosin-and-West-1989">Rosin&nbsp;and&nbsp;West,&nbsp;1989</a>].
+   * Black (connected) components which are smaller than the size
+   * introduced by flag <b>-prune</b> are pruned.
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source binary image.
+   * The format of the file must be one of the binary formats described
+   * by the PBM+ specification (either raw or ASCII).
+   * - <b>-out</b><br>
+   * Full pathname of the DXF file to store resulting vectors
+   * (line segments).
+   * - <b>-outch</b><br>
+   * Full pathname of the DXF file to store resulting chains of points.
+   * - <b>-prune</b><br>
+   * Maximum size (in pixels) of a black component to be pruned.
+   */
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// I M A G E   P R O C E S S I N G                               [IMG]
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+/**
+ * @defgroup IMG Image processing
+ *
+ * Tools to perform all kinds of image processings.
+ */
+
+
+  // -----------------------------------------------------------------
+  // K A N U N G O                                       [IMG_KANUNGO]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup IMG_KANUNGO Kanungo-based degradation of a binary image
+   * @ingroup  IMG
+   *
+   * Degradations introduced are similar to the noise obtained when
+   * a document is scanned, printed or photocopied. Two kinds of noise
+   * are introduced: A global one (tuned by parameter <b>-eta</b>)
+   * and a local one (tuned by parameters <b>-a</b>, <b>-a0</b>,
+   * <b>-b</b>, and <b>-b0</b>). A morphological closing (tuned
+   *  by parameter <b>-size</b>) may be finally applied to the degraded
+   * image. See
+   * [<a href="Bibliography.html#Kanungo-et-al-2000">Kanungo&nbsp;et&nbsp;al,&nbsp;2000</a>]
+   *
+   * <b>Warning:</b> The content of the rows and columns contiguous
+   * to the borders of the given image is not degraded.
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the binary source image.
+   * The format of the file must be one of the binary formats
+   * described by the PBM+ specification (either raw or ASCII).
+   * - <b>-out</b><br>
+   * Full pathname of the binary file to store the degraded image.
+   * The format of the file is raw PBM.
+   * - <b>-a</b><br>
+   * Decay speed of the noise related to black components.
+   * The noise is introduced in a black component according to the
+   * distance between a considered pixel of the component and the closest
+   * border of the component. The decay speed is an exponential parameter:
+   * The more this value is low, the more the thickness of the influence
+   * area of the noise close to the borders is large. In particular, a
+   * null value ensures that the noise determined by parameter
+   * <b>-a0</b> is introduced in the whole area of all black components.
+   * - <b>-a0</b><br>
+   * Strength of the (white) noise related to black components.
+   * The more this value is high, the more the noise is important.
+   * The noise is introduced inside black components at an average
+   * distance from the borders, controlled by parameter <b>-a</b>.
+   * - <b>-b</b><br>
+   * Decay speed of the noise related to white components.
+   * The noise is introduced inside white components according to the
+   * distance between a considered pixel of the component and the closest
+   * border of the component. The decay speed is an exponential parameter:
+   * The more this value is low, the more the thickness of the influence
+   * area of the noise close to the borders is large. In particular, a
+   * null value ensures that the noise determined by parameter <b>-b0</b>
+   * is introduced in the whole area of all white components.
+   * - <b>-b0</b><br>
+   * Strength of the (black) noise related to white components.
+   * The more this value is high, the more the noise is important.
+   * The noise is introduced inside white components, at an average
+   * distance from the borders, controlled by parameter <b>-b</b>.
+   * - <b>-eta</b><br>
+   * Strength of the global noise applied to the binary image.
+   * This parameter represents the constant probability of flipping
+   * (from white to black or from black to white) for all pixels.
+   * Thus, the expected value must be between <b>0.0</b>
+   * (no global noise) and <b>1.0</b> (global noise everywhere).
+   * - <b>-size</b><br>
+   * Size (i.e. width) of the square structural element to be used
+   * for the final closing. In fact, the effective size is an odd number,
+   * equal to two times the supplied value, plus 1.
+   */
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// M A T H E M A T I C A L    M O R P H O L O G Y          [MATHMORPH]
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+/**
+ * @defgroup MATHMORPH Mathematical Morphology
+ *
+ * Tools based on exclusive use of fundamental operators
+ * of Mathematical Morphology.
+ */
+
+
+  // -----------------------------------------------------------------
+  // C L O S I N G                                   [MATHMORPH_CLOSE]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup MATHMORPH_CLOSE Closing
+   * @ingroup  MATHMORPH
+   * @brief Closing of a binary image, using a square structural
+   *   element.
+   *
+   * Flags to introduce parameter values in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source binary
+   * image. The format of the file must be one of the binary formats
+   * described by the PBM+ specification (either raw or ASCII).
+   * - <b>-out</b><br>
+   * Full pathname of the file in which the closing of the
+   * source image will be stored. The format of the file is raw PBM.
+   * - <b>-size</b><br>
+   * Size (i.e. width) of the square structural element
+   * used for the closing, which must be an odd number. If the supplied
+   * value is an even number, it is automatically rounded to the nearest
+   * superior odd number.
+   */
+
+
+  // -----------------------------------------------------------------
+  // O P E N I N G                                    [MATHMORPH_OPEN]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup MATHMORPH_OPEN Opening
+   * @ingroup  MATHMORPH
+   * @brief Opening of a binary image, using a square structural
+   *   element.
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source binary
+   * image. The format of the file must be one of the binary formats
+   * described by the PBM+ specification (either raw or ASCII).
+   * - <b>-out</b><br>
+   * Full pathname of the file in which the opening of the
+   * source image will be stored. The format of the file is raw PBM.
+   * - <b>-size</b><br>
+   * Size (i.e. width) of the square structural element
+   * used for the opening, which must be an odd number. If the supplied
+   * value is an even number, it is automatically rounded to the nearest
+   * superior odd number.
+   */
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// T E X T   P R O C E S S I N G                                [TEXT]
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+/**
+ * @defgroup TEXT Text processing
+ *
+ * Tools to process textual parts in binary images.
+ */
+
+
+  // -----------------------------------------------------------------
+  // S T R I N G S   E X T R A C T I O N                [TEXT_STRINGS]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup TEXT_STRINGS Character string extraction
+   * @ingroup  TEXT
+   * @brief Extract character strings from a binary image
+   *   including only textual components.
+   *
+   * Character strings, formed by closely positioned and similarly
+   * oriented components, are constructed by a 2D Hough Transform.
+   * The bounding boxes of the strings are saved in a file for
+   * display purposes. The features of each string
+   * (corners of its bounding box, number of characters,
+   * corners of the bounding box of each character) are saved
+   * in a separate file for further use.
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source binary image.
+   * The format of the file must be one of the binary formats described
+   * by the PBM+ specification (either raw or ASCII).
+   * - <b>-out</b><br>
+   * Full pathname of the ASCII file to store the features
+   * of the resulting strings for further use.
+   * - <b>-outd</b><br>
+   * Full pathname of the DXF file to store bounding boxes
+   * of the resulting strings for display purposes.
+   * - <b>-char</b><br>
+   * Maximum space (in pixels) between characters in a word.
+   * - <b>-hough</b><br>
+   * Sampling rate of the Hough space.
+   */
+
+
+  // -----------------------------------------------------------------
+  // T E X T   G R A P H I C S   S E P A R A T I O N      [TEXT_GRAPH]
+  // -----------------------------------------------------------------
+  /**
+   * @defgroup TEXT_GRAPH Text-graphics separation
+   * @ingroup  TEXT
+   * @brief Separate textual parts from graphics parts among components
+   *   of a binary image.
+   *
+   * Black (connected) components which are smaller than the size
+   * introduced by flag <b>-prune</b> are pruned.
+   *
+   * Flags to introduce parameters in the command line:
+   *
+   * - <b>-in</b><br>
+   * Full pathname of the file containing the source binary image.
+   * The format of the file must be one of the binary formats described
+   * by the PBM+ specification (either raw or ASCII).
+   * - <b>-outxt</b><br>
+   * Full pathname of the file to store the image of textual parts.
+   * The format of the file is raw PBM.
+   * - <b>-outg</b><br>
+   * Full pathname of the file to store the image of graphical parts.
+   * The format of the file is raw PBM.
+   * - <b>-outu</b><br>
+   * Full pathname of the file to store the image of undetermined
+   * parts. The format of the file is raw PBM.
+   * - <b>-prune</b><br>
+   * Maximum size (in pixels) of a black component to be pruned.
+   * - <b>-area</b><br>
+   * Factor to be multiplied by the average bounding box area to get
+   * the maximum area of a bounding box of a textual component.
+   * - <b>-elbbox</b><br>
+   * Maximum elongation factor of the bounding box of a textual component.
+   * - <b>-elmaer</b><br>
+   * Minimum elongation factor of the Minimum-Area Encasing Rectangle
+   * (MAER) of a dash character.
+   * - <b>-dmaer</b><br>
+   * Minimum value of the Minimum-Area Encasing Rectangle
+   * (MAER) density of a dash character.
+   */

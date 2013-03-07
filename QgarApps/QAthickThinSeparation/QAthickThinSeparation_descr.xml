@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+
+<application>
+
+
+  <descr>
+    <name>Thick-thin sepraration</name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Separate thick line segments (or components) from thin line segments
+(or components) in a binary image, using operators of Mathematical Morphology.
+      </brief>
+      <long>
+<![CDATA[
+<p>
+The result is obtained by consecutively performing an
+8-connexity-based opening (i.e. a composition of an
+erosion and a dilation) and a geodesic recontruction,
+using a square structural element.
+The size (i.e. width) of the structural element should be an
+odd number. If it is not the case, the size is automatically
+rounded to the nearest superior odd number.
+</p>
+<p>
+Line segments are then classified according to their thickness
+(width). Line segments having a width greater than the structural
+element size are stored in a given file, and line segments having
+a width smaller or equal to the structural element size are
+stored in second, separate given file.
+</p>
+<p>
+In fact, the method does not only apply to line segments: The source
+image may contain any kind of graphical elements, identified as
+the black connected components. Let <i>c</i> be such a component.
+The (connected) parts of <i>c</i> which fit the structural element
+(i.e. in which the structural element can be moved without overrunning
+the border) are considered as ''thick'' elements, the other parts are
+considered as ''thin'' elements.
+</p>
+<p>
+<b>Warning:</b> Let <i>s</i> be the size of the structural
+element. Because of the very nature of Mathematical Morphology
+operations, the content of the <i>s</i> rows and columns
+contiguous to the borders of the resulting image is not
+relevant.
+</p>
+]]>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+    <param name="Source Image" flag="in" required="true" passing-mode="in"
+           type="binary" format="PBM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the source binary image.
+	  </brief>
+	  <long>
+The format of the file must be one of the binary formats described
+by the PBM+ specification (either raw or ASCII).
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="image of thick lines" flag="outhick" required="true" passing-mode="out"
+	   type="binary" format="PBM" default="_.thick.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the thick line segments.
+	  </brief>
+	  <long>
+The format of the file is raw PBM.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="image of thin lines" flag="outhin" required="true" passing-mode="out"
+           type="binary" format="PBM" default="_.thin.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the thin line segments.
+	  </brief>
+	  <long>
+The format of the file is raw PBM.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="Thin line max width" flag="size" required="true" passing-mode="out"
+           type="numeric" format="int" default="6" min="0">
+      <documentation>
+	<doc>
+	  <brief>
+Maximum size (i.e. width) of a thin line segment.
+	  </brief>
+	  <long>
+Line segments whose width is greater than the given value are classified as
+''thick'', the others are classified as ''thin''.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+
+</application>

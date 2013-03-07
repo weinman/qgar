@@ -1,0 +1,1508 @@
+<?xml version="1.0" encoding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                         "/local/qgar/outils/docbook-4.2/docbookx.dtd">
+<article lang="en" revision="$Revision: 1.1 $" userlevel="DVLP">
+
+  <title>Qgar C++ Coding Standards</title>
+
+  <articleinfo>
+    <author>
+      <firstname>Gérald</firstname>
+      <surname>Masini</surname>
+      <email>masini@loria.fr</email>
+    </author>
+
+    <releaseinfo>
+    Qgar version @qgar_vesion@
+    </releaseinfo>
+
+    <legalnotice>
+      <simpara>
+	Permission is granted to copy, distribute and/or modify this document
+	under the terms of the GNU Free Documentation License, Version 1.1 or
+	any later version published by the Free Software Foundation; with no
+	Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+	Texts.
+      </simpara>
+    </legalnotice>
+
+    <copyright>
+      <year>2002</year>
+      <holder>Qgar Project, LORIA</holder>
+    </copyright>
+  </articleinfo>
+
+
+  <sect1 id="documentation">
+    <title>Documentation</title>
+    
+    <itemizedlist>
+      <listitem>
+	<para>
+	  Each piece of code must be fully and precisely documented using
+          <ulink url="http://www.stack.nl/~dimitri/doxygen/index.html">Doxygen</ulink>.
+	</para>
+	<para>
+	  Comment patterns for header files, source files, members, etc. can be
+	  automatically generated using the <emphasis>XEmacs</emphasis> text
+	  editor with macros from the <emphasis>QgarEmacs</emphasis> directory
+	  of the Qgar distribution (see the
+          <ulink url="../xemacs/xemacs.html">Xemacs Macros
+	  Installation and Use Guide</ulink>)
+	</para>
+      </listitem>
+      
+      <listitem>
+	<para>     
+	  Each class comment header includes the current version number of the
+	  Qgar software corresponding to the creation of the class.
+	  <important>
+	    <para>
+	      When a new member is added to the class, the current version
+	      number must be indicated (using tag <literal>@since</literal>) in
+	      the comment header of the member if the current number is
+	      different from the initial class version number.
+	    </para>
+	  </important>
+	</para>
+      </listitem>
+
+      <listitem>
+	<simpara>
+	  Comments must document decisions: At every point where one had a
+	  choice about what to do, a comment must describe which choice has been
+	  made and why.
+	</simpara>
+      </listitem>
+      
+      <listitem>
+	<para>
+	  Comments must clearly document bugs (using tag
+	  <literal>@bug</literal>), incomplete, experimental, or inefficient
+	  pieces of code (using tag <literal>@todo</literal>).
+  	</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+    <title>Coding Restrictions</title>
+
+    <sect2>
+      <title>Assignments</title>
+
+      <itemizedlist>
+	<listitem>
+	  
+	  <para>
+	    A variable and only a variable must be used as the left part of an
+	    assignment:
+	    <informalexample>
+	      <programlisting>class S
+{
+  public:
+    String& rName() { return name; }
+
+  protected:
+    String _name;
+};
+
+S x;
+x.rName() = "test";    // prohibited!</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Embedded assignments are strictly prohibited:
+	    <informalexample>
+	      <programlisting> x = (a = b + c) + y;        while ((c = getchar())!= EOF) {...}</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>	  
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Booleans</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    As the C++ standard now defines a native boolean type
+	    <emphasis>bool</emphasis>, it must be used whenever appropriate.
+	    Subsequently, numerical tests (especially for pointers) must be
+	    written in a way conforming to their nature:
+	    
+	    <informalexample>
+	      <programlisting>if (!(bufSize % sizeof(int)))         // prohibited!
+		
+if ((bufSize % sizeof(int)) == 0)     // correct</programlisting>
+	    </informalexample>
+
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Classes</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    <emphasis>Data members</emphasis> must always be declared in
+	    <literal>protected</literal> sections, except those locally used by
+	    function members, that must be declared in
+	    <literal>private</literal> sections.  Declarations in
+	    <literal>public</literal> sections are prohibited, without any
+	    exception.
+	  </para>
+	  <para>
+	    Any access to the value of a data member and any assignment of this
+	    value must be performed by clients using available access and
+	    transformation function members.
+	  </para>
+	</listitem>
+	
+	<listitem>
+	  <para>
+	    For each data member that is not of local interest, a function that
+	    returns its value (<emphasis>access</emphasis>) and a function that
+	    sets its value (<emphasis>transformation</emphasis>) must be
+	    defined.  To preserve efficiency, these functions must be
+	    <literal>inline</literal> whenever it is possible.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Defining <emphasis>friends</emphasis> of any nature (class, function
+	    member, global function) is strictly prohibited, except to define
+	    stream operators '<literal><<</literal>' and '<literal>>></literal>'
+	    as friends of a class so as objects of this class can be dumped and
+	    restored (see subsection
+            <link linkend="ioClasses">Input/Output</link> in section Classes).
+	  </para>	  
+	</listitem>
+      </itemizedlist>
+    </sect2>
+    
+    <sect2>
+      <title>#define</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    The use of <literal>#define</literal> to define constants, macros
+	    or whatever else, is strictly prohibited, <emphasis>without any
+	      exception</emphasis>.
+	  </para>
+	  <para>
+	    Constants are defined using <literal>#define</literal> for
+	    compilation purposes only.  Such definitions are automatically
+	    included in patterns generated by macros from the <link
+								    linkend="documentation">Qgar emacs package</link> and must never
+	    result from a developer's initiative.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>goto, continue and break</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    The use of <literal>goto</literal>, <literal>continue</literal>,
+	    and <literal>break</literal> statements is strictly prohibited.
+	    The one and only exception is the use of <literal>break</literal>
+	    inside a <literal>switch</literal> block.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Input/Output</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    The use of C facilities for input/output, from
+	    <literal>cstdio</literal>, like <literal>printf</literal> and so
+	    on, is strictly prohibited.  Streams (from
+	    <literal>iostream</literal>, <literal>fstream</literal>...)
+	    must be used instead.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+    
+    <sect2 id="localv">
+      <title>Local Variable</title>
+      <para>Section commented out, see code for details.</para>
+      <!-- Commented out by rendek@loria.fr: Section à revoir
+      
+      
+    <itemizedlist>
+    <listitem>
+    <para>
+      Local variables declarations must be grouped together at the
+      beginning of a block 
+
+      (see subsection <a
+      href="#declarations">Declarations</a> of section Formatting).
+
+      Declarations embedded in other statements are not allowed.  The one
+      and only particular case applies to conditional statements using
+    <literal>dynamic_cast</literal> in the condition part: 
+    </para>
+    </listitem>
+    </itemizedlist>
+      -->
+    </sect2>
+    
+    <sect2>
+      <title>Magic Values</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Never use magic values, i.e. values (typically numbers) for which no
+	    one, including the author, has a clue about what it means inside 3
+	    months. Use constants or enums instead:
+	    <informalexample>
+	      <programlisting>enum QGEcolor { QGE_WHITE=0, QGE_GRAY=128, QGE_BLACK=255 };
+
+if (color == 0)                 if (color == QGE_WHITE)
+  ...                             ...
+else if (color == 128)    =>    else if (color == QGE_GRAY)
+  ...                             ...
+else if (color == 255)          else if (color == QGE_BLACK)
+  ...                             ...</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Pointers</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    '<literal>0</literal>', instead of '<literal>NULL</literal>', is
+	    the correct value for null pointers, in declarations and conditional
+	    statements:
+	    <informalexample>
+	      <programlisting>char* myPointer = 0;
+...
+if (myPointer == 0)
+  {
+    ...
+  }</programlisting>		
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>this</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    <emphasis> Altering the value of <literal>this</literal> (especially
+	      using a constant cast) is strictly and definitively prohibited
+	    </emphasis>
+	    <!-- rem:especially casting out the constness using a const_cast -->
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+  </sect1>
+  
+  <sect1>
+    <title>Formatting</title>
+    
+    <para>
+      The Qgar formatting/indenting style more ou less conforms to the ANSI
+      style, using 2 spaces indentation.  A raw source file may be formatted in
+      this way using the <emphasis>astyle</emphasis> indentation filter together
+      with the <emphasis>.astylerc</emphasis> options file (to be copied into
+      the developer's home directory) given in the main directory of the Qgar
+      distribution:
+      <programlisting>astyle [original-source-file] [beautified-source-file]    (with Unix/Linux)</programlisting>or
+      <programlisting>astyle [original-source-file-1] [original-source-file-2]...</programlisting>
+      
+
+      In the latter case, the newly indented file retains the original file
+      name, while a copy of the original file is created with a
+      '<emphasis>.orig</emphasis>' appended to the original file name. Thus,
+      after indenting file <emphasis>Example.cpp</emphasis>, the indented result
+      will be named <emphasis>Example.cpp</emphasis>, while the original
+      pre-indented file will be renamed as <emphasis>Example.cpp.orig</emphasis>.
+    </para>
+
+    <important>
+      <para>
+	The <emphasis>astyle</emphasis> filter only perfoms blocks and
+	statements indentation.  Checking coding restrictions and naming
+	conventions, indents declarations blocks, inserting comments (either
+	Doxygen or other ones), and so on is the responsability of the
+	developer.
+      </para>
+    </important>
+    
+    <para>
+      To install <emphasis>astyle</emphasis>, see:
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    <ulink url="http://astyle.sourceforge.net">
+	      http://astyle.sourceforge.net
+	    </ulink> (main home page)
+	  </para>
+	</listitem>
+	
+	<listitem>
+	  <para>
+	    <ulink url="http://www.sourceforge.net/projects/astyle">
+	      http://www.sourceforge.net/projects/astyle
+	    </ulink> (project page)
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </para>
+    
+    <sect2>
+      <title>Files</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Especially with Unix/Linux, the <literal>.h</literal> extension must
+	    be used for header files, and <literal>.cpp</literal> for source
+	    files.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Each <literal>.h</literal> (resp. <literal>.cpp</literal>) file must
+	    contain the definition (resp. implementation) of a single class.  A
+	    file is named directly from the class name:
+	    <informalexample>
+	      <programlisting>ClassName.h ClassName.cpp</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+    
+    <sect2>
+      <title>Blocks</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Unless impossible, make blocks fit within a common screen size so that
+	    scrolling is not necessary when reading code.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Always comment (beginnings and) ends of (long) blocks.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Indent using 2 spaces for each level.  <emphasis>Never use tab
+	      characters</emphasis>, as some text editors may substitute spaces
+	    for tabs and subsequently alter the formatting.  Indent as much as
+	    needed, but no more. If the indenting level is more than 4 or 5
+	    levels, think about factoring out the code.
+	    <informalexample>
+	      <programlisting>if (...)
+  {
+    // Block 1: ...
+    while (...)
+    {
+      // Block 2: ...
+      ...
+    } // END Block 2
+    ...
+  } // END Block 1</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Lines</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    A line should not exceed 80 characters, as most printers cannot
+	    print wider, the wider a window is the fewer windows we can have on
+	    a screen, etc.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Each line must include only one statement, especially concerning
+	    assignments.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Functions</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Function members declarations must be grouped together according at
+	    least four Doxygen comment group blocks titled
+	    <literal>CONSTRUCTORS</literal>, <literal>ACCESS</literal>,
+	    <literal>TRANSFORMATION</literal>, and
+	    <literal>DESTRUCTORS</literal>.  <emphasis>Use extra blocks
+	      whenever it is necessary</emphasis>, in particular when the
+	    <literal>TRANSFORMATION</literal> block includes too many
+	    functions that can be semantically grouped together into blocks of
+	    smaller size.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Do not put any space between a function name and the parenthesis of
+	    the arguments list, in a declaration as well as in a call:
+	    <informalexample>
+	      <programlisting>someFunctionCall(arg1, arg2, arg3);</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Try and make functions have as few parameters as possible.  When a
+	    function does have a lot of parameters (that cannot be placed on a
+	    single line), it must be formatted in the following way:
+	    <informalexample> <programlisting>int* someFunction(int arg1, 
+                  int arg2,
+                  float arg3,
+                  char* arg4);</programlisting> 
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+    
+    <sect2>
+      <title>Declarations</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Declarations must be grouped together at the beginning of the
+	    corresponding block (there is just one particular case, for
+	    conditional statements, see subsection <link linkend="localv">Local
+	      Variables</link> in section Coding Restrictions)
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Each declaration must be placed on a separate line and be followed
+	    by an initialization and a comment.
+ 	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Declarations of variables of the same type must be placed on
+	    consecutive lines.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    '&' and '*' tokens must be adjacent to the type (not to the name).
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Blocks of declarations, including initializations, must be
+	    tabulated.
+	    <informalexample>
+	      <programlisting>int      intVarOne   = 0;     // Comment...
+int      intVarTwo   = 100;   // Comment...
+char*    charVarOne  = 0;     // Comment...
+double   dVarOne     = 0.;    // Comment...
+double&  dVarTwo     = 0;     // Comment...</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Conditional and Loop Statements</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Do not put parentheses next to keywords, leave a space between.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Always use the braces form, even when unnecessary (single statement
+	    blocks).
+	  </para>
+	</listitem>
+	
+	<listitem>
+	  <para>
+	    Always document a null body for a 'for' or a 'while' statement so
+	    that it is clear that the null body is intentional and not missing
+	    code.
+	    <informalexample>
+	      <programlisting>
+if (...)         if (...)            switch (...)
+  {                {                 {
+    ...              ...               case 1:
+  }                }                   {
+else             else if (...)           ...
+  {                {                   }
+    ...              ...               break;
+  }                }   
+else                                   case 2:
+  {                                    {
+    ...                                  ...
+}                                      }
+                                       break;
+
+                                       default:
+                                       {
+                                         ...
+                                       }
+                                     }
+
+for (...)        while (...)         do
+{                {                   {
+  ...              ...                 ...
+}                }                   }
+                                     while (...)
+
+for (...)        while (...)
+{                {
+  // VOID          // VOID
+}                }</programlisting>
+             </informalexample>
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    When using the <literal>?:</literal> operator:
+	    <itemizedlist>
+	      <listitem>
+		<simpara>
+		  The condition must be put between parentheses.
+		</simpara>
+	      </listitem>
+
+	      <listitem>
+		<simpara>
+		  If possible, the actions for the test should be simple
+		  functions
+		</simpara>
+	      </listitem>
+	      
+	      <listitem>
+		<simpara>
+		  Actions for then and else statements must be on separate lines
+		  unless they can be clearly put on a single line.
+		</simpara>
+	      </listitem>
+	    </itemizedlist>
+
+	    <informalexample>
+	      <programlisting>(condition) ? funct1() : func2();</programlisting>
+	    </informalexample>
+	    or
+	    <informalexample>
+	      <programlisting>(condition)
+  ? long statement
+  : another long statement;</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>	 
+
+      </itemizedlist>
+    </sect2>
+  </sect1>  
+
+  <sect1>
+    <title>Names</title>
+    
+    <sect2>
+      <title>General Principle</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Names usually conform to Smalltalk conventions.  A full name is the
+	    concatenation of capitalized words:
+	    <informalexample>
+	      <programlisting>anArgument    veryLongVariableName    NameOfAClass..</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+	
+	<listitem>
+	  <para>
+	    For static functions and data, as well as constants, names conform
+	    to C conventions.  A full name is the concatenation of words
+	    separated with underscore characters ('_') and the use of underscore
+	    characters is strictly prohibited in other cases:
+	    <informalexample>
+	      <programlisting>A_CONSTANT_NAME    _s_static_data_member_name    s_staticMemberFunctionName...</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+	
+	<listitem>
+	  <para>
+	    A function member that provides the value of a data member must have
+	    the same name as the data member:
+	    <informalexample>
+	      <programlisting>x()           for    _x
+weightKg()    for    _weightKg</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    The name of a function member that sets the value of a data member
+	    must be the concatenation of '<emphasis>set</emphasis>' and of the
+	    data member name:
+	    <informalexample>
+	      <programlisting>setX()           for    _x
+setWeightKg()    for    _weightKg</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+	
+	<listitem>
+	  <para>
+	    As a function usually performs an action, its name must make clear
+	    what it does.
+	    <informalexample>
+	      <programlisting>drawRectangle()   instead of  rectangle()
+dumpDataToFile()  instead of  dataToFile()..</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    If a variable represents time, weight, or some other unit, then
+	    include the unit in the name:
+	    <informalexample>
+	      <programlisting>timeoutSecs    weightKg...</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2 id="namingSyntax">
+      <title>Syntactical Conventions</title>
+
+      <simplelist columns="3" type="horiz">
+	<member><literal>[anExample]</literal></member>
+	<member> stands for </member>
+	<member>
+	  a concatenation of capitalized words excepting the first one
+	</member>
+	
+	<member><literal>[AnExample]</literal></member>
+	<member> stands for </member>
+	<member>
+	  concatenation of capitalized words
+	</member>
+
+	<member><literal>[AN_EXAMPLE]</literal></member>
+	<member> stands for </member>
+	<member>
+	  words in capitals separated with underscore characters ('<literal>_</literal>')
+	</member>
+
+	<member><literal>[an_example]</literal></member>
+	<member> stands for </member>
+	<member>
+	  words in small letters separated with underscore characters
+	  ('<literal>_</literal>')
+	</member> 
+      </simplelist>
+
+      <formalpara>
+	<title>Name Spaces</title>
+
+	<para>
+	  <simplelist columns="3" type="horiz">
+	    <member>Qgar library</member>
+	    <member />
+	    <member><literal>qgar</literal></member>
+	    
+	    <member>Globals</member>
+	    <member />
+	    <member><literal>qglobal</literal></member>
+	    
+	    <member>STL utilities</member>
+	    <member />
+	    <member><literal>qstl</literal></member>
+	    
+	    <member>XML related</member>
+	    <member />
+	    <member><literal>qgxml</literal></member>
+	  </simplelist>
+	</para>
+      </formalpara>
+
+      <formalpara>
+	<title>Types</title>
+
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>enum type</member>
+	    <member />
+	    <member><literal>QGE[enumTypeName]</literal></member>
+	    <member>like</member>
+	    <member><literal>QGEpbmFormat</literal></member>
+
+	    <member>typedef</member>
+	    <member />
+	    <member><literal>QGT[typeName]</literal></member>
+	    <member>like</member>
+	    <member><literal>QGTuChar</literal></member>
+	  </simplelist>
+	</para>
+      </formalpara>
+
+      <formalpara>
+	<title>Classes</title>
+	
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>concrete class</member>
+	    <member />
+	    <member>[ClassName]</member>
+	    <member>like</member>
+	    <member><literal>ErodedBinaryImage</literal></member>
+	    
+	    <member>generic class</member>
+	    <member />
+	    <member>Gen[ClassName]</member>
+	    <member>like</member>
+	    <member><literal>GenBoundingBox</literal></member>
+	    
+	    <member>abstract class</member>
+	    <member />
+	    <member>Abstract[ClassName]</member>
+	    <member>like</member>
+	    <member><literal>AbstractGenPrimitive</literal></member>
+
+	    <member>interface</member>
+	    <member />
+	    <member>[Capitalized]Interface</member>
+	    <member>like</member>
+	    <member><literal>DataStructureInterface</literal></member>
+	  </simplelist>
+	</para>
+      </formalpara>
+
+
+      <formalpara>
+	<title>Data Members</title>
+	
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>non static data member</member>
+	    <member />
+	    <member>_[dataMemberName]</member>
+	    <member>like</member>
+	    <member><literal>_fileStream</literal></member>
+
+	    <member>static data member</member>
+	    <member />
+	    <member>_s_[data_member_name]</member>
+	    <member>like</member>
+	    <member><literal>_s_error_msgs</literal></member>
+
+	    <member>pointer data member</member>
+	    <member />
+	    <member>_p[DataMemberName]</member>
+	    <member>like</member>
+	    <member><literal>_pCoeffMap</literal></member>
+
+	    <member>reference data member</member>
+	    <member />
+	    <member>_r[DataMemberName]</member>
+	    <member>like</member>
+	    <member><literal>_rMagicNb</literal></member>
+	  </simplelist>
+	</para>
+      </formalpara>
+
+      <formalpara>
+	<title>Function Members</title>
+	
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>non static function</member>
+	    <member />
+	    <member>[functionName]</member>
+	    <member>like</member>
+	    <member><literal>writeHeader</literal></member>
+
+	    <member>static function</member>
+	    <member />
+	    <member>s_[functionName]</member>
+	    <member>like</member>
+	    <member><literal>s_setEpsilonAngle</literal></member>
+
+	    <member>argument</member>
+	    <member />
+	    <member>a[ParamName] or an[ArgName]</member>
+	    <member>like</member>
+	    <member><literal>aRowIdx</literal>, <literal>anEpsilon</literal></member>
+	  </simplelist>
+	</para>
+      </formalpara>
+
+      
+      <formalpara>
+	<title>Local Variables</title>
+
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    
+	    <member>counter</member>
+	    <member />
+	    <member />
+	    <member>like</member>
+	    <member><literal>iCnt</literal>,
+                    <literal>jCnt</literal>,
+                    <literal>kCnt</literal>...</member>
+
+	    <member>index</member>
+	    <member />
+	    <member />
+	    <member>like</member>
+	    <member><literal>iNdx</literal>,
+                    <literal>jNdx</literal>,
+                    <literal>kNdx</literal>...</member>
+
+	    <member>pointer</member>
+	    <member />
+	    <member>p[PointerName]</member>
+	    <member>like</member>
+	    <member><literal>pPixMap</literal></member>
+
+	    <member>reference</member>
+	    <member />
+	    <member>r[ReferenceName]</member>
+	    <member>like</member>
+	    <member><literal>rPixMap</literal></member>
+
+	    <member>static variable</member>
+	    <member />
+	    <member>s_[variable_name]</member>
+	    <member>like</member>
+	    <member><literal>s_tgif_version</literal></member>
+	  </simplelist>
+	</para>
+      </formalpara>
+
+      <formalpara>
+	<title>Globals</title>
+
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    
+	    <member>function</member>
+	    <member />
+	    <member>qg[FunctioName]</member>
+	    <member>like</member>
+	    <member><literal>qgRadiansToDegrees</literal></member>
+
+	    <member>constant</member>
+	    <member />
+	    <member>QG_[CONSTANT_NAME]</member>
+	    <member>like</member>
+	    <member><literal>QG_FLOAT_MAX</literal></member>
+	  </simplelist>
+	</para>
+      </formalpara>
+      
+
+      <formalpara>
+	<title>Constants</title>
+
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>local & global</member>
+	    <member />
+	    <member>QG_[CONSTANT_NAME]</member>
+	    <member>like</member>
+	    <member><literal>QG_SQRT_2</literal></member>
+
+	    <member>enum value</member>
+	    <member />
+	    <member>QGE_[ENUM-NAME]_[ENUM_VALUE]</member>
+	    <member>like</member>
+	    <member><literal>QGE_COLOUR_MEDIUM_BLUE</literal>
+                    (for enum type <literal>QGEcolour</literal>)</member>
+	  </simplelist>
+	</para>
+      </formalpara>	    
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Classes</title>
+    
+    <sect2>
+      <title>Files</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    The <literal>.h</literal> extension must be used for header files,
+	    and <literal>.cpp</literal> for source files.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Each <literal>.h</literal> (resp. <literal>.cpp</literal>) file
+	    must contain the definition (resp. implementation) of a single
+	    class.  A file is named directly from the class name:
+	    <informalexample>
+	      <programlisting>ClassName.h    ClassName.cpp</programlisting>
+	    </informalexample>		
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Organization</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Sections for members declaration must be strictly ordered as
+	    <literal>public</literal>, <literal>protected</literal>, and, at
+	    last, <literal>private</literal>.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Friends</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Defining friends of any nature (class, function member, global
+	    function) is strictly prohibited, excepting one particular case (see
+	    subsection <link linkend="ioClasses">Input/Output</link> below).
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Private Members</title>
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Auxiliary data and function members locally used by other function
+	    members must be defined in a <literal>private</literal> section of
+	    the corresponding class.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Data Members</title>
+      
+      <itemizedlist>
+
+	<listitem>
+	  <para>
+	    Data members must always be declared in
+	    <literal>protected</literal> sections, except those locally used
+	    by function members, that must be declared in
+	    <literal>private</literal>.  Declarations in
+	    <literal>public</literal> sections are prohibited, without any
+	    exception.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    If a data member represents time, weight, or some other unit, then
+	    include the unit in the name:
+	    <informalexample>
+	      <programlisting>_timeoutSecs    _weightKg...</programlisting>
+	    </informalexample>	      
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    For each data member that is not of local interest, a function that
+	    returns its value (<emphasis>access</emphasis>) and a function that
+	    sets its value (<emphasis>tranformation</emphasis>) must be defined.
+	    To preserve efficiency, these functions must be
+	    <literal>inline</literal> whenever it is possible.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Any access to the value of a data member and any assignment of this
+	    value must be performed by clients using available access and
+	    transformation function members.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    <emphasis>Memory space that is dynamically allocated for data
+	      members must be explicitely freed (using
+	      <literal>delete</literal>) by the destructor</emphasis>.  A
+	    <literal>@warning</literal> statement in the comments of the
+	    corresponding data members (and of the destructor) must give all
+	    details about dynamic (de)allocations.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Function Members</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Access function members (i.e. that do not modify their objects) must
+	    be declared <literal>const</literal>.  Such a function that
+	    provides a data member value must have the same name as the data
+	    member.
+	    <informalexample>
+	      <programlisting>int x() const { return _x; }
+double sizePixels() const { return(_height * _width); }</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    The name of a function member that sets the value of a data member
+	    must be the concatenation of '<literal>set</literal>' and of the
+	    data member name:
+	    <informalexample>
+	      <programlisting>setX()           for    _x
+setWeightKg()    for    _weightKg</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    A function name must make clear what it does.
+	    <informalexample>
+	      <programlisting>drawRectangle()   instead of  rectangle()
+dumpDataToFile()  instead of  dataToFile()...</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+    
+    <sect2>
+      <title>Functions Implementations</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Each concrete class must implement the following functions:
+	    <itemizedlist>
+	      <listitem>
+		<formalpara>
+		  <title>A default constructor</title>
+		  <para>
+		    If your default constructor has one or more optional
+		    arguments, add a comment indicating that it is still used as
+		    the default constructor.  If the compiler-generated
+		    default constructor is sufficient, add a comment indicating
+		    that the compiler-generated version is used.
+		  </para>
+		</formalpara>
+	      </listitem>
+
+	      <listitem>
+		<formalpara>
+		  <title>A copy constructor</title>
+		  <para>
+		    as long as all the data members have not elementary types.
+		    If all the data members have elementary types, add a comment
+		    indicating that the compiler-generated copy constructor is
+		    used.
+		  </para>
+		</formalpara>
+	      </listitem>
+
+	      <listitem>
+		<formalpara>
+		  <title>A virtual destructor</title>		  
+		  <para>
+		    It ensures objects will be completely destructed regardless of
+		    inheritance depth.
+		    <warning>
+		      <simpara>
+			there is no need to define a virtual destructor in a
+			class that is not supposed to have descendants, as a
+			virtual destructor is useless in such a case and
+			requires extra memory space for each object of the
+			class.
+		      </simpara>
+		    </warning>
+		  </para>
+		</formalpara>
+	      </listitem>
+
+	      <listitem>
+		<formalpara>
+		  <title>An assignment operator</title>
+		  <para>
+		    as long as all the data members have not elementary types.
+		    If all the data members have elementary types, add a comment
+		    indicating that the compiler-generated version is used.  If
+		    the objects should not be assigned, make the assignment
+		    operator private and do not define a body for it.
+		    <warning>
+		      <para>
+			If you do not know whether the class objects should be
+			assignable, then assume they won't
+		      </para>
+		    </warning>
+		  </para>
+		</formalpara>
+	      </listitem>
+	    </itemizedlist>
+	  </para>
+	</listitem>
+	
+	<listitem>
+	  <para>
+	    A function that has no implementation must be declared in the
+	    <literal>private</literal> section inside a block of comments
+	    titled <emphasis>DISABLED</emphasis>:
+	    <informalexample>
+	      <programlisting> private:
+  /** @name DISABLED */
+  //        ========
+  //@{
+
+  /**
+   * @brief ...
+   */
+  void notImplementedOne();
+
+  /**
+   * @brief ...
+   */
+  void notImplementedTwo();
+
+  //@}</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2 id="ioClasses">
+      <title>Input/Output</title>
+      
+      <itemizedlist>
+
+	<listitem>
+	  <para>
+	    When objects of class <literal>Example</literal> have to be dumped
+	    and restored, one must define stream operators
+	    <literal>'<<'</literal> and <literal>'>>'</literal> as friends of
+	    the class (see file <emphasis>QgarSegment.h</emphasis> for a real
+	    case).  The external representation of an object conforms to the
+	    pattern:
+	    <programlisting>ClassName(value-1) ... (value-N)</programlisting>
+	    The source code of such stream operators should be typically written
+	    as below. They then apply to file streams as well.
+	    <informalexample>
+	      <programlisting>// INPUT
+  inline istream& operator>>(istream& is, Example& obj)
+  {
+    DataType-1 v1; // First data member
+    ...
+    DataType-N vN; // Last data member
+
+    global::qgReadObjName(is, "Example");
+    qglobal::qgReadObjData(is, v1);      // Get first data member
+    ...
+    qglobal::qgReadObjData(is, vN);   // Get last data member
+    obj = Example(v1, ..., vN); // Construct resulting object
+
+    return is;
+  }
+
+  // OUTPUT
+  inline ostream& operator<<(ostream& os, const Example& obj)
+  {
+    os << "Example"
+    << '(' << obj.data-1 << ')'  // First data member
+    ...
+    << '(' << obj.data-N << ')'; // Last data member
+
+    return os;
+  }</programlisting>
+	    </informalexample>
+	    Values of data members must be input and output in the same order.
+	    As indicated, functions <literal>qgReadObjName</literal> and
+	    <literal>qgReadObjData</literal> are defined in the
+	    <literal>qglobal</literal> namespace.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Abstract Classes</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    The name of an abstract class begins with
+	    <literal>Abstract</literal>.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    The constructor must be declared in the
+	    <literal>protected</literal> section.
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Gobals</title>
+
+    <sect2>
+      <title>Constants</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Global constants of general interest must be defined in the
+	    <literal>qglobal</literal> namespace.General interest applies for
+	    constants that are not related to a particular class or group of
+	    classes, for example the value of PI/2.
+	  </para>
+	</listitem>
+	
+	<listitem>
+	  <para>
+	    A constant name must conform to notation:
+	    <literal>QG_[UPPER_CASE]</literal>
+            (see section <link linkend="namingSyntax">Naming</link>).
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Functions</title>
+      
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Global functions of general interest must be defined in the
+	    <literal>qglobal</literal> namespace.  General interest applies for
+	    functions that are not related to a particular class or group of
+	    classes, for example to compute min or max between two numbers.
+	  </para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    A global function name must conform to notation:
+	    <literal>qg[Capitalized]</literal> (see section <link
+								  linkend="namingSyntax">Naming</link>).
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+  </sect1>
+  
+  <sect1>
+    <title>Useful Tricks</title>
+    
+    <sect2>
+      <title>Commenting Out Large Parts Of Code</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para>
+	    Sometimes large parts of code need to be commented out for testing,
+	    because the code includes a pernicious bug, or whatsoever.  Use an
+	    <literal>#if</literal> block for that (because <literal>/*
+	      */</literal> style comments cannot contain comments) and add a
+	    comment explaining why the code is not implemented, obsolete or
+	    temporarily disabled.
+	    <informalexample>
+	      <programlisting>void example()
+  {
+    some code...
+
+    #if TEMPORARILY_DISABLED
+    large disabled code part
+    #endif
+
+    more code...
+  }</programlisting>
+	    </informalexample>
+	  </para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+  </sect1>
+
+  <appendix>
+    <title>Online Resources</title>
+    
+    <itemizedlist>
+      <listitem>
+	<para>
+	  <ulink url="http://www.abxsoft.com">Abraxis code check</ulink>:
+          A program for checking code for coding standard violations and other
+	  problems.
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink url="http://www.cs.wustl.edu/~schmidt/ACE-overview.html">ACE
+	    C++ Library</ulink>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink url="http://www.desy.de/user/projects/C++/Projects.html">C++
+	    source libraries</ulink>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink url="http://www.desy.de/user/projects/C++/Learning.html">C++
+	    tutorials</ulink>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink url="http://www.joelinoff.com/ccdoc/index.html">ccdoc</ulink>:
+          A 'javadoc' like utility that extracts comments and relevant information
+	  from your C++/C programs and generates HTML pages from it.
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink url="http://www.cs.umd.edu/users/cml/cstyle">
+	    Collection of other standards
+	  </ulink>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink url="http://www.possibility.com/Cpp/const.html">Const
+	    correctness</ulink>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink url="http://www.eiffel.com/doc/manuals/technology/contract/">
+	    Design by contract from Eiffel
+	  </ulink>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink url="http://www.sente.ch/cetus/software.html">OO info
+	    source</ulink>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink url="http://www.markv.com/OPEN/">OPEN method</ulink>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <ulink
+		 url="http://pcroot.cern.ch/TaligentDocs/TaligentOnline/DocumentRoot/1.0/Docs/books/WM/WM_1.html">Taligent's guide to designing programs</ulink>
+	</para>
+      </listitem>
+      
+      <listitem>
+	<para>
+	  <ulink url="http://www.rational.com/uml/index.jtmpl">Unified Modeling
+	    Language (UML)</ulink>
+	</para>
+      </listitem>
+    </itemizedlist>
+  </appendix>
+</article>

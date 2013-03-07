@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+  <title>Qgar Software documentation header</title>
+  <link href="leftMenu.css" rel="stylesheet" type="text/css">
+</head>
+
+<body bgcolor="lightgray">
+
+
+<!-- ---------------------------- LOGO ---------------------------- -->
+
+
+<div align="center">
+
+
+<table cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td><a href="http://www.qgar.org/" target="_blank"><img src="images/qgarLogo-orange.gif" alt="Qgar web site" border="0"></a><td>
+<!-- <td valign="middle"><font size="+1"><b>&reg;<b></font></td> -->
+</tr>
+</table>
+
+<p><b>Version @qgar_version@</b></p>
+
+
+</div>
+
+
+<!-- -------------------------------------------------------------- -->
+
+
+<!-- ---------------------------- MENU ---------------------------- -->
+
+
+<table cellspacing="2" cellpadding="0">
+
+
+<tr>
+<td colspan="2"><img src="images/orangePin-T.gif">
+<a href="main.html" target="mainfrm">Main Page</a></td>
+</tr>
+
+
+<tr>
+<td colspan="2"><img src="images/orangePin-T.gif">
+<a href="../installation/installGuide.html" target="mainfrm">Installation Guide</a></td>
+</tr>
+
+<tr>
+<td colspan="2"><img src="images/orangePin-T.gif">
+<a href="../installation/compilationGuide.html" target="mainfrm">Compilation Guide</a></td>
+</tr>
+
+<tr>
+<td colspan="2"><img src="images/orangePin-T.gif">
+<a href="../installation/installWindows.html" target="mainfrm">Windows Installer Guide</a></td>
+</tr>
+
+
+<tr>
+<td colspan="2"><img src="images/orangePin-T.gif">
+<strong>Design Papers</strong></td>
+</tr>
+
+<tr>
+<td width="24">&nbsp;</td>
+<td><a href="../design/qgarAppsDesign.html" target="mainfrm">QgarApps</a></td>
+</tr>
+
+
+<!--
+<tr>
+<td></td>
+<td><a href="../design/qgarGuiDesign.html" target="mainfrm">QgarGui</a></td>
+</tr>
+-->
+
+
+<tr>
+<td></td>
+<td><a href="qgarLibDesign.html" target="mainfrm">QgarLib</a></td>
+</tr>
+
+
+<tr>
+<td colspan="2"><img src="images/orangePin-T.gif">
+<strong>Developer's Guide</strong></td>
+</tr>
+
+
+<tr>
+<td></td>
+<td><a href="../developer/packagingGuide.html" target="mainfrm">Packaging Guide</a></td>
+</tr>
+
+<tr>
+<td></td>
+<td><a href="../developer/codingStandards.html" target="mainfrm">Coding standards</a></td>
+</tr>
+
+<tr>
+<td></td>
+<td><a href="../developer/codingStandardsAbstract.html" target="mainfrm">Coding standards Abstract</a></td>
+</tr>
+
+<tr>
+<td width="24">&nbsp;</td>
+<td><a href="../developer/Xemacs.html" target="mainfrm">Xemacs macros</a></td>
+</tr>
+
+
+<tr>
+<td colspan="2"><img src="images/orangePin-T.gif">
+<strong>API Docs</strong></td>
+</tr>
+
+<tr>
+<td width="24">&nbsp;</td>
+<td><a href="../api/qgarapps/index.html" target="mainfrm">QgarApps</a></td>
+</tr>
+
+
+<tr>
+<td></td>
+<td><a href="../api/qgargui/index.html" target="mainfrm">QgarGui</a></td>
+</tr>
+
+
+<tr>
+<td></td>
+<td><a href="../api/qgarlib/index.html" target="mainfrm">QgarLib</a></td>
+</tr>
+
+
+
+
+<tr>
+<td colspan="2"><img src="images/orangePin-T.gif">
+<a href="../bibliography/bibliography.html" target="mainfrm">Bibliography</a></td>
+</tr>
+
+<!--
+<tr>
+<td colspan="2"><img src="images/orangePin-T.gif">
+<a href="../download.php" target="_blank">Downloads</a></td>
+</tr>
+-->
+
+</table>
+
+
+<!-- -------------------------------------------------------------- -->
+
+
+<p>&nbsp;</p>
+
+
+<!-- ------------------------- BUG REPORT ------------------------- -->
+
+
+<div align="center">
+
+
+<p>
+<b><b>bug report</b><br><a href="mailto:qgar-develop@loria?subject=Bug report"><img src="images/mail-T.gif" alt="Mail a bug report" border="0"></a>
+</p>
+
+
+</div>
+
+
+<!-- -------------------------------------------------------------- -->
+
+
+<p>&nbsp;</p>
+
+
+<!-- ---------------------------- LORIA --------------------------- -->
+
+
+<div align="center">
+
+
+<p>
+<a href="http://www.loria.fr/equipes/qgar/" target="_blank">Qgar Research Project</a></font><br><a href="http://www.loria.fr/" target="_blank"><img src="images/loriaLogo-T.gif" alt="LORIA web site" border="0"></a><br>B.P. 239<br>54506 Vandoeuvre Cedex<br>France
+</p>
+
+
+</div>
+
+
+<!-- -------------------------------------------------------------- -->
+
+
+</body>
+
+</html>

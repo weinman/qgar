@@ -1,0 +1,25 @@
+/**************** BODY ****************/
+
+body
+{
+  background: url(images/background.jpg);
+}
+
+.programlisting
+{
+  align-left: auto;
+  font-family: monospace;
+  width: 95%;
+  padding: 1em;
+  margin-left: 1em;
+  border: 1px solid #CCCCCC;
+  background-color: #f5f5f5;
+}
+
+.emphasis
+{
+  color: #0000FF;
+  background-color: inherit;
+  font-weight: bold;
+  font-style: normal;
+}

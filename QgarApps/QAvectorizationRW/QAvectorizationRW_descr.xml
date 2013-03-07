@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<application>
+
+
+  <descr>
+    <name>Rosin-West based vectorization</name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Vectorization using Rosin and West's polygonal approximation.
+      </brief>
+      <long>
+<![CDATA[
+The polygonal approximation is based on the algorithm
+proposed by David Lowe and further refined by P. Rosin and G. West
+(see <i>J. Rosin, and G. West. Segmentation of edges into lines and arcs.
+Image and Vision Computing, 7(2):109-114, May 1989</i>).
+Black (connected) components which are smaller than a given size
+are pruned.
+]]>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+
+    <param name="source image" flag="in" required="true" passing-mode="in"
+	   type="binary" format="PBM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the binary source image.
+	  </brief>
+	  <long>
+The format of the file must be one of the binary formats described
+by the PBM+ specification (either raw or ASCII).
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="image of vectors" flag="out" required="true" passing-mode="out"
+	   type="vectorial" format="DXF" default="_.vecto.dxf">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store resulting line segments.
+	  </brief>
+	  <long>
+The format of the file is DXF.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="image of chains" flag="outch" required="false" passing-mode="out"
+	   type="vectorial" format="DXF" default="_.chains.dxf">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store resulting chains of points.
+	  </brief>
+	  <long>
+The format of the file is DXF.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="small CC max size" flag="prune" required="false" passing-mode="in"
+	   type="numeric" format="int" default="5" min="0">
+      <documentation>
+	<doc>
+	  <brief>
+Maximum size (in pixels) of black components which are pruned.
+	  </brief>
+	  <long>
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+
+</application>

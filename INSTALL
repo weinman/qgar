@@ -1,0 +1,98 @@
+Basic Installation
+==================
+
+   Since version 3.0, the Qgar system configuration and installation 
+are managed by CMake tool. Different from previous versions, there is 
+only one configuration file 'CmakeLists.txt' in each Qgar directory. 
+They are used by CMake to generate the traditional Makefiles.
+
+   The `cmake' command is able to guess correct values for various 
+system-dependent variables used during compilation. It uses those values 
+to create a `Makefile' in each directory of the package. Finally, it 
+creates some 'CMake' files that it uses to keep your system information, 
+hold the compile rules and, in some cases, control the tests.
+
+   If you need to do unusual things to compile the package or just wish 
+to change some parameters, please run the `Cmake's interface:
+
+   --> ccmake .
+ 
+   If you want to use Qgar with some unavailable option, please, give us 
+a detailed (but objective!) description of your needs by mail to the address 
+given in the `README' so they can be considered for the next release. 
+
+The simplest way to compile this package is:
+
+  1. `cd' to the directory containing the package's source code and type
+     `cmake .' to configure the package for your system.  
+
+     Running `cmake' takes awhile.  While running, it prints some
+     messages telling which features it is checking for.
+
+  2. Type `make' to compile the package.
+
+  3. Type `make install' to install the programs and any data files and
+     documentation.
+
+  5. You can remove the program binaries and object files from the
+     source code directory by typing `make clean'.
+
+
+Compilers and Options
+=====================
+
+   CMake can get information about most systems. However, if by any 
+reason, you need to change a parameter value, just execute the `CMake's 
+interface:
+
+   --> ccmake .
+
+   The list of variables will be presented and putting the cursor 
+over it you'll have small description of it. Just press <ENTER> to 
+modify the field and re-generate your rules typing `g' inside CMake 
+interface.
+
+
+Compiling For Multiple Architectures
+====================================
+
+   The install procedure is always the same in any Architecture.
+
+
+Installation Names
+==================
+
+   By default, `make install' will install the package's files in
+`/usr/local/bin', `/usr/local/lib', etc.  You can specify an
+installation prefix other than `/usr/local' by changing `CMake' 
+variable CMAKE_INSTALL_PREFIX executing the `CMake' interface 
+(Plese, see `Compilers and Options' session) or typing:
+
+  --> make edit_cache
+
+   The `CMake' interface will be opened and you chose the value to 
+modify.
+
+
+Sharing Defaults
+================
+
+   Any change made in `CMake' variables is kept until next cache rebuild. 
+The cache rebuild can be forced by `make rebuild_cache'.
+
+
+Operation Controls
+==================
+
+   `CMake' recognizes several options to control how it
+operates. Two of them are:
+
+`--help'
+     Print a summary of the options to `Cmake', and exit.
+
+`--version'
+     Print the version of CMake used to generate the Makefile 
+     and exit.
+
+   We strongelly suggests the use of Cmake interface to any 
+modification in compilation and build options.

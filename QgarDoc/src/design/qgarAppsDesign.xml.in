@@ -1,0 +1,1623 @@
+<?xml version="1.0"encoding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                         "/local/qgar/outils/docbook-4.2/docbookx.dtd">
+
+
+<article lang="en" revision="$Revision: 1.1 $" userlevel="USER">
+
+
+<title>Design and installation guide of a Qgar application</title>
+
+  
+<articleinfo>
+
+<author>
+  <firstname>Gerald</firstname>
+  <surname>Masini</surname>
+  <email>Gerald.Masini@loria.fr</email>
+</author>
+
+<releaseinfo>
+Qgar version @qgar_version@
+</releaseinfo>
+
+<orgname>Qgar Project, LORIA</orgname>
+    
+<abstract>
+  <simpara>
+This document describes how to design and install a so-called
+<emphasis>Qgar application</emphasis>, which can be subsequently run within the
+Qgar user interface (QgarGui).
+  </simpara>
+</abstract>   
+
+</articleinfo>
+
+
+<!-- INTRODUCTION =========================================================== -->
+
+
+<section>
+
+<!--   ============     -->
+<title>Introduction</title>
+<!--   ============     -->
+
+<para>
+So-called <emphasis>Qgar applications</emphasis>, that is to say pieces of
+executable binary code, may be integrated into the Qgar software package in
+order to be run within the user interface (QgarGui).
+</para>
+
+<orderedlist numeration="upperroman">
+
+<!-- I -->
+
+  <listitem>
+    <para>
+In any case, a file describing the application and its parameters must be
+provided to allow the user interface to generate the corresponding dialog boxes
+and to run the code:
+see section <link linkend="description">Description of an application</link>.
+    </para>
+  </listitem>
+
+<!-- II -->
+
+  <listitem>
+    <para>
+Then, there is more or less to do, depending on the way the application is designed.
+    </para>
+
+      <itemizedlist>
+
+        <listitem>
+          <para>
+When the application is designed separately from the Qgar platform,
+it has to conform to two prerequisites:
+
+<itemizedlist>
+<listitem>
+<simpara>
+the code can be run on the computer hosting the Qgar software, of course,
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+the code can be invoked and fed with parameter values from a command line,
+typically within a shell of a Linux operating system, like below:
+</simpara> 
+<programlisting>myVectorization -in myInputImage.pbm -out myOutputImage.dxf -prune 8</programlisting>
+</listitem>
+</itemizedlist>
+
+If this is the case, there is nothing to do about the application itself.
+Go to item III.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+When the application is designed using the Qgar platform, the structure of its
+code should conform to a predefined pattern, especially concerning argument
+retrieval and use, as explained in section
+<link linkend="design">Design of a new application using QgarLib</link>.
+          </para>
+        </listitem>
+
+      </itemizedlist>
+
+  </listitem>
+
+<!-- III -->
+
+  <listitem>
+    <para>
+Finally, the application has to be installed in the Qgar platform.
+See section
+<link linkend="install">Installation of a new application in the Qgar platform</link>.
+    </para>
+  </listitem>
+
+<!-- FIN -->
+
+</orderedlist>
+
+
+</section>
+
+
+
+<!-- DESCRIPTION OF AN APPLICATION ========================================== -->
+
+
+<section id="description">
+
+<!--   =============================     -->   
+<title>Description of an application</title>
+<!--   =============================     -->
+
+  <section>
+
+  <title>General pattern of a description</title>
+  <!--   ================================     -->
+
+    <para>
+Each application is associated with a description file coded in XML.
+When launched, the user interface parses the available description files
+to integrate the corresponding applications into its menus.
+It then generates the dialog boxes to display the documentation about the
+applications, to get the values of the parameters and to run the code.
+    </para>	
+
+    <para>
+An application description must conform to the DTD given in
+<link linkend="a1">appendix A</link>.
+It is specified between
+<emphasis><![CDATA[<]]>application<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/application<![CDATA[>]]></emphasis> tags,
+and includes 3 parts, introduced by tags
+<emphasis><![CDATA[<]]>descr<![CDATA[>]]></emphasis>,
+<emphasis><![CDATA[<]]>documentation<![CDATA[>]]></emphasis>, and
+<emphasis><![CDATA[<]]>paramlist<![CDATA[>]]></emphasis>,
+as emphasized in the example below.
+    </para>
+
+
+<!-- ---------------- EXAMPLE OF XML DESCRIPTION ---------------- -->
+
+<programlisting><![CDATA[<]]>?xml version="1.0"?<![CDATA[>]]>
+
+<![CDATA[<]]>!-- *---------------------------------------------------*
+     | DESCRIPTION OF THE ROSIN-&-WEST-BASED APPLICATION |
+     *---------------------------------------------------* --<![CDATA[>]]>
+
+<![CDATA[<]]>application<![CDATA[>]]>
+
+
+<![CDATA[<]]>!-- <link linkend="general">GENERAL INFORMATION ABOUT THE APPLICATION</link> --<![CDATA[>]]>
+
+  <![CDATA[<]]>descr<![CDATA[>]]>
+    <![CDATA[<]]>name<![CDATA[>]]>Rosin-&-West-based vectorization<![CDATA[<]]>/name<![CDATA[>]]>
+    <![CDATA[<]]>author<![CDATA[>]]>Qgar Project, LORIA<![CDATA[<]]>/author<![CDATA[>]]>
+    <![CDATA[<]]>copyright<![CDATA[>]]>2006 - Qgar Project, LORIA<![CDATA[<]]>/copyright<![CDATA[>]]>
+  <![CDATA[<]]>/descr<![CDATA[>]]>
+
+
+<![CDATA[<]]>!-- <link linkend="technical">TECHNICAL DESCRIPTION OF THE APPLICATION</link> --<![CDATA[>]]>
+
+  <![CDATA[<]]>documentation<![CDATA[>]]>
+    <![CDATA[<]]>doc<![CDATA[>]]>
+      <![CDATA[<]]>brief<![CDATA[>]]>
+Vectorization using Rosin & West's polygonal approximation.
+      <![CDATA[<]]>/brief<![CDATA[>]]>
+      <![CDATA[<]]>long<![CDATA[>]]>
+<![CDATA[<]]>![CDATA[
+The polygonal approximation is based on the algorithm
+proposed by David Lowe and further refined by P. Rosin and G. West
+(see <![CDATA[<]]>i<![CDATA[>]]>J. Rosin, and G. West.
+Segmentation of edges into lines and arcs.
+Image and Vision Computing, 7(2):109-114, May 1989<![CDATA[<]]>/i<![CDATA[>]]>).
+Black (connected) components which are smaller than a given size are pruned.
+]]<![CDATA[>]]>
+      <![CDATA[<]]>/long<![CDATA[>]]>
+    <![CDATA[<]]>/doc<![CDATA[>]]>
+  <![CDATA[<]]>/documentation<![CDATA[>]]>
+
+
+<![CDATA[<]]>!-- <link linkend="parameters">DESCRIPTION OF THE PARAMETERS</link> --<![CDATA[>]]>
+
+  <![CDATA[<]]>paramlist<![CDATA[>]]>
+
+    <![CDATA[<]]>!-- 1st PARAMETER --<![CDATA[>]]>
+
+    <![CDATA[<]]>param
+        name="source image"
+        flag="in"
+        required="true"
+        passing-mode="in"
+	type="binary"
+        format="PBM"<![CDATA[>]]>
+      <![CDATA[<]]>documentation<![CDATA[>]]>
+	<![CDATA[<]]>doc<![CDATA[>]]>
+	  <![CDATA[<]]>brief<![CDATA[>]]>
+Full pathname of the file containing the binary source image.
+	  <![CDATA[<]]>/brief<![CDATA[>]]>
+	  <![CDATA[<]]>long<![CDATA[>]]>
+The format of the file must be one of the binary formats described
+by the PBM+ specification (either raw or ASCII).
+	  <![CDATA[<]]>/long<![CDATA[>]]>
+	<![CDATA[<]]>/doc<![CDATA[>]]>
+      <![CDATA[<]]>/documentation<![CDATA[>]]>
+    <![CDATA[<]]>/param<![CDATA[>]]>
+
+    <![CDATA[<]]>!-- 2nd PARAMETER --<![CDATA[>]]>
+
+    <![CDATA[<]]>param
+        name="image of vectors"
+        flag="out"
+        required="true"
+        passing-mode="out"
+	type="vectorial"
+        format="DXF"
+        default="_.vecto.dxf"<![CDATA[>]]>
+      <![CDATA[<]]>documentation<![CDATA[>]]>
+	<![CDATA[<]]>doc<![CDATA[>]]>
+	  <![CDATA[<]]>brief<![CDATA[>]]>
+Full pathname of the file to store resulting line segments.
+	  <![CDATA[<]]>/brief<![CDATA[>]]>
+	  <![CDATA[<]]>long<![CDATA[>]]>
+The format of the file is DXF.
+	  <![CDATA[<]]>/long<![CDATA[>]]>
+	<![CDATA[<]]>/doc<![CDATA[>]]>
+      <![CDATA[<]]>/documentation<![CDATA[>]]>
+    <![CDATA[<]]>/param<![CDATA[>]]>
+
+    <![CDATA[<]]>!-- 3rd PARAMETER --<![CDATA[>]]>
+
+    <![CDATA[<]]>param
+        name="small CC max size"
+        flag="prune"
+        required="false"
+        passing-mode="in"
+	type="numeric"
+        format="int"
+        default="5"
+        min="0"<![CDATA[>]]>
+      <![CDATA[<]]>documentation<![CDATA[>]]>
+	<![CDATA[<]]>doc<![CDATA[>]]>
+	  <![CDATA[<]]>brief<![CDATA[>]]>
+Maximum size (in pixels) of black components which are pruned.
+	  <![CDATA[<]]>/brief<![CDATA[>]]>
+	  <![CDATA[<]]>long<![CDATA[>]]>
+	  <![CDATA[<]]>/long<![CDATA[>]]>
+	<![CDATA[<]]>/doc<![CDATA[>]]>
+      <![CDATA[<]]>/documentation<![CDATA[>]]>
+    <![CDATA[<]]>/param<![CDATA[>]]>
+
+  <![CDATA[<]]>!--  END OF PARAMETERS DESCRIPTION --<![CDATA[>]]>
+  <![CDATA[<]]>/paramlist<![CDATA[>]]>
+
+
+<![CDATA[<]]>/application<![CDATA[>]]></programlisting>
+
+<!-- ---------------- END OF XML DESCRIPTION ---------------- -->
+
+
+  </section>
+
+
+  <section id="general">
+
+  <title>General information about the application</title>
+  <!--   =========================================     -->
+
+
+<programlisting><![CDATA[<]]>descr<![CDATA[>]]>
+
+  <![CDATA[<]]>name<![CDATA[>]]>Rosin-&-West-based vectorization<![CDATA[<]]>/name<![CDATA[>]]>
+  <![CDATA[<]]>author<![CDATA[>]]>Qgar Project, LORIA<![CDATA[<]]>/author<![CDATA[>]]>
+  <![CDATA[<]]>copyright<![CDATA[>]]>2006 - Qgar Project, LORIA<![CDATA[<]]>/copyright<![CDATA[>]]>
+
+<![CDATA[<]]>/descr<![CDATA[>]]></programlisting>
+
+
+  <para>
+This part provides a textual documentation about the application,
+specified between tags
+<emphasis><![CDATA[<]]>descr<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/descr<![CDATA[>]]></emphasis>,
+and including 3 parts:
+  </para>
+
+
+  <itemizedlist>
+
+    <listitem>
+      <para>
+<emphasis><![CDATA[<]]>name<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/name<![CDATA[>]]></emphasis>:
+a one-line description, to be used as title of the corresponding dialog box,
+generated by the user interface
+     </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis><![CDATA[<]]>author<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/author<![CDATA[>]]></emphasis>:
+the name(s) of the author(s),
+to be used in the <command>Description</command>
+sheet of the dialog box
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis><![CDATA[<]]>copyright<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/copyright<![CDATA[>]]></emphasis>:
+the copyright mention, to be used in the <command>Description</command>
+sheet of the dialog box
+     </para>
+    </listitem>
+  </itemizedlist>
+
+  </section>
+
+
+
+  <section id="technical">
+
+  <title>Technical description of the application</title>
+  <!--   ========================================     -->
+
+<programlisting><![CDATA[<]]>documentation<![CDATA[>]]>
+
+  <![CDATA[<]]>doc<![CDATA[>]]>
+    <![CDATA[<]]>brief<![CDATA[>]]>BRIEF DESCRIPTION<![CDATA[<]]>/brief<![CDATA[>]]>
+    <![CDATA[<]]>long<![CDATA[>]]>LONG DESCRIPTION<![CDATA[<]]>/long<![CDATA[>]]>
+  <![CDATA[<]]>/doc<![CDATA[>]]>
+
+<![CDATA[<]]>/documentation<![CDATA[>]]></programlisting>
+
+  <para>
+This part provides a textual documentation about the
+application, from a technical point of view, to be displayed
+by the <command>Description</command> sheet of the dialog box generated by the
+user interface. It is specified between tags
+<emphasis><![CDATA[<]]>documentation<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/documentation<![CDATA[>]]></emphasis>.
+  </para>
+
+  <para>
+The text itself is given between tags
+<emphasis><![CDATA[<]]>doc<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/doc<![CDATA[>]]></emphasis>,
+and includes 2 parts:
+  </para>
+
+  <itemizedlist>
+
+    <listitem>
+      <para>
+<emphasis><![CDATA[<]]>brief<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/brief<![CDATA[>]]></emphasis>:
+a few words describing shortly the purpose of the application.
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis><![CDATA[<]]>long<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/long<![CDATA[>]]></emphasis>:
+a full description, supposed to include all information
+a user has to know about the application before running it.
+      </para>
+    </listitem>
+
+  </itemizedlist>
+
+  </section>
+
+
+
+  <section id="parameters">
+
+  <title>Description of the parameters</title>
+  <!--   =============================     -->
+
+<programlisting><![CDATA[<]]>paramlist<![CDATA[>]]>
+
+  <![CDATA[<]]>param
+      ATTRIBUTE-1
+      ATTRIBUTE-2
+      ...<![CDATA[>]]>
+
+    <![CDATA[<]]>documentation<![CDATA[>]]>
+      <![CDATA[<]]>doc<![CDATA[>]]>
+        <![CDATA[<]]>brief<![CDATA[>]]>BRIEF DESCRIPTION<![CDATA[<]]>/brief<![CDATA[>]]>
+        <![CDATA[<]]>long<![CDATA[>]]>LONG DESCRIPTION<![CDATA[<]]>/long<![CDATA[>]]>
+      <![CDATA[<]]>/doc<![CDATA[>]]>
+    <![CDATA[<]]>/documentation<![CDATA[>]]>
+
+  <![CDATA[<]]>/param<![CDATA[>]]>
+
+  ...
+
+<![CDATA[<]]>/paramlist<![CDATA[>]]></programlisting>
+
+
+  <para>
+The description of the parameters of the application is specified
+between tags 
+<emphasis><![CDATA[<]]>paramlist<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/paramlist<![CDATA[>]]></emphasis>.
+The provided documentation is displayed by the
+<command>Call parameters</command> and
+<command>Command line</command> sheets of the dialog box
+generated by the user interface.
+  </para>
+
+  <para>
+The description of each parameter is specified between
+<emphasis><![CDATA[<]]>param<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/param<![CDATA[>]]></emphasis> tags.
+It includes a textual documentation provided in the same way as
+the technical description, between
+<emphasis><![CDATA[<]]>documentation<![CDATA[>]]></emphasis> and
+<emphasis><![CDATA[<]]>/documentation<![CDATA[>]]></emphasis> tags
+(see <link linkend="technical">previous section</link>):
+  </para>
+
+  <itemizedlist>
+
+    <listitem>
+      <para>
+The brief description is especially used to give 
+information about the parameter
+(button '<command>?</command>')
+in the <command>Call parameters</command> sheet of the dialog box.
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+The long description is displayed by the
+<command>Parameters description</command> section
+of the <command>Description</command> sheet of the dialog box. 
+      </para>
+    </listitem>
+
+  </itemizedlist>
+
+
+  <para>
+The technical description of each parameter is provided by attributes of the 
+<emphasis><![CDATA[<]]>param<![CDATA[>]]></emphasis> tag.
+Six of them are required:
+  </para>
+
+  <itemizedlist>
+
+    <listitem>
+      <para>
+<emphasis>name</emphasis>:
+very short description of the parameter, used to comment the input
+form of the parameter, in the <command>Call parameters</command> sheet
+of the dialog box.
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>flag</emphasis>:
+name of the parameter, without any blank or '<emphasis>-</emphasis>' characters.
+It will be used to introduce the parameter value when invoking the application
+from a command line.
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>required</emphasis>:
+boolean value stating that the parameter is
+required (<emphasis>true</emphasis>),
+or optional (<emphasis>false</emphasis>).
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>type</emphasis>:
+generic type of the parameter, which may be
+a numeric value (<emphasis>numeric</emphasis>),
+a grey-level image (<emphasis>grayscale</emphasis>),
+a binary image (<emphasis>binary</emphasis>),
+or a vectorial image (<emphasis>vectorial</emphasis>).
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>format</emphasis>:
+format of the parameter value.
+  <itemizedlist>
+    <listitem>
+      <para>
+For a numeric value:
+integer (<emphasis>int</emphasis>) or
+real (<emphasis>real</emphasis>) number.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+For an image:
+DXF (<emphasis>DXF</emphasis>),
+PBM (<emphasis>PBM</emphasis>),
+PGM (<emphasis>PGM</emphasis>),
+PPM (<emphasis>PPM</emphasis>),
+or SVG (<emphasis>SVG</emphasis>).
+      </para>
+      <para>
+NOTE: An image is given as a file coded in the specified format.
+      </para>
+    </listitem>
+  </itemizedlist>
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>passing-mode</emphasis>:
+passing mode of the parameter, stating that it used
+to input (<emphasis>in</emphasis>),
+to output (<emphasis>out</emphasis>),
+or to both input and output (<emphasis>inout</emphasis>)
+a value.
+      </para>
+    </listitem>
+
+ </itemizedlist>
+
+  <para>
+Three attributes are optional:
+  </para>
+
+  <itemizedlist>
+
+    <listitem>
+      <para>
+<emphasis>default</emphasis>:
+default name of the file used to save the value of the parameter,
+typically when it represents an image passed in 
+<emphasis>out</emphasis> mode.
+An underscore character ('<emphasis>_</emphasis>') in the given name represents
+the name (without the extension) of the input file , if any, of the application.
+
+<programlisting>default="_.vecto.dxf"</programlisting>
+
+In the example above, if
+<command>myInputImage.pbm</command>
+is the name of the input image, the name of the output file is
+<command>myInputImage.vecto.dxf</command>.
+     </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>min</emphasis>:
+minimum value of the parameter, for a number only.
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>max</emphasis>:
+maximum value of the parameter, for a number only.
+      </para>
+    </listitem>
+
+  </itemizedlist>
+
+  </section>
+
+
+
+</section>
+
+
+<!-- DESIGN OF A NEW APPLICATION USING QgarLib ============================== -->
+
+
+<section id="design">
+
+<!--   =========================================     -->   
+<title>Design of a new application using QgarLib</title>
+<!--   =========================================     -->
+
+  <section>
+
+  <title>General pattern of the source code</title>
+  <!--   ==================================     -->
+
+    <para>
+An application typically works in 8 steps, as shown in the example.
+The code of each section of the example is explained in the same-numbered
+sections of the following. 
+    </para>
+
+<programlisting>
+/*----------------------------------*
+ | ROSIN-&-WEST-BASED VECTORIZATION |
+ *----------------------------------*/
+
+// QgarLib headers for the representation
+// of the application and of its parameters...
+#include <![CDATA[<]]>qgarlib/QgarApp.h<![CDATA[>]]>
+#include <![CDATA[<]]>qgarlib/QgarArgs.h<![CDATA[>]]>
+// ...as well as other headers required to code the application...
+#include <![CDATA[<]]>cstdlib<![CDATA[>]]>
+#include <![CDATA[<]]>qgarlib/LabeledSkeletonImage.h<![CDATA[>]]>
+#include <![CDATA[<]]>qgarlib/DxfFile.h<![CDATA[>]]>
+#include <![CDATA[<]]>qgarlib/PbmFile.h<![CDATA[>]]>
+
+// Current namespaces
+using namespace std;
+using namespace qgar;
+
+// The main function of the application
+int main(int argc, char *argv[])
+{
+  // The object representing the application
+  QgarApp app;
+
+  // <link linkend="paramdescr">PARAMETER DESCRIPTION</link>
+
+  // Binary source image
+  app.addParameter("-in",
+                   QgarArgs::REQPARAM,
+                   QgarArgs::FILEIN,
+                   "source image:");
+
+  // File to store the resulting vectors (line segments)
+  app.addParameter("-out",
+                   QgarArgs::REQPARAM,
+                   QgarArgs::FILEOUTD,
+                   "image of vectors:",
+                   ".dxf");
+
+  // Maximum size of a black component to be pruned
+  app.addParameter("-prune",
+                   QgarArgs::OPTPARAM,
+                   QgarArgs::INT,
+                   "small CC max size:",
+                   0,
+                   "5");
+
+  // <link linkend="appdescr">APPLICATION DESCRIPTION</link>
+
+  app.setDescription("Rosin-&-West-based vectorization",
+		     QgarArgs::PBM);
+
+  // <link linkend="parsing">COMMAND LINE PARSING</link>
+
+  app.analyzeLine(argc, argv);
+
+  // Error while parsing parameters?
+  if (app.isError())
+    {
+      return app._CODE_ERROR;
+    }
+
+  // Initialize the progress bar
+  app.showProgressBar();
+  app.setProgressBar(0);
+
+  // <link linkend="load">SOURCE IMAGE LOADING</link>
+
+  cout << "Loading source image..." << endl;
+
+  // Get the input file name
+  PbmFile sourceFile((char*) app.getStringOption("-in"));
+
+  // Load data contained by the input file
+  sourceFile.openRONLY();
+  BinaryImage sourceImg(sourceFile);
+  sourceFile.close();
+
+  // Update progress bar
+  app.setProgressBar(10);
+
+  // <link linkend="core">APPLICATION CORE</link>
+
+  cout << "Cleaning source image..." << endl;
+  ... ... ...
+  app.setProgressBar(20);
+
+  cout << "Computing distance transform of source image..." << endl;
+  ... ... ...
+  app.setProgressBar(35);
+
+  cout << "Performing skeletonization..." << endl;
+  int prune = app.isOptionSet("-prune")                // Is optional parameter -prune provided?
+                ? atoi(app.getStringOption("-prune"))  // Yes: get the corresponding value
+                : 5;                                   // No: provide a default value
+  // Construct the skeleton
+  LabeledSkeletonImage skelImg(dist34Img, prune);
+  app.setProgressBar(50);
+
+  cout << "Chaining skeleton points..." << endl;
+  ... ... ...
+  app.setProgressBar(65);
+
+  cout << "Performing polygonal approximation..." << endl;
+  ... ... ...
+  app.setProgressBar(90);
+
+  // <link linkend="save">RESULT SAVING</link>
+
+  cout << "Saving vectors..." << endl;
+
+  DxfFile resultFile((char*) app.getStringOption("-out"));
+  resultFile.openWONLY();
+  ... ... ...  // Save resulting vectors in the DXF file
+  resultFile.close();
+
+  // Complete and close the progress bar
+  app.setProgressBar(100);
+  cout << "Vectorization done." << endl;
+  app.closeProgressBar();
+
+  // <link linkend="display">RESULT DISPLAY</link>
+
+  cout << "Displaying result..." << endl;
+  app.showPicture((char*)app.getStringOption("-out"));
+
+  // <link linkend="termination">NORMAL TERMINATION</link>
+
+  return app._CODE_END;
+}</programlisting>
+
+  </section>
+
+
+  <section id="paramdescr">
+
+  <title>Parameter description</title>
+  <!--   =====================     -->
+
+  <para>	
+The description of each parameter has to be stored in the object representing
+the application, <emphasis>app</emphasis> here, using function
+<emphasis>addParameter</emphasis>:
+  </para>	
+
+<programlisting>app.addParameter("-NAME",
+		 QgarArgs::STATUS,
+		 QgarArgs::TYPE,
+		 "SHORT_DESCRIPTION",
+		 "FILE_EXTENSION",
+		 "DEFAULT_VALUE");</programlisting>
+
+   <itemizedlist>
+
+    <listitem>
+      <para>
+<emphasis>NAME</emphasis> is the name of the parameter, which must not include
+any blank character. Preceded by a '<emphasis>-</emphasis>' character,
+it will be used to introduce the parameter value when invoking the application
+from a command line. The '<emphasis>-</emphasis>' character must always be
+included at first position in the character string given as argument to function
+<emphasis>addParameter</emphasis>.
+     </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>STATUS</emphasis> is the parameter status.
+Possible status are given by enum type
+<emphasis>qgar::QgarArgs::QGEparamStatus</emphasis>, including:
+      </para>
+      <itemizedlist>
+        <listitem><para>
+<emphasis>SINGLEFLAG</emphasis>, for a single flag, introducing no value,
+        </para></listitem>
+        <listitem><para>
+<emphasis>REQPARAM</emphasis>, for a non-optional parameter introducing a value,
+        </para></listitem>
+        <listitem><para>
+<emphasis>OPTPARAM</emphasis>, for an optional parameter introducing a value,
+        </para></listitem>
+        <listitem><para>
+<emphasis>REQMULTIPARAM</emphasis>, for a non-optional parameter introducing multiple values,
+        </para></listitem>
+        <listitem><para>
+<emphasis>OPTMULTIPARAM</emphasis>, for an optional parameter, introducing multiple values.
+        </para></listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>TYPE</emphasis> is the parameter type.
+Possible types are given by enum type
+<emphasis>qgar::QgarArgs::QGEparamType</emphasis>, including:
+      </para>
+      <itemizedlist>
+        <listitem><para>
+<emphasis>INT</emphasis>, for an integer number,
+        </para></listitem>
+        <listitem><para>
+<emphasis>FLOAT</emphasis>, for a float number,
+        </para></listitem>
+        <listitem><para>
+<emphasis>STRING</emphasis>, for a string,
+        </para></listitem>
+        <listitem><para>
+<emphasis>BOOL</emphasis>, for a boolean value,
+        </para></listitem>
+        <listitem><para>
+<emphasis>FILEIN</emphasis>, for the name of an input data file,
+        </para></listitem>
+        <listitem><para>
+<emphasis>FILEOUT</emphasis>, for the name of an output data file,
+        </para></listitem>
+        <listitem><para>
+<emphasis>FILEOUTD</emphasis>, for an output file name, whose data has to be displayed,
+        </para></listitem>
+        <listitem><para>
+<emphasis>FILEOUTDS</emphasis>, for an an output file name, whose data has to be displayed,
+    in superimposition mode
+        </para></listitem>
+        <listitem><para>
+<emphasis>PATH</emphasis>, for a directory path.
+        </para></listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>SHORT_DESCRIPTION</emphasis> (deprecated)
+is a short description of the parameter, usually ended by a
+'<emphasis>:</emphasis>' character.
+     </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>FILE_EXTENSION</emphasis> is the file extension, in case of an output
+file only. Otherwise, the corresponding argument is useless for function
+<emphasis>addParameter</emphasis> and is usually substituted for a null pointer
+(<emphasis>0</emphasis>).
+     </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>DEFAULT_VALUE</emphasis> is the default value of the a parameter.
+It must be given as a character string.
+     </para>
+    </listitem>
+
+  </itemizedlist>
+
+  <para>
+Examples:
+  </para>
+
+<programlisting>app.addParameter("-in",
+                 QgarArgs::REQPARAM,
+                 QgarArgs::FILEIN,
+                 "source image:");</programlisting>
+
+  <itemizedlist>
+    <listitem><para>
+This parameter is supposed to represent the input file, which contains a binary
+image. It is named <emphasis>in</emphasis>, and is thus introduced
+in a command line using flag <emphasis>-in</emphasis>.
+    </para></listitem>
+    <listitem><para>
+The parameter is not optional (<emphasis>QgarArgs::REQPARAM</emphasis>).
+    </para></listitem>
+    <listitem><para>
+The file is used for input (<emphasis>QgarArgs::FILEIN</emphasis>).
+    </para></listitem>
+  </itemizedlist>
+
+
+<programlisting>app.addParameter("-out",
+                 QgarArgs::REQPARAM,
+                 QgarArgs::FILEOUTD,
+                 "image of vectors:",
+                 ".dxf");</programlisting>
+  
+  <itemizedlist>
+    <listitem><para>
+This parameter is supposed to represent the output file in which to store the
+resulting vectors. It is named <emphasis>out</emphasis>, and is thus introduced
+in a command line using flag <emphasis>-out</emphasis>.
+    </para></listitem>
+    <listitem><para>
+The parameter is not optional (<emphasis>QgarArgs::REQPARAM</emphasis>).
+    </para></listitem>
+    <listitem><para>
+The content of the file will be displayed by the user interface
+(<emphasis>QgarArgs::FILEOUTD</emphasis>).
+    </para></listitem>
+    <listitem><para>
+The file extension is <emphasis>.dxf</emphasis>.
+    </para></listitem>
+  </itemizedlist>
+
+
+<programlisting>app.addParameter("-prune",
+                 QgarArgs::OPTPARAM,
+                 QgarArgs::INT,
+                 "small CC max size:",
+                 0,
+                 "5");</programlisting>
+ 
+  <itemizedlist>
+    <listitem><para>
+This parameter is supposed to represent the maximum size of a black component to
+be pruned before starting the vectorization itself. It is named
+<emphasis>prune</emphasis>, and is thus introduced in a command line using flag
+<emphasis>-prune</emphasis>.
+    </para></listitem>
+    <listitem><para>
+The parameter is optional (<emphasis>QgarArgs::OPTPARAM</emphasis>).
+    </para></listitem>
+    <listitem><para>
+The parameter is an integer number (<emphasis>QgarArgs::FLOAT</emphasis>).
+    </para></listitem>
+    <listitem><para>
+As the parameter does not represent a file name, argument #5 is useless (<emphasis>0</emphasis>).
+    </para></listitem>
+    <listitem><para>
+The default value of the parameter is <emphasis>5</emphasis>.
+    </para></listitem>
+  </itemizedlist>
+
+  </section>
+
+
+  <section id="appdescr">
+
+  <title>Application description</title>
+  <!--   =======================     -->
+
+  <para>	
+The description of the application itself is stored in the object representing
+the application, <emphasis>app</emphasis> here, using function
+<emphasis>setDescription</emphasis>:
+  </para>	
+
+<programlisting>app.setDescription("DESCRIPTION", QgarArgs::INFILE_FORMAT);</programlisting>
+
+   <itemizedlist>
+
+    <listitem>
+      <para>
+<emphasis>DESCRIPTION</emphasis> is a short description of the application,
+which is at user's disposal when coding the application.
+     </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>INFILE_FORMAT</emphasis> is the format of the input data file.
+It is used by the QgarGui user interface to fill its
+<emphasis>Algorithms</emphasis> menu with the applications which can process
+the current image.
+Possible formats are given by enum type
+<emphasis>qgar::QgarArgs::QGEfileType</emphasis>, including:
+      </para>
+      <itemizedlist>
+        <listitem><para>
+<emphasis>DXF</emphasis>, for a file containing a vectorial image in format DXF,
+        </para></listitem>
+        <listitem><para>
+<emphasis>PBM</emphasis>, for a file containing a black and white (binary) bitmap image,
+        </para></listitem>
+        <listitem><para>
+<emphasis>PGM</emphasis>, for a file containing a grey-level bitmap image,
+        </para></listitem>
+        <listitem><para>
+<emphasis>PPM</emphasis>, for a file containing a color bitmap image.
+        </para></listitem>
+      </itemizedlist>
+    </listitem>
+
+   </itemizedlist>
+
+  <para>
+Example:
+  </para>
+
+<programlisting>app.setDescription("Rosin-&-West-based vectorization",
+		   QgarArgs::PBM);</programlisting>
+
+  <para>
+This application is supposed to perform a vectorization based on the Rosin &
+West's method. The input file contains a binary image.
+  </para>
+
+  </section>
+
+
+  <section id="parsing">
+
+  <title>Command line parsing</title>
+  <!--   ====================     -->
+
+  <para>	
+Any Qgar application may be directly invoked by a user from a command line
+(in a Linux shell, typically). The QgarGui user interface itself also uses
+such a command line to launch an application. The syntax of the line must
+thus be checked before running the core of the application.
+  </para>
+
+  <para>	
+Example:
+  </para>
+
+<programlisting>app.analyzeLine(argc, argv);
+
+// Error while parsing parameters?
+if (app.isError())
+  {
+    return app._CODE_ERROR;
+  }
+
+// Initialize the progress bar
+app.showProgressBar();
+app.setProgressBar(0);</programlisting>
+
+  <itemizedlist>
+
+    <listitem>
+      <para>
+First, the command line is parsed using function
+<emphasis>analyzeLine</emphasis>, which stores the information given by the line
+in the object representing the application, <emphasis>app</emphasis> here.
+     </para>
+    </listitem>
+
+    <listitem>
+      <para>
+The application should obviously not be run when the line syntax is not correct,
+that is to say when function <emphasis>isError</emphasis> returns
+<emphasis>false</emphasis>.
+In this case, returning code <emphasis>_CODE_ERROR</emphasis> is the Qgar
+standard way of exiting the application. Any value may nevertheless be returned
+to conform to users' particular requirements, if any.
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+The two last code lines show how to initialize a progress bar to be
+displayed by the user interface during the execution of the application.
+Function <emphasis>showProgressBar</emphasis> tells the application to display
+a progress bar, and function <emphasis>setProgressBar</emphasis> fills the bar at
+the given percentage, <emphasis>0</emphasis> here, as the execution of the core
+of the application is just going to start.
+      </para>
+    </listitem>
+
+  </itemizedlist>
+
+  </section>
+
+
+  <section id="load">
+
+  <title>Source image loading</title>
+  <!--   ====================     -->
+
+  <para>
+This is just an example to show how to load input file data using appropriate
+functions of library QgarLib
+(see section <link linkend="load">Result saving</link> for file output).
+It is also an opportunity to explain how to retrieve the value of a parameter of
+an application.
+  </para>
+
+<programlisting>cout << "Loading source image..." << endl;
+  
+// Get the input file name
+PbmFile sourceFile((char*) app.getStringOption("-in"));
+
+// Load data contained by the input file
+sourceFile.openRONLY();
+BinaryImage sourceImg(sourceFile);
+sourceFile.close();
+
+// Update progress bar
+app.setProgressBar(10);</programlisting>
+
+  <itemizedlist>
+    <listitem>
+      <para>
+The display of a message describing the currently running step on the standard
+output (<emphasis>cout</emphasis>) is optional.
+In fact, the message is displayed on the lower bar of the QgarGui window
+when the application is launched by the QgarGui user interface.
+     </para>
+    </listitem>
+
+    <listitem>
+      <para>
+As previously explained, the input file name is introduced by flag
+<emphasis>-in</emphasis> in the command line.
+The corresponding value is retrieved from the object representing the
+application, <emphasis>app</emphasis>, using function
+<emphasis>getStringOption</emphasis>.
+      </para>
+
+      <para>
+WARNING: the function returns a constant character string, which should require
+a conversion to the type of the parameter value.
+See <link linkend="core">next section</link> for a demonstrative example.
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+The progress bar is updated according to the estimated amount of time required
+by the loading...
+      </para>
+    </listitem>
+  </itemizedlist>
+
+  </section>
+
+
+  <section id="core">
+
+  <title>Application core</title>
+  <!--   ================     -->
+
+  <para>
+This is just an example of the way how the actions performed by an application
+could be organized.
+Here, the application is supposed to perform a vectorization including 5 steps:
+image cleaning, computation of the distance transform, skeletonization,
+chaining, and polygonal approximation.
+Giving the details of all these operations would be useless here.
+The skeletonization step is nevertheless fully exemplified, to show how to deal
+with an optional parameter.
+  </para>
+
+
+<programlisting>cout << "Cleaning source image..." << endl;
+... ... ...
+app.setProgressBar(20);
+
+cout << "Computing distance transform of source image..." << endl;
+... ... ...
+app.setProgressBar(35);
+
+cout << "Performing skeletonization..." << endl;
+int prune = app.isOptionSet("-prune")                // Is optional parameter -prune provided?
+              ? atoi(app.getStringOption("-prune"))  // Yes: get the corresponding value
+              : 5;                                   // No: provide a default value
+// Construct the skeleton
+LabeledSkeletonImage skelImg(dist34Img, prune);
+app.setProgressBar(50);
+
+cout << "Chaining skeleton points..." << endl;
+... ... ...
+app.setProgressBar(65);
+
+cout << "Performing polygonal approximation..." << endl;
+... ... ...
+app.setProgressBar(90);</programlisting>
+
+
+  <itemizedlist>
+
+    <listitem>
+      <para>
+Function <emphasis>isOptionSet</emphasis> returns <emphasis>true</emphasis>
+if the optional parameter introduced by the given flag
+(<emphasis>-prune</emphasis> here) is actually provided.
+     </para>
+    </listitem>
+
+    <listitem>
+      <para>
+As parameter <emphasis>prune</emphasis> is an integer number, the character
+string returned by function <emphasis>getStringOption</emphasis> is adequately
+converted to such a number, using function <emphasis>atoi</emphasis> from
+<emphasis>cstdlib.h</emphasis>.
+     </para>
+    </listitem>
+
+  </itemizedlist>
+
+  </section>
+
+
+  <section id="save">
+
+  <title>Result saving</title>
+  <!--   =============     -->
+
+  <para>
+This is just a simple example to show how to create an output file
+(see <link linkend="load">Source image loading</link> for file input).
+The file name is introduced by flag <emphasis>-out</emphasis> in the command
+line.
+  </para>
+
+
+<programlisting>cout << "Saving vectors..." << endl;
+
+DxfFile resultFile((char*) app.getStringOption("-out"));
+resultFile.openWONLY();
+... ... ...  // Save resulting vectors in the DXF file
+resultFile.close();
+
+// Complete and close the progress bar
+app.setProgressBar(100);
+cout << "Vectorization done." << endl;
+app.closeProgressBar();</programlisting>
+
+
+  <para>
+Once the resulting vectors are saved in the DXF file, the progress bar is
+set to 100%, and may then be closed.
+  </para>
+
+  </section>
+
+
+  <section id="display">
+
+  <title>Result display</title>
+  <!--   ==============     -->
+
+<programlisting>cout << "Displaying result..." << endl;
+app.showPicture((char*)app.getStringOption("-out"));</programlisting>
+
+
+  <para>
+Function <emphasis>showPicture</emphasis> displays the content of the given file
+in the window of the QgarGui interface.
+  </para>
+
+  </section>
+
+
+  <section id="termination">
+
+  <title>Normal termination</title>
+  <!--   ==================     -->
+
+<programlisting>return app._CODE_END;</programlisting>
+
+
+  <para>	
+In case of normal termination, a Qgar application is supposed to return code
+<emphasis>_CODE_END</emphasis>...
+  </para>
+
+  </section>
+
+
+</section>
+
+
+<!-- INSTALLATION OF AN APPLICATION ========================================== -->
+
+
+<section id="install">
+
+<!--   ======================================================     -->   
+<title>Installation of a new application in the Qgar platform</title>
+<!--   ======================================================     -->
+
+    <para>	
+Finally comes the effective installation of the application in
+the Qgar Platform, which requires 2 steps:
+installation of the application files in the file hierarchy of the platform,
+and integration in the tools of the platform so that the application 
+can be compiled (if needed) and taken into account by the user interface.
+    </para>	
+
+    <para>
+In the following,	
+<emphasis>[QGAR_ROOT]</emphasis>
+states for the root installation directory of the Qgar platform, and
+<emphasis>myVectorization</emphasis>
+is the "name" of the application.
+    </para>	
+
+
+  <section>
+
+  <title>Installation in the file hierarchy</title>
+  <!--   ==================================     -->
+
+
+<orderedlist numeration="upperroman">
+
+<!-- I -->
+
+  <listitem>
+    <para>
+In directory 
+<emphasis>[QGAR_ROOT]/QgarApps</emphasis>,
+create a new directory for the application:
+its name is conventionally the concatenation of <emphasis>QA</emphasis>
+and of the application name, that is to say
+<command>QAmyVectorization</command> here.
+    </para>
+
+<programlisting>...
+... ASSUMING A csh-COMPATIBLE SHELL ...
+...
+cd [QGAR_ROOT]/QgarApps
+mkdir QAmyVectorization
+cd QAmyVectorization</programlisting>
+
+  </listitem>
+
+<!-- II -->
+
+  <listitem>
+    <para>
+Copy the description file in the new directory.
+The file name is conventionally obtained by appending
+<emphasis>_descr.xml</emphasis> to the directory name,
+resulting in <command>QAmyVectorization_descr.xml</command> here.
+    </para>
+  </listitem>
+
+<!-- III -->
+
+  <listitem>
+    <para>
+If the application has been designed using the Qgar platform:
+    </para>
+
+    <itemizedlist>
+      <listitem>
+        <para>
+Copy the source files in the new directory.
+The file name is conventionally obtained  by appending
+a <emphasis>.cpp</emphasis> to the directory name,
+resulting in <command>QAmyVectorization.cpp</command> here.
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>
+Create a file
+<emphasis>Makefile.am</emphasis>,
+to enable the compilation of the source,
+according to the following pattern:
+        </para>	
+
+<programlisting>pkglib_PROGRAMS = QAmyVectorization
+
+INCLUDES = @qgar_apps_includes@
+LDFLAGS = @qgar_apps_ldflags@
+LDADD = @qgar_apps_ldadd@
+CXXFLAGS = -Wall -pedantic
+
+EXTRA_DIST = $(pkglib_PROGRAMS)_descr.xml
+
+QAmyVectorization_SOURCES = $(pkglib_PROGRAMS).cpp
+
+pkgdata_DATA = $(pkglib_PROGRAMS)_descr.xml</programlisting>
+
+        <para>	
+The content of such a file is the same for any application.
+The new application name has just to be substituted for all occurrences of the
+old application name.
+        </para>	
+      </listitem>
+    </itemizedlist>
+
+  </listitem>
+
+<!-- IV -->
+
+  <listitem>
+    <para>
+If the application has been designed apart from the Qgar Platform:
+    </para>
+
+    <itemizedlist>
+      <listitem>
+        <para>
+Just copy the corresponding (executable) binary file in the newly created
+directory. The file is conventionally named like the directory,
+<command>QAmyVectorization</command> here.
+        </para>
+      </listitem>
+    </itemizedlist>
+  </listitem>
+
+</orderedlist>
+
+  </section>
+
+
+  <section>
+
+  <title>Integration in the tools of the platform</title>
+  <!--   ========================================     -->
+
+<orderedlist numeration="upperroman">
+
+<!-- I -->
+
+  <listitem>
+    <para>
+Go to directory
+<emphasis>[QGAR_ROOT]/QgarApps</emphasis>
+and edit file
+<emphasis>qgarguicfg.xml.in</emphasis>
+to insert a new entry corresponding to the application:
+    </para>
+
+<programlisting><![CDATA[<]]>qgarguicfg<![CDATA[>]]>
+
+  <![CDATA[<]]>qgarapps<![CDATA[>]]>
+
+    <![CDATA[<]]>!-- THE NEW APPLICATION --<![CDATA[>]]>
+
+    <![CDATA[<]]>entry<![CDATA[>]]>
+      <![CDATA[<]]>name<![CDATA[>]]>Rosin-&-West vectorization<![CDATA[<]]>/name<![CDATA[>]]>
+      <![CDATA[<]]>descr-path<![CDATA[>]]>@DESCR_INSTALL_DIR@/QAmyVectorization_descr.xml<![CDATA[<]]>/descr-path<![CDATA[>]]>
+      <![CDATA[<]]>application-path<![CDATA[>]]>@BIN_INSTALL_DIR@/QAmyVectorization<![CDATA[<]]>/application-path<![CDATA[>]]>
+    <![CDATA[<]]>/entry<![CDATA[>]]>
+
+    <![CDATA[<]]>!-- EXISTING APPLICATIONS --<![CDATA[>]]>
+
+    <![CDATA[<]]>entry<![CDATA[>]]>
+      <![CDATA[<]]>name<![CDATA[>]]>(3,4)-distance-based skeletonization<![CDATA[<]]>/name<![CDATA[>]]>
+      <![CDATA[<]]>descr-path<![CDATA[>]]>@DESCR_INSTALL_DIR@/QAdist34Skeletonization_descr.xml<![CDATA[<]]>/descr-path<![CDATA[>]]>
+      <![CDATA[<]]>application-path<![CDATA[>]]>@BIN_INSTALL_DIR@/QAdist34Skeletonization<![CDATA[<]]>/application-path<![CDATA[>]]>
+    <![CDATA[<]]>/entry<![CDATA[>]]>
+    ...
+    ...
+    ...
+
+  <![CDATA[<]]>/qgarapps<![CDATA[>]]>
+
+<![CDATA[<]]>/garguicfg<![CDATA[>]]></programlisting>
+
+    <itemizedlist>
+      <listitem>
+        <para>
+<emphasis><![CDATA[<]]>name<![CDATA[>]]>...<![CDATA[<]]>/name<![CDATA[>]]></emphasis>:
+just a few words describing the application
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+<emphasis><![CDATA[<]]>descr-path<![CDATA[>]]>...<![CDATA[<]]>/descr-path<![CDATA[>]]></emphasis>:
+full pathname of the description file of the application.
+Just give the file name, in fact, as variable
+<emphasis>@DESCR_INSTALL_DIR@</emphasis>
+is set by <command>automake/autoconf</command>.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+<emphasis><![CDATA[<]]>application-path<![CDATA[>]]>...<![CDATA[<]]>/application-path<![CDATA[>]]></emphasis>:
+full pathname of the (executable) binary file.
+Just give the file name, in fact, as variable
+<emphasis>@BIN_INSTALL_DIR@</emphasis>
+is set by <command>automake/autoconf</command>.
+        </para>
+      </listitem>
+    </itemizedlist>
+
+  </listitem>
+
+<!-- II -->
+
+  <listitem>
+    <para>	
+Update the Qgar Platform installation by runing the configuration scripts and
+by compiling (if necessary) the source code of the application,
+as explained in section 3.3 of the
+<ulink url="../install/installGuide.html">Installation guide</ulink>:
+    </para>	
+
+<programlisting>./bootstrap
+./configure [REQUIRED PARAMETERS]
+make
+make install</programlisting>
+
+    <para>
+Runing <emphasis>make</emphasis> is required only if the application
+has to be compiled.
+    </para>	
+  </listitem>
+
+</orderedlist>
+
+  </section>
+
+
+</section>
+
+
+<!-- ANNEXE 1 =============================================================== -->
+
+
+  <appendix id="a1">
+
+  <!--   =================================================     -->
+  <title>DTD for the description of a QgarApps application</title>
+  <!--   =================================================     -->
+
+<programlisting><![CDATA[<]]>!-- Author:   Jan Rendek
+     Revision: $Revision: 1.1 $ --<![CDATA[>]]>
+
+<![CDATA[<]]>!-- *************************************************************
+     *                       E N T I T I E S                     *
+     ************************************************************* --<![CDATA[>]]>
+
+<![CDATA[<]]>!-- BOOLEANS ---------------------------------------- --<![CDATA[>]]>
+
+     <![CDATA[<]]>!ENTITY % bool "(true | false)"<![CDATA[>]]>
+
+<![CDATA[<]]>!-- IMAGE TYPES ------------------------------------- --<![CDATA[>]]>
+
+     <![CDATA[<]]>!ENTITY % image_types "binary | grayscale | vectorial"<![CDATA[>]]>
+
+<![CDATA[<]]>!-- NUMERIC TYPES ----------------------------------- --<![CDATA[>]]>
+
+     <![CDATA[<]]>!ENTITY % numeric_types "numeric"<![CDATA[>]]>
+
+<![CDATA[<]]>!-- IMAGE FORMATS ----------------------------------- --<![CDATA[>]]>
+
+     <![CDATA[<]]>!ENTITY % image_formats "DXF | PBM | PGM | PPM | SVG"<![CDATA[>]]>
+
+<![CDATA[<]]>!-- NUMERIC FORMATS --------------------------------- --<![CDATA[>]]>
+
+     <![CDATA[<]]>!ENTITY % numeric_formats "int | real"<![CDATA[>]]>
+
+
+<![CDATA[<]]>!-- *************************************************************
+     *                       E L E M E N T S                     *
+     ************************************************************* --<![CDATA[>]]>
+
+<![CDATA[<]]>!-- APPLICATION ------------------------------------- --<![CDATA[>]]>
+
+     <![CDATA[<]]>!ELEMENT application (descr, documentation, paramlist)<![CDATA[>]]>
+
+
+<![CDATA[<]]>!-- APPLICATION DESCRIPTION ------------------------- --<![CDATA[>]]>
+
+     <![CDATA[<]]>!ELEMENT descr (name, author, copyright)<![CDATA[>]]>
+
+     <![CDATA[<]]>!ELEMENT name      (#PCDATA)<![CDATA[>]]>
+     <![CDATA[<]]>!ELEMENT author    (#PCDATA)<![CDATA[>]]>
+     <![CDATA[<]]>!ELEMENT copyright (#PCDATA)<![CDATA[>]]>
+
+
+<![CDATA[<]]>!-- APPLICATION DOCUMENTATION ----------------------- --<![CDATA[>]]>
+
+     <![CDATA[<]]>!ELEMENT documentation (doc+)<![CDATA[>]]>
+
+     <![CDATA[<]]>!ELEMENT doc (brief, long)<![CDATA[>]]>
+     <![CDATA[<]]>!ATTLIST doc 
+         revision CDATA #IMPLIED
+         lang     CDATA #IMPLIED
+     <![CDATA[>]]>
+
+     <![CDATA[<]]>!ELEMENT brief (#PCDATA)<![CDATA[>]]>
+     <![CDATA[<]]>!ELEMENT long  (#PCDATA)<![CDATA[>]]>
+
+
+<![CDATA[<]]>!-- PARAMETERS LIST --------------------------------- --<![CDATA[>]]>
+
+     <![CDATA[<]]>!ELEMENT paramlist (param+)<![CDATA[>]]>
+
+     <![CDATA[<]]>!ELEMENT param (documentation)<![CDATA[>]]>
+     <![CDATA[<]]>!ATTLIST param
+         name         CDATA                                 #REQUIRED
+         flag         CDATA                                 #REQUIRED
+         required     %bool;                                #REQUIRED
+         passing-mode (in | out | inout)                    #REQUIRED
+         type         (%image_types;   | %numeric_types;)   #REQUIRED
+         format       (%image_formats; | %numeric_formats;) #REQUIRED
+         default      CDATA                                 #IMPLIED
+         min          CDATA                                 #IMPLIED
+         max          CDATA                                 #IMPLIED
+     <![CDATA[>]]></programlisting>    
+
+
+  </appendix>
+
+<!-- ======================================================================== -->
+
+</article>

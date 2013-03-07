@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+
+<application>
+
+
+  <descr>
+    <name>Text extraction</name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+<![CDATA[
+Extract character strings from a binary image
+<b>including only textual components</b>.
+]]>
+      </brief>
+      <long>
+Character strings, formed by closely positioned and similarly
+oriented components, are constructed by a 2D Hough Transform.
+The bounding boxes of the strings are saved in a file for
+display purposes. The features of each string
+(corners of its bounding box, number of characters,
+corners of the bounding box of each character) are saved
+in a separate file for further use.
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+
+
+    <param name="source image" flag="in" required="true" passing-mode="in"
+	   type="binary" format="PBM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the source image.
+	  </brief>
+	  <long>
+The format of the file must be one of the binary formats described
+by the PBM+ specification (either raw or ASCII).
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="file for string features" flag="outxt"
+	   required="true" passing-mode="out"
+	   type="?" format="?" default="_.bbox.txt">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the features of the resulting
+strings for further use.
+	  </brief>
+	  <long>
+This is a raw ASCII file.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="file for bounding boxes" flag="outbb"
+	   required="true" passing-mode="out" type="vectorial"
+	   format="DXF" default="_.bbox.dxf">
+      <documentation>
+	<doc>
+	  <brief>
+	  </brief>
+Full pathname of the file to store bounding boxes of the resulting
+strings for display purposes.
+	  <long>
+The format of the file is DXF.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="maximum character spacing" flag="char" required="true" passing-mode="in"
+	   type="numeric" format="real" default="2.5">
+      <documentation>
+	<doc>
+	  <brief>
+Maximum space (in pixels) between characters in a word.
+	  </brief>
+	  <long>
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="Hough space sampling rate" flag="hough" required="true" passing-mode="in"
+           type="numeric" format="real" default="0.2">
+      <documentation>
+	<doc>
+	  <brief>
+Sampling rate of the Hough space.
+	  </brief>
+	  <long>
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+
+</application>
+ 

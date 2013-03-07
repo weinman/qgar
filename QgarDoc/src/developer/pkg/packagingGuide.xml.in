@@ -1,0 +1,195 @@
+<?xml version="1.0"encoding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                         "/local/qgar/outils/docbook-4.2/docbookx.dtd">
+
+
+<article lang="en" revision="$Revision: 1.1 $" userlevel="USER">
+
+
+<title>Qgar Software Linux packages generation guide</title>
+
+  
+<articleinfo>
+
+<author>
+  <firstname>Vitor</firstname>
+  <surname>Vasconcelos</surname>
+  <email>Vitor.Vasconcelos@loria.fr</email>
+</author>
+
+<releaseinfo>
+Qgar version @qgar_version@
+</releaseinfo>
+
+<orgname>Qgar Project, LORIA</orgname>
+    
+<abstract>
+  <simpara>
+
+  </simpara>
+</abstract>   
+
+</articleinfo>
+
+<section id="Instroduction">
+<!-- INTRODUCTION =========================================================== -->
+
+<!--   ============     -->
+<title>Introduction</title>
+<!--   ============     -->
+
+<para>
+Since version 3.0, the Qgar plataform uses the <ulink url="http://www.cmake.org/HTML/RunningCMake.html">CMake</ulink> to control its compilation and install process. 
+One of improvements added in this version it the automatic generation of Linux binary packages.
+</para>
+
+<para>
+Two third-party scripts included by Qgar <emphasis>CMake</emphasis> configuration file allows the generation of a RPM and Debian packages. 
+The next sessions will explain how to generate each package and the variables necessary to do it.
+More information about CMake or the third-party scripts, check the bibliography section.
+</para>
+
+<para>
+<emphasis>
+The CMake version tested is 2.6 patch 0. 
+The third-party scripts need at least the version 2.4 patch 4. 
+Any previous version of CMake will not work, even functionalities unrelated to the package generation system. 
+</emphasis> 
+</para>
+
+</section>
+
+<!-- LINUX  ======================================================= -->
+<section id="Packages">
+
+<!--   ================     -->   
+<title>How does CMake pack?</title>
+<!--   ================     -->
+
+  <para>
+  The CMake script language allows the use of <emphasis>include</emphasis> like many computer languages. 
+  The third-party scrips must be included and it's enough to make CMake understande their commands. 
+  The scripts work creating new commands to the original CMake's set and these commands are used to configure the package that will be generated. 
+  However, like most commands, they have parameters that must be correctly passed and set. 
+  These parameters are used to feed the script with necessary parameters to generate the packages. 
+  </para>
+
+  <para>
+  For each script, different parameters are mandatory (there are optional parameters) once the rules to generate a RPM package are different from the Debian one.
+  Beside that, the most important thing is to have available in the Operational System the tools used to generate packages. 
+  Namely <emphasis>dpkg-deb</emphasis> to generate Debian packages and <emphasis>rpmbuild</emphasis> to RPM packages. 
+  The scripts are able to detect them and inform the user if they are not available.
+  </para>
+</section>
+
+<section id="Debian">
+  <title>Debian packages</title>
+  <!--   ===================     -->
+
+     <para>
+     The Debian packager script defines a source added to the list of all available builds. 
+     In Qgar project the name is <emphasis>Qgar_deb</emphasis>.
+     A example can make things clearer:
+     <programlisting>make Qgar_deb < ENTER > </programlisting>
+     This is the command used to generate a Debian package.
+     </para>
+
+     <para>
+     Some knowledge about Debian package format is necessary to change or add parameters to the package. 
+     In the body of the Debian script there are basic but useful information.
+     An important remark is that the script responsible to generate the package uses information set in the main Qgar project. 
+     It is worship to know how <emphasis>CMake</emphasis> works before to modify any packaging script parameters.
+     </para>
+
+     <para>
+     To generate the package, one directory called <emphasis>Qgar_version_i386</emphasis> is created in the Qgar source 
+tree and all files and directories are copied to it. Based on this directory structure, the script generate the binary 
+package.
+     </para>
+
+     <para>
+     Is possible to generate only the directory structure without generating the package. The command:
+     <programlisting>make deb_dir_install < ENTER > </programlisting>
+     Creates the package directory without generating the package. This command is called during the binary package 
+generation. It is not recommended to change the contents once 
+the process of generating the package is aimed to be automatic. <emphasis>Any</emphasis> modification on this directory 
+contents will repercute in the binary package. 
+     </para>
+</section>
+
+<section id="RPM">
+  <title>RPM packages</title>
+  <!--   ===================     -->
+
+     <para>
+     The RPM packager works exactly as the Debian one. 
+     However, the informatition needed by them is different. 
+     Fortunately the RPM generator is less strict about the information needed to build a package althought it is a good idea to add the maximum of information about the package being generated.
+     </para>
+
+     <para>
+     As the Debian packager, there is build name. 
+     In Qgar project the name is <emphasis>Qgar_rpm</emphasis>.
+     A example can make things clearer:
+     <programlisting>make Qgar_rpm < ENTER > </programlisting>
+     This is the command used to generate a RPM package.
+     </para>
+
+     <para>
+     The same observations made to a Debian package must be observed here. 
+     </para>
+</section>
+
+
+<section id="NSIS">
+  <title>NSIS Installer</title>
+  <!--   ===================     -->
+
+     <para>
+     The Nullsoft Scriptable Install System - <ulink url="http://www.cmake.org/HTML/RunningCMake.html">NSIS</ulink> for short - is
+     the tool used to generate Qgar Windows installer. At the time of development, CMake was not yet able to generate it. It changed now, 
+     but CMake ability to use NSIS to generate a Windows was not yet tested.
+     </para>
+
+     <para>
+     The NSIS install script is provided with Qgar source in /Qgar/winstaller directory.
+     This script, a file called <emphasis>nsis_install</emphasis>, must be loaded in NSIS Compiler and simply generated with a click on 
+     'recompile' button. However, the script needs the whole Qgar built directory available in a directory named <emphasis>Qgar_install</emphasis> which
+ <emphasis>must</emphasis> be under the script directory. Better explaining:
+  <programlisting>- outils
+    |----- Qgar
+             |---- qgarlib
+             |---- ...
+             |---- winstaller
+ 		       |------ Qgar_install
+                                    |-------- bin
+                                    |-------- include
+                                    |-------- lib
+                                    |-------- share
+   </programlisting>
+
+     If the whole Qgar tree is in the right directory, the script will recognize it and generate the Windows executable.
+     </para>
+
+     <para>
+     The easiest way to avoid any mistake in the process, is to point the <emphasis>CMAKE_INSTALL_PREFIX</emphasis> to the right directory before the first compilation.
+     Supposing Qgar source is available in <emphasis>C:\downloads\Qgar</emphasis>, the variable must point to <emphasis>C:\downloads\Qgar\winstaller\Qgar_install</emphasis>. This will compile Qgar and also install it on the correct directory to generate the Windows executable. Remembering the <emphasis>CMAKE_BUILD_TYPE</emphasis> should be defined as 'Release' to get the best size/performace issues and also to include the correct Qt dynamic libraries.
+     </para>
+
+     <para>
+     The Qgar Graphical User Interface is based on Qt, so the needed Qt dll files will also be added to the executable package.
+     </para>
+</section>
+
+
+<section id="conclusion">
+  <title>Conclusion</title>
+
+    <para>
+    The process of generate a binary package could not be easier. 
+    However, any developer interested in change the parameters of configuration of the packages must be in mind that is necessary to have basic knowledge about the Linux packages formats and also about CMake.
+    </para>
+
+</section>
+
+</article>

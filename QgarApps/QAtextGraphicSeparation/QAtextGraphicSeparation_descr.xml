@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+
+<application>
+
+
+  <descr>
+    <name>Text-graphics separation</name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Separate textual parts from graphics parts among components
+of a binary image.
+      </brief>
+      <long>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+
+
+    <param name="source image" flag="in" required="true" passing-mode="in"
+           type="binary" format="PBM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the source binary image.
+	  </brief>
+	  <long>
+The format of the file must be one of the binary formats described
+by the PBM+ specification (either raw or ASCII).
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="image of textual parts" flag="outxt" required="true"
+	   passing-mode="out" type="binary" format="PBM" default="_.text.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the image of textual parts.
+          </brief>
+	  <long>
+The format of the file is raw PBM.
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="image of graphical parts" flag="outg" required="true"
+	   passing-mode="out" type="binary" format="PBM"
+	   default="_.graphx.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the image of graphical parts.
+          </brief>
+	  <long>
+The format of the file is raw PBM.
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+    
+    <param name="image of undertermined parts" flag="outu" required="true"
+	   passing-mode="out" type="binary" format="PBM"
+	   default="_.undet.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the image of parts
+which are not classified.
+          </brief>
+	  <long>
+The format of the file is raw PBM.
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="small CC max size" flag="prune" required="true"
+           passing-mode="in" type="numeric" format="int" default="3">
+      <documentation>
+	<doc>
+	  <brief>
+Maximum size (in pixels) of a black component to be pruned.
+          </brief>
+	  <long>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="size factor" flag="area" required="true"
+	   passing-mode="in" type="numeric" format="int" default="3">
+      <documentation>
+	<doc>
+	  <brief>
+Factor to be multiplied by the average bounding box area to get
+the maximum area of a bounding box of a textual component.
+          </brief>
+	  <long>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="max elongation factor of a textual box" flag="elbbox" required="true"
+    passing-mode="in" type="numeric" format="real" default="20.">
+      <documentation>
+	<doc>
+	  <brief>
+Maximum elongation factor of the bounding box of a textual component.
+          </brief>
+	  <long>
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+    <param name="min elongation factor of a dash MAER" flag="elmaer" required="true"
+	   passing-mode="in" type="numeric" format="real" default="2.">
+      <documentation>
+	<doc>
+	  <brief>
+Minimum elongation factor of the Minimum-Area Encasing Rectangle
+(MAER) of a dash character.
+	  </brief>
+	  <long>
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="min density of a dash MAER" flag="dmaer" required="true"
+	   passing-mode="in" type="numeric" format="real" default=".6">
+      <documentation>
+	<doc>
+	  <brief>
+Minimum value of the Minimum-Area Encasing Rectangle (MAER) density
+of a dash character.
+          </brief>
+	  <long>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+
+</application>

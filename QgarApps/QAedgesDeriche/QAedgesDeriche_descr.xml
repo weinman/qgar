@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+
+<application>
+
+  <descr>
+    <name>Edges detection using Derichés operator</name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Edges detection using the Deriche operator.
+      </brief>
+      <long>
+<![CDATA[
+An image of the local maxima of the Gradient is first computed,
+using a Deriche's filter as described in
+<i>R. Deriche. Using Canny's criteria to derive a recursively
+implemented optimal edge detector. International Journal of
+Computer Vision, 1(2):167-187, May 1987.</i>
+A hysteresis thresholding is then performed on this image.
+]]>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+
+
+    <param name="source image" flag="in" required="true"
+	   passing-mode="in" type="grayscale" format="PGM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the source image.
+          </brief>
+	  <long>
+The format of the file must be PGM.
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="image of edges" flag="out" required="true"
+	   passing-mode="out" type="binary" format="PBM"
+	   default="_.deriche.pbm" >
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the image of edges.
+          </brief>
+	  <long>
+The format of the file is raw PBM.
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="low hysteresis threshold" flag="low" required="true"
+	   passing-mode="in" type="numeric" format="int"
+	   min="0" default="0">
+      <documentation>
+	<doc>
+	  <brief>
+Low hysteresis threshold.
+          </brief>
+	  <long>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="high hysteresis threshold" flag="high" required="true"
+	    passing-mode="in" type="numeric" format="int"
+	    min="0" default="5">
+      <documentation>
+	<doc>
+	  <brief>
+High hysteresis threshold.
+          </brief>
+	  <long>
+          </long>	  
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+
+</application>

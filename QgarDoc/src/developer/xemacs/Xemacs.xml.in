@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                         "/local/qgar/outils/docbook-4.2/docbookx.dtd">
+<article lang="en" revision="$Revision: 1.1 $" userlevel="DVLP">
+
+  <title>Qgar Documentation about Xemacs Macros</title>
+
+  <articleinfo>
+    <author>
+      <firstname>Gérald</firstname>
+      <surname>Masini</surname>
+      <email>Gerald.Masini@loria.fr</email>
+    </author>
+
+    <author>
+      <firstname>Vitor</firstname>
+      <surname>Vasconcelos</surname>
+      <email>Vitor.Vasconcelos@loria.fr</email>
+    </author>
+
+    <releaseinfo>
+        Qgar version @qgar_version@
+    </releaseinfo>
+
+	<orgname>Qgar Project, LORIA</orgname>
+
+    <abstract>
+      <simpara>
+      Macros may be added to the <emphasis>Xemacs</emphasis> text editor to make it easier to edit Qgar header and 
+      source files. In particular, these macros insert Doxygen comment patterns (conforming to 
+      the Qgar coding style) for header files, source files, members, etc.
+      </simpara>
+    </abstract>
+  
+  </articleinfo>   
+
+<sect1 id="Installation">
+
+  <title>Installation</title>
+  <para>
+  All required files are stored in the <emphasis>QgarEmacs</emphasis> directory of
+  the main directory of the Qgar distribution.
+
+  <itemizedlist>
+    <listitem>
+    <simpara>
+    Install the Qgar system first (see the 
+<ulink url="../../installguide/installguide.html">Installation Guide</ulink>): Required <emphasis>Xemacs</emphasis> 
+    files are automatically generated and updated.
+    </simpara>
+    </listitem>
+  
+    <listitem>
+    <simpara>
+    Move the <literal>QgarEmacs</literal> directory if necessary.
+    </simpara>
+    </listitem>
+  
+    <listitem>
+    <simpara>
+    Call the <literal>Xemacs</literal> editor.
+    </simpara>
+    </listitem>
+
+    <listitem>
+    <para>
+    Insert the piece of (emacs Lisp) code included in file <literal>qgar.include-emacs</literal> into your emacs initialisation file, 
+    that should be located in your home directory and be named <literal>.Xemacs/init.el</literal> (when using Unix/Linux).
+    </para>
+    <para>
+    In this piece of code, substitute fields framed by lines of <literal>'='</literal>, in a way conforming to the corresponding comments, indicated by WARNING's.
+    </para>
+    </listitem>
+
+    <listitem>
+    <simpara>
+    Quit the <emphasis>Xemacs</emphasis> editor, and call it again: Qgar macros are now available and two new menus should appear in the Xemacs menu bar: <literal>QGAR:visit-file</literal> 
+    and <literal>QGAR:insert</literal>. The former includes commands to visit Qgar files, the latter includes commands to insert various Doxygen comment patterns.
+    </simpara>
+    </listitem>
+
+    <listitem>
+    <simpara>
+    Lisp functions implementing the Qgar commands (see next section) are all interactive and may consequently be 
+    associated with Xemacs keys, if necessary, to invoke them directly from the keyboard without using the mouse.
+    </simpara>
+    </listitem>
+
+  </itemizedlist>
+
+  </para>
+
+  </sect1>
+  
+<sect1 id="Macros">
+  <title>Available Macros</title>
+
+  <para>
+  Tables below give the (Xemacs) Lisp function names of the available 
+  macros (2nd column), a brief description of their actions (3rd column), 
+  and the corresponding Xemacs key sequences to use them from the keyboard 
+  preferably from menus (1st column).
+  </para>
+
+  <para>
+    <literal>^c</literal> means simultaneously press keys 
+    <literal>'Ctrl'</literal> and <literal>'c'</literal>.
+  </para>
+
+<table frame='none'><title>Menu QGAR:files</title>
+<tgroup cols='3'>
+<colspec colwidth='1.0in'/>
+<colspec colwidth='4.0in'/>
+<tbody>
+
+<row><entry><literal>^c ^f ^c</literal></entry><entry><literal>qgar-f-c</literal></entry>
+<entry>visit a '.cpp' file in a new window</entry></row>
+
+<row><entry><literal>^c ^f c</literal></entry>
+<entry><literal>qgar-f-other-frame-c</literal></entry>
+<entry>visit a '.cpp' file in a new frame</entry></row>
+
+<row><entry><literal>^c ^f ^h</literal></entry>
+<entry><literal>qgar-f-h</literal></entry>
+<entry>visit a '.hpp' file in a new window</entry></row>
+
+<row><entry><literal>^c ^f h</literal></entry>
+<entry><literal>qgar-f-other-frame-h</literal></entry>
+<entry>visit a '.hpp' file in a new frame</entry></row>
+
+<row><entry><literal>^c ^f ^I</literal></entry>
+<entry><literal>qgar-f-h-and-c</literal></entry>
+<entry>visit a '.hpp' file and its related '.cpp' file in two new windows</entry></row>
+
+<row><entry><literal>^c ^f i</literal></entry>
+<entry><literal>qgar-f-other-frame-h-and-c</literal></entry>
+<entry>visit a '.hpp' file and its related '.cpp' file in a new frame</entry></row>
+
+<row><entry><literal>^c ^f ^S</literal></entry>
+<entry><literal>qgar-f-simple-h</literal></entry>
+<entry>visit a '.hpp' file in a new window, inserting a simplified class pattern in
+case of a new file</entry></row>
+
+<row><entry><literal>^c ^f S</literal></entry>
+<entry><literal>qgar-f-other-frame-simple-h</literal></entry>
+<entry>visit a '.hpp' file in a new frame, inserting a simplified class pattern in
+case of a new file</entry></row>
+
+<row><entry><literal>^c ^f ^J</literal></entry>
+<entry><literal>qgar-f-simple-h-and-c</literal></entry>
+<entry>visit a '.hpp' file (inserting a simplified class pattern in case of a new
+file) and its related '.cpp' file in two new windows</entry></row> 
+
+<row><entry><literal>^c ^f J</literal></entry>
+<entry><literal>qgar-f-other-frame-simple-h-and-c</literal></entry>
+<entry>visit a '.hpp' file (inserting a simplified class pattern in case of a new
+file) and its related '.cpp' file in a new frame</entry></row> 
+
+<row><entry><literal>^c ^f ^C</literal></entry>
+<entry><literal>qgar-f-test-c</literal></entry>
+<entry>visit a '.cpp' test file in a new window</entry></row>
+
+<row><entry><literal>^c ^f C</literal></entry>
+<entry><literal>qgar-f-test-other-frame-c</literal></entry>
+<entry>visit a '.cpp' test file in a new frame</entry></row>
+
+<row><entry><literal>^c ^f ^H</literal></entry>
+<entry><literal>qgar-f-test-h</literal></entry>
+<entry>visit a '.hpp' test file in a new window</entry></row>
+
+<row><entry><literal>^c ^f h</literal></entry>
+<entry><literal>qgar-f-test-other-frame-h</literal></entry>
+<entry>visit a '.hpp' test file in a new frame</entry></row>
+
+<row><entry><literal>^c ^f ^I</literal></entry>
+<entry><literal>qgar-f-test-h-and-c</literal></entry>
+<entry>visit a '.hpp' test file and its related '.cpp' test file in two new windows</entry></row>
+
+<row><entry><literal>^c ^f i</literal></entry>
+<entry><literal>qgar-f-test-other-frame-h-and-c</literal></entry>
+<entry>visit a '.hpp' test file and its related '.cpp' test file in a new frame</entry></row>
+
+</tbody>
+</tgroup>
+</table>
+
+<table frame='none'><title>Menu QGAR:insert</title>
+<tgroup cols='3'>
+<colspec colwidth='1.0in'/>
+<colspec colwidth='4.0in'/>
+<tbody>
+
+
+<row><entry><literal>^c ^i ^n</literal></entry>
+<entry><literal>qgar-i-dox-name</literal></entry>
+<entry>insert a Doxygen group definition pattern (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i ^b</literal></entry>
+<entry><literal>qgar-i-dox-brief</literal></entry>
+<entry>insert a Doxygen so-called brief description
+(<literal>@brief</literal>)at point (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i ^p</literal></entry>
+<entry><literal>qgar-i-dox-param</literal></entry>
+<entry>insert a Doxygen parameter description
+(<literal>@param</literal>) at point (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i ^w</literal></entry>
+<entry><literal>qgar-i-dox-warning</literal></entry>
+<entry>insert a Doxygen warning message (<literal>@warning</literal>)
+at point (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i ^e</literal></entry>
+<entry><literal>qgar-i-dox-exception</literal></entry>
+<entry>insert a Doxygen exception description
+(<literal>@exception</literal>) at point (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i b</literal></entry>
+<entry><literal>qgar-i-dox-bug</literal></entry>
+<entry>insert a Doxygen bug description (<literal>@bug</literal>) at
+point (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i ^t</literal></entry>
+<entry><literal>qgar-i-dox-todo</literal></entry>
+<entry>insert a Doxygen paragraph describing what is to be
+done (<literal>@todo</literal>) at point (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i c</literal></entry>
+<entry><literal>qgar-i-empty-class</literal></entry>
+<entry>insert an empty Doxygen class pattern at point (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i ^c</literal></entry>
+<entry><literal>qgar-i-class-header</literal></entry>
+<entry>insert an empty Doxygen class header at point (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i ^m</literal></entry>
+<entry><literal>qgar-i-member-def</literal></entry>
+<entry>insert a Doxygen member definition pattern (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i g</literal></entry>
+<entry><literal>qgar-i-group-block</literal></entry>
+<entry>insert a Doxygen group block pattern (in a '.cpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i ^f</literal></entry>
+<entry><literal>qgar-i-file-header</literal></entry>
+<entry>insert a Doxygen file header at point (in a '.cpp' or '.hpp' Qgar file only)</entry></row>
+
+<row><entry><literal>^c ^i n</literal></entry>
+<entry><literal>qgar-i-class-name</literal></entry>
+<entry>insert current class name at point (in a '.hpp' or '.cpp' Qgar file only)</entry></row>
+
+<row><entry><literal>^c ^i ^a</literal></entry>
+<entry><literal>qgar-i-author-name</literal></entry>
+<entry>insert author name at point (in a '.hpp' or '.cpp' Qgar file only)</entry></row>
+
+
+<row><entry><literal>^c ^i ^l</literal></entry>
+<entry><literal>qgar-i-license</literal></entry>
+<entry>insert a license notice at the beginning of the file (in a '.hpp' or '.cpp' Qgar file only)</entry></row>
+
+<row><entry><literal>^c ^i f</literal></entry>
+<entry><literal>qgar-i-test-funtion</literal></entry>
+<entry>Prompt for the name of a test function and insert its declaration at point (in a '.hpp' file only)</entry></row>
+
+<row><entry><literal>^c ^i ^v</literal></entry>
+<entry><literal>qgar-i-display-version</literal></entry>
+<entry>display current Qgar package version number and date in the minibuffer</entry></row>
+
+</tbody>
+</tgroup>
+</table>
+
+</sect1>
+
+<sect1 id="files">
+
+  <title>The files</title>
+
+  <itemizedlist>
+    <listitem>
+    <simpara>
+    File <literal>qgar.el</literal> (compiled version: <literal>qgar.elc</literal>)
+    contains the source code of all the Qgar macros.
+    </simpara>
+    </listitem>
+
+    <listitem>
+    <simpara>
+    File <literal>qgar.util.el</literal> (compiled version: <literal>qgar.util.elc</literal>)
+    contains the source code of some basic Lisp functions which are not
+    supplied by Emacs Lisp and are used in the <literal>qgar.el</literal> source code.
+    </simpara>
+    </listitem>
+
+    <listitem>
+    <simpara>
+    File <literal>qgar.include-emacs</literal> contains the piece of Emacs Lisp code to
+    be inserted in the <literal>emacs</literal> initilization file.
+    </simpara>
+    </listitem>
+
+    <listitem>
+    <simpara>
+    Files <literal>qgar.pattern-*</literal> contain patterns and license notices
+    which are inserted by the different Qgar macros.
+    </simpara>
+    </listitem>
+
+  </itemizedlist>
+
+</sect1>
+
+</article>

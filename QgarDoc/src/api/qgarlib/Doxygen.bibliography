@@ -1,0 +1,328 @@
+/** 
+ * @page Bibliography Bibliography
+
+
+<table border="0" cellspacing="5" cellpadding="0">
+
+
+<tr>
+<td valign="top">
+<a name="Belongie-et-al-2002">[Belongie&nbsp;et&nbsp;al,&nbsp;2002]</a>
+</td>
+<td>
+S. Belongie, J. Malik, and J. Puzicha.
+<b>Shape matching and object recognition using shape context.</b>
+<i>IEEE Transactions on PAMI</i>, 24(24):509-522, April 2002.
+<br>Referenced by
+qgar::DesShapeContext.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Deriche-1987">[Deriche,&nbsp;1987]</a>
+</td>
+<td>
+R. Deriche. 
+<b>Using Canny's criteria to derive a recursively implemented
+optimal edge detector</b>.
+<i>International Journal of Computer Vision</i>, 1(2):167-187, May 1987.
+<br>Referenced by
+qgar::DericheGradientImage.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Freeman-and-Shapira-1975">[Freeman&nbsp;and&nbsp;Shapira,&nbsp;1975]</a>
+</td>
+<td>
+H. Freeman, and R. Shapira.
+<b>Determining the Minimum-Area Encasing Rectangle for an arbitrary
+closed curve</b>.
+<i>Communications of the ACM</i>, 18(7):409-413, 1975.
+<br>Referenced by
+qgar::Maer.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Graham-1972">[Graham,&nbsp;1972]</a>
+</td>
+<td>
+R.L. Graham.
+<b>An efficient algorithm for determining the convex hull
+of a finite planar set</b>.
+<i>Information Processing Letters</i>, 1(4):132-133, 1972.
+<br>Referenced by
+qgar::GenConvexHull.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Jain-et-al-1995">[Jain&nbsp;et&nbsp;al,&nbsp;1995]</a>
+</td>
+<td>
+R. Jain, R. Kasturi, and B. Schunk. 
+<b>Machine vision</b>, pages 46-47.
+Mc Graw Hill, New York, March 1995.
+<br>Referenced by
+qgar::PruneSmallCCBinaryImage.
+</td>
+</tr>
+
+
+<!--
+<tr>
+<td valign="top">
+<a name="Janssen-and-Vossepoel-1997">[Janssen&nbsp;and&nbsp;Vossepoel,&nbsp;1997]</a>
+</td>
+<td>
+R.D.T. Janssen, and A.M. Vossepoel.
+<b>Adaptive vectorization of line drawing images</b>.
+<i>Computer Vision and Image Understanding</i>, 65(1):38-56, January 1997.
+<br>Referenced by
+qgar::SegmentGraph
+</td>
+</tr>
+-->
+
+
+<tr>
+<td valign="top">
+<a name="Kanungo-et-al-2000">[Kanungo&nbsp;et&nbsp;al,&nbsp;2000]</a>
+</td>
+<td>
+T. Kanungo, R.M. Haralick, H.S. Baird, W. Stuezle, and D. Madigan.
+<b>A statistical, nonparametric methodology for document
+degradation model validation</b>.
+<i>IEEE Transactions on PAMI</i>, 22(11):1209-1223, November 2000.
+<br>Referenced by
+qgar::KanungoBinaryImage
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Kirk-1992">[Kirk,&nbsp;1992]</a>
+</td>
+<td>
+David Kirk, editor.
+<b>Graphics Gems III</b>.
+Academic Press, New York, 1992.
+<br>Referenced by
+qgar::GenSegment.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Meyer-1996">[Meyer,&nbsp;1996]</a>
+</td>
+<td>
+S. Meyer.
+<b>More Effective C++</b>.
+Addison-Wesley Professional Computing Series, Addison-Wesley,
+Reading (MA), 1996 (ISBN 0-201-63371-X).
+<br>Referenced by
+qgar::GenImage,
+qgar::GenPoint.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Meyer, 2001">[Meyer,&nbsp;2001]</a>
+</td>
+<td>
+S. Meyer.
+<b>Effective STL</b>.
+Addison Wesley, Reading (MA), 2001 (ISBN 0201749629).
+<br>Referenced by
+qgar::qstlCloneObject,
+qgar::qstlDeleteObject.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Niblack-1986">[Niblack,&nbsp;1986]</a>
+</td>
+<td>
+W. Niblack.
+<b>An introduction to digital image processing</b>,
+pages 115-116. Prentice-Hall, Englewood Cliffs (NJ), 1986.
+<br>Referenced by
+qgar::NiblackBinaryImage.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="ORourke-1994">[O'Rourke,&nbsp;1994]</a>
+</td>
+<td>
+J. O'Rourke.
+<b>Computational Geometry in C</b>.
+Cambridge University Press, Cambridge (MA), 1994.
+<br>Referenced by
+qgar::GenSegment.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Rosin-and-West-1989">[Rosin&nbsp;and&nbsp;West,&nbsp;1989]</a>
+</td>
+<td>
+J. Rosin, and G. West.     
+<b>Segmentation of edges into lines and arcs</b>.
+<i>Image and Vision Computing</i>, 7(2):109-114, May 1989.
+<br>Referenced by
+qgar::RWSegmentList.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Sanniti-di-Baja-1994">[Sanniti&nbsp;di&nbsp;Baja,&nbsp;1994]</a>
+</td>
+<td>
+G. Sanniti di Baja. 
+<b>Well-shaped, stable, and reversible skeletons from the
+(3,4)-distance transform</b>.
+<i>Journal of Visual Communication and Image Representation</i>,
+5(1):107-115, March 1994.
+<br>Referenced by
+qgar::LabeledSkeletonImage.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Trier-and-Jain-1995">[Trier&nbsp;and&nbsp;Jain,&nbsp;1995]</a>
+</td>
+<td>
+O.D. Trier, and A.K. Jain. 
+<b>Goal-directed evaluation of binarization methods</b>.
+<i>IEEE Transactions on PAMI</i>, 17(12):1191-1201, December 1995.
+<br>Referenced by
+qgar::NiblackBinaryImage.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Trier-and-Taxt-1995">[Trier&nbsp;and&nbsp;Taxt,&nbsp;1995]</a>
+</td>
+<td>
+D. Trier, and T. Taxt. 
+<b>Improvement of ''integrated function algorithm'' for
+binarization of document images</b>.
+<i>Pattern Recognition Letters</i>, 16(3):277-283, March 1995.
+<br>Referenced by
+qgar::TTBinaryImage.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="van-Herk-1992">[van&nbsp;Herk,&nbsp;1992]</a>
+</td>
+<td>
+M. van Herk.
+<b>A fast algorithm for local minimum and maximum filters on
+rectangular and octogonal kernels</b> .
+<i>Pattern Recognition Letters</i>, 13(7):517-521, 1992.
+<br>Referenced by
+qgar::LinDilatedImage,
+qgar::LinErodedImage.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Vincent-1993">[Vincent,&nbsp;1993]</a>
+</td>
+<td>
+L. Vincent. 
+<b>Morphological grayscale reconstruction in image analysis:
+Applications and efficient algorithms.</b>
+<i>IEEE Transactions on Image Processing</i>, (2)2:176-201, 1993.
+<br>Referenced by
+qgar::GeodesicRecBinaryImage,
+qgar::GeodesicRecEroBinaryImage,
+qgar::GeodesicRecEroImage,
+qgar::GeodesicRecImage.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Wall-and-Danielsson-1984">[Wall&nbsp;and&nbsp;Danielsson,&nbsp;1984]</a>
+</td>
+<td>
+K. Wall, and P. Danielsson. 
+<b>A fast sequential method for polygonal approximation of
+digitized curves</b>.
+<i>Computer Vision, Graphics and Image Processing</i>, 28(2):220-227, 1984.
+<br>Referenced by
+qgar::WDSegmentList.
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Yanowitz-and-Bruckstein-1989">[Yanowitz&nbsp;and&nbsp;Bruckstein,&nbsp;1989]</a>
+</td>
+<td>
+S.D. Yanowitz, and A.M. Bruckstein. 
+<b>A new method for image segmentation</b>.
+<i>Computer Vision, Graphics, and Image Processing</i>,
+46(1):82-95, April 1989.
+<br>Referenced by
+qgar::NiblackBinaryImage.
+</td>
+</tr>
+
+
+</table>
+
+<!-- TEMPLATE
+
+<tr>
+<td valign="top">
+<a name="">[,&nbsp;]</a>
+</td>
+<td>
+
+<b></b>.
+<i></i>,
+<br>Referenced by
+
+</td>
+</tr>
+
+-->
+
+ *
+ */

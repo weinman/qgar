@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<application>
+
+  <descr>
+    <name>Morphological opening</name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Opening of a given binary image with mathematical morphology operations.
+      </brief>
+      <long>
+<![CDATA[
+<p>An <b>opening</b> is a mathematical morphology operation, which is the
+composition of an erosion and a dilation (8-connexity-based), using a square as
+structural element. The size (i.e. width) of the structural element should be an
+odd number. If it is not the case, the size is automatically rounded to the
+nearest superior odd number.</p>
+
+<p>The result is a binary image containing the black pixels sets of the source
+image which match (are identical to) the structural element. In other words, it
+does not contain any black region smaller than the structural element.</p>
+
+<p><b>Warning:</b> Let <i>s</i> be the size of the structural element.
+Because of the very nature of erosion and dilation, the content of the <i>s</i>
+rows and columns contiguous to the borders of the resulting image is not
+relevant.</p>
+]]>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+    <param name="source image" flag="in" required="true" passing-mode="in"
+	   type="binary" format="PBM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the source binary image.
+	  </brief>
+	  <long>
+The format of the file must be one of the binary formats described
+by the PBM+ specification (either raw or ASCII).
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="result image" flag="out" required="true" passing-mode="out"
+	   type="binary" format="PBM" default="_.opened.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the opening of the source image.
+	  </brief>
+	  <long>
+The format of the file is raw PBM.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="structural element size" flag="size" required="true" passing-mode="in"
+	   type="numeric" format="int" default="5" min="1">
+      <documentation>
+	<doc>
+	  <brief>
+Size (i.e. width) of the square structural element used for the opening.
+	  </brief>
+	  <long>
+The size of the structural element must be an odd number. If the supplied value
+is an even number, it is automatically rounded to the nearest superior odd
+number.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+
+</application>

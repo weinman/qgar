@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<application>
+
+
+  <descr>
+    <name></name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2005 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Binary image skeletonization, using (3,4)-Chamfer-distance.
+      </brief>
+      <long>
+<![CDATA[
+The result is an <b>image</b> of the corresponding skeleton:
+The chains of points (of the skeleton) are not saved in a file.
+]]>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+
+    <param name="source image" flag="in" required="true" passing-mode="in"
+	   type="binary" format="PBM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the binary source image.
+	  </brief>
+	  <long>
+The format of the file must be one of the binary formats described
+by the PBM+ specification (either raw or ASCII).
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="skeleton image" flag="out" required="true" passing-mode="out"
+	   type="binary" format="PBM" default="_.34skel.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the <b>image</b> of the resulting skeleton.
+	  </brief>
+	  <long>
+The format of the file is raw PBM.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="small CC max size" flag="prune" required="false" passing-mode="in"
+	   type="numeric" format="int" default="3" min="0">
+      <documentation>
+	<doc>
+	  <brief>
+Maximum size (in pixels) of black components which are pruned.
+	  </brief>
+	  <long>
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+</application>
+  

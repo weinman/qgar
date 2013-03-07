@@ -1,0 +1,35 @@
+@echo off
+
+REM +---------------------------------------------------------------------+
+REM | Qgar installation/compilation script                                |
+REM | Copyright (C) 2002-2008  Qgar Project, LORIA                             |
+REM |                                                                     |
+REM | This script is free software; you can redistribute it and/or        |
+REM | modify it under the terms of the GNU Lesser General Public          |
+REM | License version 2.1, as published by the Free Software Foundation.  |
+REM |                                                                     |
+REM | This script is distributed in the hope that it will be useful,      |
+REM | but WITHOUT ANY WARRANTY; without even the implied warranty of      |
+REM | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                |
+REM | See the GNU Lesser General Public License for more details.         |
+REM |                                                                     |
+REM | The GNU Lesser General Public License is included in the file       |
+REM | LICENSE.LGPL, in the root directory of the Qgar packaging. See      |
+REM | http://www.gnu.org/licenses/lgpl.html for the terms of the licence. |
+REM | To receive a paper copy, write to the Free Software Foundation,     |
+REM | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
+REM |                                                                     |
+REM | Contact Project Qgar for any information:                           |
+REM |   LORIA - équipe Qgar                                               |
+REM |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+REM |   email: qgar-contact@loria.fr                                      |
+REM |   http://www.qgar.org/                                              |
+REM *---------------------------------------------------------------------*
+
+
+set QGARSHARE=@install_prefix@@install_xml@
+set QGAREXE=@install_prefix@@install_bin@
+
+%QGAREXE%\QgarGui.exe
+
+

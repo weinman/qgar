@@ -1,0 +1,320 @@
+<?xml version="1.0"encoding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                         "/local/qgar/outils/docbook-4.2/docbookx.dtd">
+
+
+<article lang="en" revision="$Revision: 1.1 $" userlevel="USER">
+
+
+<title>Qgar Software CMake guide</title>
+
+  
+<articleinfo>
+
+<author>
+  <firstname>Vitor</firstname>
+  <surname>Vasconcelos</surname>
+  <email>Vitor.Vasconcelos@loria.fr</email>
+</author>
+
+<releaseinfo>
+Qgar version @qgar_version@
+</releaseinfo>
+
+<orgname>Qgar Project, LORIA</orgname>
+    
+<abstract>
+  <simpara>
+This document describes how to configure and compile the Qgar library 
+and its unit test set using the CMake tool, on Linux and Windows plataforms.
+  </simpara>
+</abstract>   
+
+</articleinfo>
+
+<section id="Instroduction">
+<!-- INTRODUCTION =========================================================== -->
+
+<!--   ============     -->
+<title>Introduction</title>
+<!--   ============     -->
+
+<para>
+The CMake is a tool that allows, from a single source, the generation of compilable codes for Linux, Windows 
+and other plataforms. Nevertheless, it is necessary to have the CMake tool installed on each plataform 
+you intend to compile the QGAR lib.
+
+<emphasis>The CMake version tested is 2.4.7, but any version above 2.2 supposedly works.</emphasis> 
+
+We can divide the process in three items:
+<itemizedlist>
+
+  <listitem>
+    <simpara>
+    Configuration of the CMake environment.
+    </simpara>
+  </listitem>
+
+  <listitem>
+    <simpara>
+    Generation of the Makefile.
+    </simpara> 
+  </listitem>
+
+  <listitem>
+    <simpara>
+    Compilation of the source code.
+    </simpara> 
+  </listitem>
+
+</itemizedlist>
+
+We divide this document in one session for Linux and another for
+Windows. Previous knowledge of CMake is not mandatory, however, for
+those interested, the primary source 
+is <ulink url="http://www.cmake.org/HTML/RunningCMake.html">CMake website</ulink>.
+
+</para>
+
+</section>
+
+<!-- LINUX  ======================================================= -->
+<section id="linux">
+
+<!--   ================     -->   
+<title>Linux compilation</title>
+<!--   ================     -->
+
+  <section>
+
+  <title>Project configuration</title>
+  <!--   ===================     -->
+
+  <para>
+  First of all: <emphasis>be sure you have specific rights to create directories and write files </emphasis>in 
+the path you chose to install QGARLIB.
+
+  There are two different ways to configure the project. The first and simplest way is to let CMake check 
+the environment and create its control variables. Most of these variables are used internally and for most 
+users there is no need to change them. To execute CMake is enough to type <programlisting>cmake 
+[qgar source dir]</programlisting>. This will execute Qgar's main script and will generate the Makefiles 
+to compile the project.
+  
+  The second way is to execute que CMake Configuration tool: 
+<programlisting>ccmake [qgar source dir]</programlisting> where <emphasis>[qgar source dir]</emphasis> 
+is the directory where the Qgar source is available. Remember the Qgar source dir is the root dir of 
+Qgar directory tree.
+  </para>
+
+  <para>
+  The configuration tool allows change the default behavior of the Makefile generator. It's possible to chose 
+between Release and Debug builds, change compilere optimization methods and any other project configuration. The 
+configuration tools use is straightforward and more details can be found at ccmake 
+<ulink url="http://www.cmake.org/Wiki/CCMake_2.6.1_Docs">Wiki page</ulink>.
+  </para>
+
+  <para>
+  Once all configuration is done, it's possible to generate the project from ccmake simple typing 'g' to generate the Makefile.
+
+  It's also possible to chose among the project generators available. Simply type <programlisting>cmake</programlisting> to 
+get the local help. 
+  This command puts all information needed by the project on cache variables. These variables are stored 
+and, most of time, is not necessary to change their values. Is important to remark it can be called 
+from <emphasis>any</emphasis> directory in which the user has written permission. 
+  <emphasis>Tip: </emphasis>it's a good ideia to keep the source code separeted from the binary files to avoid 
+mixing it with generated files. Another reason is to be able to keep many binary versions of the same source 
+code.
+  </para>
+
+  <para>
+  An <emphasis>example</emphasis> of a possible build tree is:
+  <programlisting>- outils
+    |----- Qgar
+    |        |---- qgarlib
+    |        |---- QgarGui
+    |        |---- ...
+    |
+    |----- builds
+              |---- qgar_gcc
+              |---- qgar_MinGW
+              |---- ...</programlisting>
+    From the directory <emphasis>qgar_gcc</emphasis>, the command to generate the Qgar build files is:
+  <programlisting>cmake ../../Qgar</programlisting>
+  </para>	
+  
+
+  </section>
+
+  <section>
+  <title>Makefile generation</title>
+  <!--   ===================     -->
+
+     <para>
+     The next step is to generate the <emphasis>Makefile</emphasis> that will be used 
+by make to build the library.
+To generate the Makefile, type in the command line:
+<programlisting>cmake [qgar source dir]</programlisting>
+where <emphasis>[qgar source dir]</emphasis> is the directory where the Qgar source is available. Remember 
+the Qgar source dir is the root dir of Qgar directory tree.
+     The output of the cmake command will display information about the project and 
+the process of generating the Makefile.
+     </para>
+
+     </section>
+
+  <section>
+  <title>Project compilation</title>
+  <!--   ===================     -->
+     
+     <para>
+     The final step is to build the library by executing:
+     <programlisting>make</programlisting>
+     Compilation information will be displayed and at the end many sources will be built.
+     The executable file called <emphasis>unitTester</emphasis> will only be built if 
+the <emphasis>cppunit</emphasis> library is available. This source is the unit test executable.
+     </para>
+
+  <para>
+
+    The default Makefile gives a wide choice of build options. A standard Makefile sources for 
+Qgar is: <emphasis>For information purposes, all sources are commented here, but they are not in the real Makefile</emphasis>
+
+<programlisting>
+  The following are some of the valid targets for this Makefile:
+... all (the default if no target is provided)
+... clean (clean all build tree without removing CMake temporary files)
+... depend (build any dependencs of the project)
+... Qgar_deb (Generate a debian file from this source)
+... Qgar_rpm (Generate a rpm file from this source)
+... deb_dir_install (Create the debian directory but not the debian file)
+... edit_cache (runs a step-by-step questionar to change CMake variables and re-generates the Makefile)
+... install (install Qgar in the proper directories)
+... install/local (force install in /usr/local prefix)
+... list_install_components (list all available components)
+... package (run CPack utility to generate a package from this source. Available packers can differ on each system)
+... package_source (run CPack utility to generate a source package from this source. Available packers can differ on each system
+... rebuild_cache (re-run CMake to get cache variables values)
+... test (run the unit test module if it is available)
+... qgar (generate only qgarlib component)
+... unitTester (generate unitTester executable and its depedence modules)
+... qgardev (generate only qgardevlib component)
+... QAedgesCanny (generate only QAedgesCanny application and its dependence modules)
+... QAedgesDeriche
+... QAdist34Skeletonization
+... QAkanungoDegrade
+... QAmorphoClosing
+... QAmorphoOpening
+... QApruneSmallCC
+... QAtextExtraction
+... QAtextGraphicSeparation
+... QAthickThinSeparation
+... QAthrsBinarization
+... QAtrierBinarization
+... QAvectorizationRW
+... doc (generate the whole documentation)
+... doc-docbook (generate only Qgar docbook based documentation)
+... doc-doxygen (generate only Qgar source code documentation)
+... QgarGui (generate the Graphical User Interface)
+</programlisting>
+
+  To get this list just type <programlisting>make help</programlisting>. Note that your list will probably be 
+slightly different from this one, since you have a different environment.
+  </para>
+
+  <para>
+
+  </para>
+  
+  </section>
+
+</section>
+
+<!-- WINDOWS  ==================================================== -->
+<section id="windows">
+
+<!--   ===================     -->
+<title>Windows compilation</title>    
+<!--   ===================     -->
+
+  <para>
+  The process to generate and compile Qgar on Windows is not so different from 
+the one on Linux environment. The CMake Windows version has an user-friendly interface and all 
+interactions necessary consist in clicking a few buttons.
+  </para>
+
+  <para>
+  Since version 4.0.0, Qgar is based on 
+  <ulink url="http://trolltech.com/products/appdev">Qt</ulink>. 
+  The free version of Qt, the one used on Qgar development, is only recommended with 
+  <ulink url="http://www.mingw.org/">MinGW</ulink>, which is a port of gcc to Windows.
+  Following this constraints, Qgar version 4.0.0 was only compiled with MinGW on Windows.
+  </para>
+
+  <section>
+
+  <title>Project configuration</title>
+  <!--   =====================     -->
+
+    <para>
+    Start CMake by clicking its icon. There are few basic steps to configure the 
+project. As in Linux, the cache variables will be set the first time you execute CMake 
+for the project. Keep in mind we're talking about MinGW when we say 'Windows Compilation'.
+    </para>
+
+    <informalfigure>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="cmake_qgar1.png" scale="50"/>
+	</imageobject>
+	<textobject><phrase>Cmake interface.</phrase></textobject>
+	<caption>
+	  <para>
+	    The CMake Windows Inteface.
+	  </para>
+	</caption>
+      </mediaobject>
+    </informalfigure>
+
+      <para>
+      The first step is to select the directory where you downloaded the source code. Make sure you select the qgarlib directory, not the main directory of Qgar package.
+      </para>
+
+      <para>
+      After selecting the source, you must chose a place to generate
+      your project. This is the directory where you'll find a Makefile 
+      after generating the project.
+      </para>
+
+      <para>
+      The next step is just clicking on 'Configure' to generate the
+      Makefile. If you need any assistence, just click
+      on 'Help' to get a brief CMake description and intructions on how to create your project.
+      </para>
+
+
+    <informalfigure>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="cmake_qgar2.png" scale="50"/>
+	</imageobject>
+	<textobject><phrase>Cmake compiler chose dialog.</phrase></textobject>
+	<caption>
+	  <para>
+	    The figure above shows the generator selection dialog. 
+	    This question is done in the first generation of a project. 
+	    If the cache ir removed, the information about the generator is removed too, forcing CMake to ask for the generator in the next execution.
+	  </para>
+	</caption>
+      </mediaobject>
+    </informalfigure>
+
+    <para>
+    The 'Delete Cache' button cleans all system checks and definitions already made. It's useful to force a new solution to be built. Othewise, if no relevant changes are made in CMake variables, it will keep the previous solution.
+    </para>
+
+  </section>
+
+</section>
+
+
+</article>

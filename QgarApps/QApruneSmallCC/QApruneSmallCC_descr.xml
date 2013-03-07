@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+
+<application>
+
+ 
+  <descr>
+    <name>Prune Small Connected Components</name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Prune small black connected components of a given binary image.
+      </brief>
+      <long>
+<![CDATA[
+<p>A (connected) component is a region defined by a set of connected
+pixels having the same color.</p>
+
+<p>Only black components are considered here.
+The application delivers two binary images, one containing the black components
+of the given image having a size smaller than a given threshold, the other
+containing the black components having a size greater than the threshold.</p>
+
+<p>This application is faster than the construction of the whole set of
+components of the image (see class qgar::ConnectedComponents in the QgaLib
+library), as it does not construct any effective component: Small components are
+detected by simply examining configurations of 2*3 pixels (based on 8-connexity)
+in consecutive pairs of rows of the given image.<p>
+]]>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+    <param name="source image" flag="in" required="true" passing-mode="in"
+    type="binary" format="PBM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the source binary image.
+	  </brief>
+	  <long>
+The format of the file must be one of the binary formats described
+by the PBM+ specification (either raw or ASCII).
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="image of small CC" flag="outscc" required="true" passing-mode="out"
+	   type="binary" format="PBM" default="_.smallCC.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+<![CDATA[
+Full pathname of the file in which the <i>small</i> components will be
+stored, i.e. components with a  size smaller or equal to the maximum introduced
+by flag <tt>-size</tt>.
+]]>
+	  </brief>
+	  <long>
+The format of the file is raw PBM.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="image of big CC" flag="outbcc" required="true" passing-mode="out"
+	   type="binary" format="PBM" default="_.bigCC.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+<![CDATA[
+Full pathname of the file in which the <i>big</i> components will be stored,
+i.e. components with a size greater than the maximum introduced by flag
+<tt>-size</tt>.
+]]>
+	  </brief>
+	  <long>
+The format of the file is raw PBM.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="small CC max size" flag="prune" required="true" passing-mode="in"
+	   type="numeric" format="int" default="3" min="0">
+      <documentation>
+	<doc>
+	  <brief>
+Maximum size of a component to be pruned.
+	  </brief>
+	  <long>
+<![CDATA[
+All the components having a size smaller or equal to the given maximum are
+considered as ''small'' and stored into the file for <i>small</i>
+components. The remaining components are stored into the file for <i>big</i>
+components.
+]]>
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+
+</application>

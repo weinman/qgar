@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"/local/qgar/outils/docbook-4.2/docbookx.dtd">
+<article revision="$Revision: 1.1 $" userlevel="DVLP">
+
+  <title>Qgar C++ Coding Standards: An Abstract</title>
+
+  <articleinfo>
+    <author>
+      <firstname>Gérald</firstname>
+      <surname>Masini</surname>
+      <email>masini@loria.fr</email>
+    </author>
+
+    <releaseinfo>
+    Qgar version @qgar_version@
+    </releaseinfo>
+
+    <legalnotice>
+      <simpara>
+	Permission is granted to copy, distribute and/or modify this document
+	under the terms of the GNU Free Documentation License, Version 1.1 or
+	any later version published by the Free Software Foundation; with no
+	Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+	Texts.
+      </simpara>
+    </legalnotice>
+
+    <copyright>
+      <year>2002</year>
+      <holder>Qgar Project, LORIA</holder>
+    </copyright>
+  </articleinfo>
+
+
+
+  <sect1 id="formatting">
+    <!--   ==========     -->
+    <title>Formatting</title>
+    <!--   ==========     -->
+
+  <itemizedlist>
+
+    <listitem>
+      <para>
+<emphasis>ClassName.h</emphasis> for header files,
+<emphasis>ClassName.cpp</emphasis> for source files
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>Member sections ordering:</emphasis> <literal>public</literal>,
+<literal>protected</literal>, and, at last, <literal>private</literal>
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>ANSI style-like indentation</emphasis>:
+Use <literal>astyle</literal> to format files
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>A single statement per line</emphasis> (about 80 characters)
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>Declarations</emphasis> are tabulated and include initializations
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>Empty bodies</emphasis> of conditional and loop statements are documented
+      </para>
+    </listitem>
+
+  </itemizedlist>
+  </sect1>
+
+
+  <sect1 id="Coding">
+    <!--   ======    -->
+    <title>Coding</title>
+    <!--   ======    -->
+
+  <itemizedlist>
+
+    <listitem>
+      <para>
+Only a variable as the left part of an <emphasis>Assignment</emphasis>
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>Classes</emphasis>
+
+      <itemizedlist>
+      <listitem>
+        <para>
+<emphasis>No friends</emphasis>
+         </para>
+      </listitem>
+      <listitem>
+        <para>
+<emphasis>Data members</emphasis> in <literal>protected</literal> sections
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+<emphasis>A function member that has no implementation</emphasis> is
+declared <literal>private</literal> inside a block of comments titled
+<literal>DISABLED</literal>
+         </para>
+      </listitem>
+      <listitem>
+        <para>
+<emphasis>An access function member</emphasis> is declared <literal>const</literal>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+<emphasis>Objects input/output</emphasis>: Define stream operators
+<literal><<</literal> and <literal>>></literal> as friends of the class
+(see file <literal>QgarSegment.h</literal> for a real case)
+        </para>
+      </listitem>
+      </itemizedlist>
+
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+Define <emphasis>global constants and functions</emphasis>
+in the <literal>qglobal</literal> namespace
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>No #define</emphasis>
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>No <literal>goto</literal>, <literal>continue</literal>,
+or <literal>break</literal></emphasis>
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+Use streams (from <literal>iostream</literal>, <literal>fstream</literal>...)
+for <emphasis>input/output</emphasis>
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+<emphasis>No magic values</emphasis>, use constants or enums
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+Use <literal>0</literal>, not <literal>NULL</literal>,
+for <emphasis>null pointers</emphasis>
+      </para>
+    </listitem>
+
+    <listitem>
+      <para>
+Do not alter the value of <emphasis><literal>this</literal></emphasis>
+      </para>
+    </listitem>
+
+  </itemizedlist>
+  </sect1>
+
+
+  <sect1 id="names">
+
+    <!--   =====     -->
+    <title>Names</title>
+    <!--   =====     -->
+
+      <simplelist columns="3" type="horiz">
+	<member><literal>[anExample]</literal></member>
+	<member> stands for </member>
+	<member>
+	  a concatenation of capitalized words excepting the first one
+	</member>
+	
+	<member><literal>[AnExample]</literal></member>
+	<member> stands for </member>
+	<member>
+	  concatenation of capitalized words
+	</member>
+
+	<member><literal>[AN_EXAMPLE]</literal></member>
+	<member> stands for </member>
+	<member>
+	  words in capitals separated with underscore characters ('<literal>_</literal>')
+	</member>
+	<member><literal>[an_example]</literal></member>
+	<member> stands for </member>
+	<member>
+	  words in small letters separated with underscore characters
+	  ('<literal>_</literal>')
+	</member> 
+      </simplelist>
+
+     <itemizedlist>
+       <listitem>
+        <para>Name Spaces</para>
+	<para>
+	  <simplelist columns="3" type="horiz">
+	    <member>Qgar library</member>
+	    <member />
+	    <member><literal>qgar</literal></member>
+	    
+	    <member>Globals</member>
+	    <member />
+	    <member><literal>qglobal</literal></member>
+	    
+	    <member>STL utilities</member>
+	    <member />
+	    <member><literal>qstl</literal></member>
+	    
+	    <member>XML related</member>
+	    <member />
+	    <member><literal>qgxml</literal></member>
+	  </simplelist>
+	</para>
+      </listitem>
+
+      <listitem>
+        <para>Types</para>
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>enum type</member>
+	    <member />
+	    <member><literal>QGE[enumTypeName]</literal></member>
+	    <member>like</member>
+	    <member><literal>QGEpbmFormat</literal></member>
+
+	    <member>typedef</member>
+	    <member />
+	    <member><literal>QGT[typeName]</literal></member>
+	    <member>like</member>
+	    <member><literal>QGTuChar</literal></member>
+	  </simplelist>
+	</para>
+      </listitem>
+
+      <listitem>
+        <para>Classes</para>	
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>concrete class</member>
+	    <member />
+	    <member>[ClassName]</member>
+	    <member>like</member>
+	    <member><literal>ErodedBinaryImage</literal></member>
+	    
+	    <member>generic class</member>
+	    <member />
+	    <member>Gen[ClassName]</member>
+	    <member>like</member>
+	    <member><literal>GenBoundingBox</literal></member>
+	    
+	    <member>abstract class</member>
+	    <member />
+	    <member>Abstract[ClassName]</member>
+	    <member>like</member>
+	    <member><literal>AbstractGenPrimitive</literal></member>
+
+	    <member>interface</member>
+	    <member />
+	    <member>[Capitalized]Interface</member>
+	    <member>like</member>
+	    <member><literal>DataStructureInterface</literal></member>
+	  </simplelist>
+	</para>
+      </listitem>
+
+      <listitem>
+        <para>Data Members</para>
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>non static data member</member>
+	    <member />
+	    <member>_[dataMemberName]</member>
+	    <member>like</member>
+	    <member><literal>_fileStream</literal></member>
+
+	    <member>static data member</member>
+	    <member />
+	    <member>_s_[data_member_name]</member>
+	    <member>like</member>
+	    <member><literal>_s_error_msgs</literal></member>
+
+	    <member>pointer data member</member>
+	    <member />
+	    <member>_p[DataMemberName]</member>
+	    <member>like</member>
+	    <member><literal>_pCoeffMap</literal></member>
+
+	    <member>reference data member</member>
+	    <member />
+	    <member>_r[DataMemberName]</member>
+	    <member>like</member>
+	    <member><literal>_rMagicNb</literal></member>
+	  </simplelist>
+	</para>
+      </listitem>
+
+      <listitem>
+        <para>Function Members</para>
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>non static function</member>
+	    <member />
+	    <member>[functionName]</member>
+	    <member>like</member>
+	    <member><literal>writeHeader</literal></member>
+
+	    <member>static function</member>
+	    <member />
+	    <member>s_[functionName]</member>
+	    <member>like</member>
+	    <member><literal>s_setEpsilonAngle</literal></member>
+
+	    <member>argument</member>
+	    <member />
+	    <member>a[ParamName] or an[ArgName]</member>
+	    <member>like</member>
+	    <member><literal>aRowIdx</literal>, <literal>anEpsilon</literal></member>
+	  </simplelist>
+	</para>
+      </listitem>
+      
+      <listitem>
+        <para>Local Variables</para>
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>counter</member>
+	    <member />
+	    <member />
+	    <member>like</member>
+	    <member><literal>iCnt</literal>,
+                    <literal>jCnt</literal>,
+                    <literal>kCnt</literal>...</member>
+
+	    <member>index</member>
+	    <member />
+	    <member />
+	    <member>like</member>
+	    <member><literal>iNdx</literal>,
+                    <literal>jNdx</literal>,
+                    <literal>kNdx</literal>...</member>
+
+	    <member>pointer</member>
+	    <member />
+	    <member>p[PointerName]</member>
+	    <member>like</member>
+	    <member><literal>pPixMap</literal></member>
+
+	    <member>reference</member>
+	    <member />
+	    <member>r[ReferenceName]</member>
+	    <member>like</member>
+	    <member><literal>rPixMap</literal></member>
+
+	    <member>static variable</member>
+	    <member />
+	    <member>s_[variable_name]</member>
+	    <member>like</member>
+	    <member><literal>s_tgif_version</literal></member>
+	  </simplelist>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>Globals</para>
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    
+	    <member>function</member>
+	    <member />
+	    <member>qg[FunctioName]</member>
+	    <member>like</member>
+	    <member><literal>qgRadiansToDegrees</literal></member>
+
+	    <member>constant</member>
+	    <member />
+	    <member>QG_[CONSTANT_NAME]</member>
+	    <member>like</member>
+	    <member><literal>QG_FLOAT_MAX</literal></member>
+	  </simplelist>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>Constants</para>
+	<para>
+	  <simplelist columns="5" type="horiz">
+	    <member>local & global</member>
+	    <member />
+	    <member>QG_[CONSTANT_NAME]</member>
+	    <member>like</member>
+	    <member><literal>QG_SQRT_2</literal></member>
+
+	    <member>enum value</member>
+	    <member />
+	    <member>QGE_[ENUM-NAME]_[ENUM_VALUE]</member>
+	    <member>like</member>
+	    <member><literal>QGE_COLOUR_MEDIUM_BLUE</literal>
+                    (for enum type <literal>QGEcolour</literal>)</member>
+	  </simplelist>
+	</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+</article>

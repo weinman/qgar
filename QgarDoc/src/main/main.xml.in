@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                         "/local/qgar/outils/docbook-4.2/docbookx.dtd">
+
+<article lang="en" revision="$Revision: 1.1 $" userlevel="DVLP">
+
+  <title>Qgar Software Documentation main page</title>
+
+  <articleinfo>
+    <author>
+      <firstname>Gérald</firstname>
+      <surname>Masini</surname>
+      <email>Gerald.Masini@loria.fr</email>
+    </author>
+
+    <author>
+      <firstname>Vitor</firstname>
+      <surname>Vasconcelos</surname>
+      <email>Vitor.Vasconcelos@loria.fr</email>
+    </author>
+
+    <releaseinfo>
+    Qgar version @qgar_version@
+    </releaseinfo>
+
+    <orgname>Qgar Project, LORIA</orgname>
+  </articleinfo>   
+
+
+    <abstract>
+      <para>
+      Graphics recognition is a multi-disciplinary domain,
+      involving techniques as heterogeneous as signal processing, image processing,
+      pattern recognition, or computer vision. A research team working in the domain
+      cannot start an application from scratch. It must be able to reuse whole or part
+      of software implemented for previous work, as well as experience collected at
+      these occasions. The working base built up in this way allows research projects
+      to be efficiently conducted, by reusing existing material, standardizing program
+      coding, and making ideas and software exchanges easier.
+      </para>
+
+      <para>
+      For several years, the <ulink url="http://www.loria.fr/equipes/qgar/">Qgar Research Team</ulink> at 
+      <ulink url="http://www.loria.fr">LORIA</ulink> has devoted much effort to the construction of such a 
+      software environment 
+      <ulink url="../../html/bibliography/bibliography.html">[Tombre et al, 1998]</ulink> 
+      <ulink url="../../html/bibliography/bibliography.html">[Dosch et al, 2000]</ulink> 
+      <ulink url="../../html/bibliography/bibliography.html">[Rendek et al, 2004a]</ulink>
+      , including three main parts:
+  
+      <itemizedlist>
+        <listitem>
+          <simpara>
+	  QgarLib is a library of C++ classes implementing basic graphics analysis and recognition methods.	  
+	  </simpara>
+	</listitem>
+
+        <listitem>
+          <simpara>
+	  QgarApps is an applicative layer, including higher-level applications (binarization, edge detection, 
+	  text-graphics separation, thick-thin separation, vectorization...). A third-party application, either 
+	  designed apart from the Qgar software or not, can be integrated into the system by wrapping it with a 
+	  predefined C++ class, without recompiling any part of the system itself <ulink url="../../html/bibliography/bibliography.html">[Rendek et al, 2004b]</ulink>.
+	  </simpara>
+	</listitem>
+
+        <listitem>
+          <simpara>
+	  QgarGui is a graphical interface to design and run applications, provided with data manipulation and display capabilities.
+	  </simpara>
+	</listitem>
+
+      </itemizedlist>
+
+      This environmnet has been used within the frame of several projects, in particular DocMining, supported by the French national 
+      program for software technologies <ulink url="../../html/bibliography/bibliography.html">[Clavier et al, 2004]</ulink>.
+      </para>
+
+      <para>
+      Qgar is a registered trademark of <ulink url="http://www.inria.fr">INRIA</ulink>, and the Qgar environment is registered as 
+      free software by the French agency for software protection, according to the terms of two licenses:      
+
+      <itemizedlist>
+        <listitem>
+          <simpara>
+	  the <ulink url="license-lgpl.html">GNU Lesser General Public License</ulink> (LGPL) for the installation/compilation tools, 
+	  the core library QgarLib, the applications globally so-called QgarApps,
+	  </simpara>
+	</listitem>
+
+        <listitem>
+          <simpara>
+	  the <ulink url="license-qpl.html">Q Public License</ulink> (QPL) for the the graphical user interface QgarGui.
+	  </simpara>
+	</listitem>
+      </itemizedlist>
+      </para>
+
+      <para>
+      The Qgar software is entirely developed in C++, for Unix/Linux OS. The source code includes about 50,000 lines and may 
+      be freely downloaded, together with its installation/compilation tools as well as the HTML version of the documentation, 
+      from the Qgar software web site See button '<emphasis>Downloads</emphasis>' in the menu on the left. A click on the Qgar logo makes you go 
+      to the Qgar software web site.
+      </para>
+
+    </abstract>
+  
+</article>

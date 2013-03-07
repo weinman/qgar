@@ -1,0 +1,106 @@
+/** 
+ * @page Bibliography Bibliography
+
+
+<table border="0" cellspacing="5" cellpadding="0">
+
+
+<tr>
+<td valign="top">
+<a name="Chhabra-and-Phillips-1998">[Chhabra&nbsp;and&nbsp;Phillips&nbsp;1998]</a>
+</td>
+<td>
+A.K. Chhabra, and I.T. Phillips.
+<b>The Second International Graphics Recognition Contest
+-- Raster to vector conversion: A report</b>.
+In: K. Tombre and A.K. Chhabra, editors,
+<i>Graphics recognition, algorithms and systems (selected papers of the Second
+International Workshop GREC'97)</i>,
+Lecture Notes in Computer Science 1389, Springer-Verlag, Berlin, pages 390-410, 1998.
+<br>Referenced by application
+<a href="group__CONVERSION.html">QAdxf2vec</a>
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Deriche-1987">[Deriche,&nbsp;1987]</a>
+</td>
+<td>
+R. Deriche. 
+<b>Using Canny's criteria to derive a recursively implemented
+optimal edge detector</b>.
+<i>International Journal of Computer Vision</i>, 1(2):167-187, May 1987.
+<br>Referenced by application
+<a href="group__EDGES__DERICHE.html">QAedgesDeriche</a>
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Kanungo-et-al-2000">[Kanungo&nbsp;et&nbsp;al,&nbsp;2000]</a>
+</td>
+<td>
+T. Kanungo, R.M. Haralick, H.S. Baird, W. Stuezle, and D. Madigan.
+<b>A statistical, nonparametric methodology for document
+degradation model validation</b>.
+<i>IEEE Transactions on PAMI</i>, 22(11):1209-1223, November 2000.
+<br>Referenced by application
+<a href="group__IMG__KANUNGO.html">QAkanungoDegrade</a>
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Rosin-and-West-1989">[Rosin&nbsp;and&nbsp;West,&nbsp;1989]</a>
+</td>
+<td>
+J. Rosin, and G. West.     
+<b>Segmentation of edges into lines and arcs</b>.
+<i>Image and Vision Computing</i>, 7(2):109-114, May 1989.
+<br>Referenced by application
+<a href="group__GRAPHX__VECTO.html">QAvectorization</a>
+</td>
+</tr>
+
+
+<tr>
+<td valign="top">
+<a name="Trier-and-Taxt-1995">[Trier&nbsp;and&nbsp;Taxt,&nbsp;1995]</a>
+</td>
+<td>
+D. Trier, and T. Taxt. 
+<b>Improvement of ''integrated function algorithm'' for
+binarization of document images</b>.
+<i>Pattern Recognition Letters</i>, 16:277-283, March 1995.
+<br>Referenced by application
+<a href="group__BIN__TRIER.html">QAtrierBinarization</a>
+</td>
+</tr>
+
+
+</table>
+
+
+<!-- TEMPLATE
+
+<tr>
+<td valign="top">
+<a name="">[,&nbsp;]</a>
+</td>
+<td>
+
+<b></b>.
+<i></i>, .
+<br>Referenced by
+
+</td>
+</tr>
+
+-->
+
+ *
+ */

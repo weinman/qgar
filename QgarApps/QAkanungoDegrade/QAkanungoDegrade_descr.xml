@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+
+<application>
+
+  <descr>
+    <name>Image degradation using Kanungo's method</name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Degradation of a binary image, using Kanungo's method.
+      </brief>
+      <long>
+<![CDATA[
+<p>
+Degradations introduced are similar to the noise obtained when a document is
+scanned, printed or photocopied. Two kinds of noise are introduced:
+ A global one (tuned by parameter <tt>-eta</tt>)
+and a local one (tuned by parameters
+<tt>-a</tt>, <tt>-a0</tt>, <tt>-b</tt>, and <tt>-b0</tt>).
+A morphological closing (tuned by parameter <tt>-size</tt>)
+may be finally applied to the degraded image.
+</p>
+<p>
+See
+<i>T. Kanungo, R.M. Haralick, H.S. Baird, W. Stuezle, and D. Madigan.
+A statistical, nonparametric methodology for document degradation model
+validation. IEEE Transactions on PAMI, 22(11):1209-1223, November 2000.</i>
+</p>
+<p>
+<b>Warning:</b> The content of the rows and columns contiguous
+to the borders of the given image is not degraded.
+</p>
+]]>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+
+
+    <param name="source image" flag="in" required="true"
+	   passing-mode="in" type="binary" format="PBM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the binary source image.
+          </brief>
+	  <long>
+The format of the file must be one of the binary formats
+described by the PBM+ specification (either raw or ASCII).
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="result image" flag="out" required="true"
+	   passing-mode="out" type="binary" format="PBM"
+	   default="_.kanungo.pbm" >
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the degraded image.
+          </brief>
+	  <long>
+The format of the file is raw PBM.
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="alpha" flag="a" required="true"
+	   passing-mode="in" type="numeric" format="real"
+	   default="0.5" min="0" >
+      <documentation>
+	<doc>
+	  <brief>
+Decay speed of the noise related to black components.
+          </brief>
+	  <long>
+<![CDATA[
+The noise is introduced in a black component according to the distance
+between a considered pixel of the component and the closest border
+of the component. The decay speed is an exponential parameter:
+The more this value is low, the more the thickness of the influence
+area of the noise close to the borders is large.
+In particular, a null value ensures that the noise determined by
+parameter <tt>alpha0</tt> (flag <tt>a0</tt>)
+is introduced in the whole area of all black components.
+]]>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="alpha0" flag="a0" required="true"
+	   passing-mode="in" type="numeric" format="real"
+	   default="0.5" min="0">
+      <documentation>
+	<doc>
+	  <brief>
+Strength of the (white) noise related to black components.
+          </brief>
+	  <long>
+<![CDATA[
+The more this value is high, the more the noise is important.
+The noise is introduced inside black components at an average
+distance from the borders, controlled by parameter <tt>alpha</tt>
+(flag <tt>-a</tt>).
+]]>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="beta" flag="b" required="true"
+	   passing-mode="in" type="numeric" format="real"
+	   default="0.5" min="0" >
+      <documentation>
+	<doc>
+	  <brief>
+Decay speed of the noise related to white components.
+          </brief>
+	  <long>
+<![CDATA[
+The noise is introduced inside white components according to the distance
+between a considered pixel of the component and the closest border of the
+component. The decay speed is an exponential parameter:
+The more this value is low, the more the thickness of the influence area
+of the noise close to the borders is large.
+In particular, a null value ensures that the noise determined by parameter
+<tt>beta0</tt> (flag <tt>-b0</tt>) is introduced in the whole area of all
+white components.
+]]>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="beta0" flag="b0" required="true"
+	   passing-mode="in" type="numeric" format="real"
+	   default="0.5" min="0">
+      <documentation>
+	<doc>
+	  <brief>
+Strength of the (black) noise related to white components.
+          </brief>
+	  <long>
+<![CDATA[
+The more this value is high, the more the noise is important.
+The noise is introduced inside white components, at an average
+distance from the borders, controlled by parameter <tt>beta</tt>
+(flag <tt>-b</tt>).
+]]>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="eta" flag="eta" required="true" passing-mode="in"
+           type="numeric" format="real" default="0.0" min="0">
+      <documentation>
+	<doc>
+	  <brief>
+Strength of the global noise applied to the binary image.
+          </brief>
+	  <long>
+<![CDATA[
+This parameter represents the constant probability of flipping
+(from white to black or from black to white) for all pixels.
+Thus, the expected value must be between <tt>0.0</tt> (no global noise)
+and <tt>1.0</tt> (global noise everywhere).
+]]>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="structural element size" flag="size" required="true"
+	   passing-mode="in" type="numeric" format="int" default="1" min="0">
+      <documentation>
+	<doc>
+	  <brief>
+Size (i.e. width) of the square structural element to be used
+for the final closing.
+          </brief>
+	  <long>
+In fact, the effective size is an odd number, equal to two times
+the supplied value, plus 1.
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+
+</application>

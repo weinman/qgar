@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<application>
+
+
+  <descr>
+    <name>Binarization using Trier  Taxt's method</name>
+    <author>Qgar Project, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Binarization according to Trier and Taxt's method.
+      </brief>
+      <long>
+<![CDATA[
+See
+<i>D. Trier, and T. Taxt. Improvement of ''integrated function algorithm''
+for binarization of document images. Pattern Recognition Letters,
+16:277-283, March 1995</i>.
+]]>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+
+
+    <param name="source image" flag="in" required="true"
+	   passing-mode="in" type="grayscale" format="PGM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the source grey-level image.
+          </brief>
+ 	  <long>
+The file must be in PGM format.
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+    <param name="result image " flag="out" required="true"
+	   passing-mode="out" type="binary" format="PBM" default="_.trier.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the binarized image.
+          </brief>
+	  <long>
+The format of the file is raw PBM.
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="Gaussian sigma" flag="sigma" required="true"
+           passing-mode="in" type="numeric" format="real" default="2">
+      <documentation>
+	<doc>
+	  <brief>
+Sigma of the Gaussian of the Canny's operator.
+          </brief>
+	  <long>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="activity threshold" flag="act" required="true"
+	   passing-mode="in" type="numeric" format="real" default="6">
+      <documentation>
+	<doc>
+	  <brief>
+Activity threshold.
+          </brief>
+	  <long>
+          </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="fake CC threshold" flag="prune" required="true"
+	   passing-mode="in" type="numeric" format="real" default="6">
+      <documentation>
+	<doc>
+	  <brief>
+Post-processing threshold to discard fake black components.
+          </brief>
+	  <long>
+          </long>
+        </doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+</application>

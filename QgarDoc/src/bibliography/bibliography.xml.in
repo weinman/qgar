@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                         "/local/qgar/outils/docbook-4.2/docbookx.dtd">
+<article lang="en" revision="$Revision: 1.1 $" userlevel="DVLP">
+
+  <title>Bibliography</title>
+
+  <articleinfo>
+    <author>
+      <firstname>Gérald</firstname>
+      <surname>Masini</surname>
+      <email>Gerald.Masini@loria.fr</email>
+    </author>
+
+    <author>
+      <firstname>Vitor</firstname>
+      <surname>Vasconcelos</surname>
+      <email>Vitor.Vasconcelos@loria.fr</email>
+    </author>
+
+    <releaseinfo>
+    Qgar version @qgar_version@
+    </releaseinfo>
+
+    <orgname>Qgar Project, LORIA</orgname>
+  </articleinfo>   
+
+  <bridgehead id="general_description">General Description</bridgehead>
+
+    <informaltable frame='none'>
+        <tgroup cols='2'>
+	<?dbhtml cellspacing="10" ?>
+	
+	<colspec colwidth='2.5in'/>
+	<colspec colwidth='14.0in'/>
+	
+	<tbody>
+	
+	<row>
+	    <entry><literal>[Rendek et al, 2004a]</literal></entry>
+	    <entry>J. Rendek, G. Masini, Ph. Dosch, and K. Tombre. <emphasis>The search for genericity in graphics recognition applications: Design issues of the Qgar software system.</emphasis> In <emphasis>Proceedings of the 6th IAPR International Workshop on Document Analysis Systems, Florence (Italy)</emphasis>, Lecture Notes in Computer Science 3163, Springer-Verlag, pages 366-377, September 2004.</entry>
+	</row>
+
+	<row>
+	    <entry><literal>[Dosch et al, 2000]</literal></entry>
+	    <entry>Ph. Dosch, K. Tombre, C. Ah-Soon, and G. Masini. <emphasis>A complete system for analysis of architectural drawings.</emphasis> <emphasis>International Journal on Document Analysis and Recognition</emphasis>, 3(2):102-116, December 2000.</entry>
+	</row>
+
+	</tbody>
+	</tgroup>
+    </informaltable>    
+
+
+  <bridgehead id="qgarapps">QgarApps</bridgehead>
+
+    <informaltable frame='none'>
+        <tgroup cols='2'>
+	<?dbhtml cellspacing="10" ?>
+	
+	<colspec colwidth='2.5in'/>
+	<colspec colwidth='14.0in'/>
+	
+	<tbody>
+	
+	<row>
+	    <entry><literal>[Rendek et al, 2004b]</literal></entry>
+	    <entry>J. Rendek, Ph. Dosch, G. Masini, and K. Tombre. <emphasis>Principes et mise en oeuvre de l'interopérabilité dans le système d'analyse de documents Qgar</emphasis>. In <emphasis>Actes du 4e Colloque International Francophone sur l'Écrit et le Document, La Rochelle (France)</emphasis>, pages 91-96, juin 2004.</entry>
+	</row>
+
+	</tbody>
+	</tgroup>
+    </informaltable>    
+    
+  <bridgehead id="qgarlib">QgarLib</bridgehead>
+
+    <informaltable frame='none'>
+        <tgroup cols='2'>
+	<?dbhtml cellspacing="10" ?>
+	
+	<colspec colwidth='2.5in'/>
+	<colspec colwidth='14.0in'/>
+	
+	<tbody>
+	
+	<row>
+	    <entry><literal>[Tombre et al, 2000]</literal></entry>
+	    <entry>K. Tombre, C. Ah-Soon, Ph. Dosch, G. Masini, and S. Tabbone. <emphasis>Stable and robust vectorization: How to make the right choices.</emphasis> In A. K. Chhabra and D. Dori, editors, <emphasis>Graphics recognition---Recent advances, volume 1941 of Lecture Notes in Computer Science</emphasis>, pages 3--18. Springer-Verlag, Berlin, September 2000.</entry>
+	</row>
+
+	<row>
+	    <entry><literal>[Tombre et al, 98]</literal></entry>
+	    <entry>K. Tombre, C. Ah-Soon, Ph. Dosch, A. Habed, and G. Masini. <emphasis>Stable, robust and off-the-shelf methods for graphics recognition.</emphasis> In <emphasis>Proceedings of the 14th International Conference on Pattern Recognition, Brisbane (Australia)</emphasis>, pages 406-408, August 1998.</entry>
+	</row>
+
+	</tbody>
+	</tgroup>
+    </informaltable>    
+
+  <bridgehead id="works">Works involving Qgar software</bridgehead>
+
+    <informaltable frame='none'>
+        <tgroup cols='2'>
+	<?dbhtml cellspacing="10" ?>
+	
+	<colspec colwidth='2.5in'/>
+	<colspec colwidth='14.0in'/>
+	
+	<tbody>
+	
+	<row>
+	    <entry><literal>[Clavier et al, 04]</literal></entry>
+	    <entry>E. Clavier, G. Masini, M. Delalandre, M. Rigamonti, K. Tombre, and J. Gardes. <emphasis>DocMining: A cooperative platform for heterogeneous document interpretation according to user-defined scenarios</emphasis>. In <emphasis>Selected Papers of the 5th IAPR International Workshop on Graphics Recognition (Barcelona, Spain), Lecture Notes in Computer Science</emphasis>. Springer-Verlag, Berlin, 2004.</entry>
+	</row>
+
+	<row>
+	    <entry><literal>[Dosch et al, 1999]</literal></entry>
+	    <entry>Ph. Dosch, C. Ah-Soon, G. Masini, G. Sánchez, and K. Tombre. <emphasis>Design of an integrated environment for the automated analysis of architectural drawings</emphasis>. In S.-W. Lee and Y. Nakano, editors, <emphasis>Document analysis systems: Theory and practice. Selected papers from DAS'98, volume 1655 of Lecture Notes in Computer Science</emphasis>, pages 295-309. Springer-Verlag, Berlin, 1999.</entry>
+	</row>
+
+	</tbody>
+	</tgroup>
+    </informaltable>    
+
+</article>

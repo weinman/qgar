@@ -1,0 +1,243 @@
+<?xml version="1.0"enconding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "=//OASIS//DTD DocBook XML V4.2//EN"
+                         "/local/qgar/outils/docbook-4.2/docbookx.dtd">
+
+<article lang="en" revision="Revision: 1.1 $" userlevel="USER">
+
+<title>Windows Installer Guide</title>
+
+<articleinfo>
+
+<author>
+    <firstname>Vitor Vasconcelos</firstname>
+    <email>Vitor.Vasconcelos@loria.fr</email>
+</author>
+
+<releaseinfo>
+Qgar version @qgar_version@
+</releaseinfo>
+
+<orgname>Qgar Project, LORIA</orgname>
+
+<abstract>
+    <simpara>
+    This documents is a step-by-step description of Qgar Install on Windows. 
+    It covers the Qgar Softare install and uninstall processes from Windows binary executable file.
+    </simpara>
+</abstract>
+
+</articleinfo>
+
+
+<sect1 id="Install">
+<title>Install information</title>
+<para>
+The install process in Windows is a simple task. 
+One executable file contains all packed data (executables, documentation, files, sources, etc.) that must be installed. 
+To be able to control its internal state, Windows keeps a lot of information in the called <emphasis>register</emphasis>. 
+Some Windows users are restrictive about softwares or tools writing or changing information on register. 
+So, the Qgar install does not write any information on it. 
+As a drawback, the only automatic way to remove Qgar is executing its uninstall. 
+Meanwhile it's possible to remove all files by hand without breaking any <emphasis>register</emphasis> consistence.
+</para>
+
+<para>
+The installer creates a shortcut path called <emphasis> Qgar </emphasis> inside the <emphasis> Programs </emphasis> menu. 
+It contains also a shortcut to a <emphasis>command window</emphasis> in Qgar directory, a shortcut to the installed documentation, a
+shortcut to <emphasis>Qgar Graphics User Interface</emphasis> and a shortcut to the <emphasis>Uninstaller</emphasis>.
+</para>
+<sect2 id="Details">
+  <title>Install details</title>
+  <para>
+  The installer will <emphasis>not</emphasis> look for the Windows default program files directory. Due to
+constraints in the actual XML parser model of Qgar, directories with empty spaces are not recognized. If Qgar 
+is installed in such conditions, no algorithms will be available inside the interface. 
+  </para>
+  <para>
+  The <emphasis>qgar</emphasis> directory will be proposed as default directory after the installer look for the default drive, which 
+  is in most of cases the <emphasis>C:</emphasis> drive. 
+  However, no constraint is imposed by the installer. Any drive of directory name can be used since they <emphasis>don't</emphasis> have empty spaces.
+  </para>
+</sect2>
+
+</sect1>
+
+<sect1 id="Installing">
+<title>Installing Qgar Software</title>
+
+<para>
+This section presents a visual guide of the install process.
+<informalfigure>
+  <mediaobject>
+    <imageobject>
+        <imagedata fileref="qgar1.png" scale="50"/>
+    </imageobject>
+    <textobject><phrase>LGPL License screen</phrase></textobject>
+    <caption>
+      <para>
+        The first screen shows the LGPL license and asks for use to read it and accept it to continue with install.
+      </para>
+    </caption>
+  </mediaobject>
+</informalfigure>
+
+<informalfigure>
+  <mediaobject>
+    <imageobject>
+        <imagedata fileref="qgar2.png" scale="50"/>
+    </imageobject>
+    <textobject><phrase>Qt License screen</phrase></textobject>
+    <caption>
+      <para>
+        Qgar is distributed under two licenses, que LGPL and the QPL. 
+	The QPL is the open source license and it's necessary due to QgarGUI graphical interface, built using the Qt library. 
+	It's mandatory to accept both licenses, otherwise the install process will stop. 
+      </para>
+    </caption>
+  </mediaobject>
+</informalfigure>
+<informalfigure>
+  <mediaobject>
+    <imageobject>
+        <imagedata fileref="qgar3.png" scale="50"/>
+    </imageobject>
+    <textobject><phrase>Install directory</phrase></textobject>
+    <caption>
+      <para>
+        The default install directory is automaticaly determined by the installer, based on default Windows applications driver.
+	The installer proposes its <emphasis>Qgar</emphasis> directory in the base driver due to problems with white spaced paths. 
+	It can be changed to any directory the user has rights to write, keeping in mind the white spaced directories contraint.
+      </para>
+    </caption>
+  </mediaobject>
+</informalfigure>
+<informalfigure>
+  <mediaobject>
+    <imageobject>
+        <imagedata fileref="qgar4.png" scale="50"/>
+    </imageobject>
+    <textobject><phrase>Install components</phrase></textobject>
+    <caption>
+      <para>
+        By default, all Qgar available components are marked to install. 
+	The user can select (or unselect) the components to install.
+      </para>
+      <itemizedlist>
+      <listitem>
+        <para>
+	  <emphasis>QgarCoreLib</emphasis> installs both libraries qgarlib and the development library, qgardevlib.
+	</para>
+      </listitem>
+      <listitem>
+        <para>
+	  The <emphasis>Graphical Interface</emphasis> install Qgar Graphical User Interface and all associated libraries.
+	</para>
+      </listitem>
+      <listitem>
+        <para>
+	  <emphasis>Applications</emphasis> contains each graphics recognition application. 
+	  They can be selected one by one expanding the install tree.
+	</para>
+      </listitem>
+      <listitem>
+        <para>
+	  The <emphasis>Documentation</emphasis> install all Qgar doc in html format.
+	</para>
+      </listitem>
+      </itemizedlist>
+      <para>
+        Depending on the components selected to be installed, different entries will be created in the <emphasis>Start Menu</emphasis> of Windows Desktop. 
+      </para>
+    </caption>
+
+  </mediaobject>
+</informalfigure>
+<informalfigure>
+  <mediaobject>
+    <imageobject>
+        <imagedata fileref="qgar5.png" scale="50"/>
+    </imageobject>
+    <textobject><phrase>Install directory</phrase></textobject>
+    <caption>
+      <para>
+        After confirming de components to be installed, one screen with the elapsed time status bar is displayed. 
+	It's possible to see the install details clicking the correspondent button. 
+	The files being installed and they paths are then showed to the user among other information. 
+      </para>
+    </caption>
+  </mediaobject>
+</informalfigure>
+<informalfigure>
+  <mediaobject>
+    <imageobject>
+        <imagedata fileref="qgar6.png" scale="50"/>
+    </imageobject>
+    <textobject><phrase>Install directory</phrase></textobject>
+    <caption>
+      <para>
+        The Qgar Installer prompts the user if he wants to create the shortcuts.
+      </para>
+    </caption>
+  </mediaobject>
+</informalfigure>
+<informalfigure>
+  <mediaobject>
+    <imageobject>
+        <imagedata fileref="qgar7.png" scale="50"/>
+    </imageobject>
+    <textobject><phrase>Install directory</phrase></textobject>
+    <caption>
+      <para>
+        After the end of the whole install process, it's necessary to click <emphasis>Close</emphasis> to close the Installer window. 
+	At this point, the Qgar Software is installed and ready to be used. 
+      </para>
+    </caption>
+  </mediaobject>
+</informalfigure>
+
+</para>
+</sect1>
+
+<sect1 id="Uninstall">
+    <title>Uninstalling Qgar Software</title>
+    <para>
+    The <emphasis>Uninstaller</emphasis> is an executable file located in Qgar directory. 
+    It can be deleted as any other file by any user with enough rights. 
+    Once removed, the uninstall process cannot be done automaticaly anymore. 
+    However, few steps are enough to totaly remove Qgar Software withou the <emphasis>Uninstaller</emphasis>  as it does not make any changes in Windows registry.
+    </para>
+
+    <para>
+    To remove it by hand, is enough to remove the Qgar directory created by the <emphasis>Install</emphasis> process. 
+    The last pass, is to remove the Qgar entry in <emphasis>Programs</emphasis> menu.
+    </para>
+
+<sect2 id="StepByStepUninst">
+  <title>Step-by-step uninstall</title>
+    <para>
+      The process of uninstall the Qgar Software is simpler than the installer one. 
+      The <emphasis>Uninstaller</emphasis> has internaly all information done by the <emphasis>Installer</emphasis> once they are built by the same script. 
+      The process consists in removing all Qgar directory contents, the directory itself (if it is empty!) and the shortcuts previously created in <emphasis>Start Menu</emphasis>.
+    </para>
+    <para>
+      To execute it is enough to chose the <emphasis>Unistall</emphasis> option in Qgar tab in <emphasis>Start Menu</emphasis> or directly execute the unistaller file located in the directory where the Qgar Software was installed.
+    </para>
+    <informalfigure>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="qgar8.png" scale="50"/>
+	</imageobject>
+	  <textobject><phrase>Install directory</phrase></textobject>
+	<caption>
+	  <para>
+	    The only screen of Qgar Software <emphasis>Uninstaller</emphasis> shows the directory were it was installed and gives the user the option to cancel the process or confirm it.  
+	  </para>
+	</caption>
+      </mediaobject>
+    </informalfigure>
+
+</sect2>
+
+</sect1>
+
+</article>

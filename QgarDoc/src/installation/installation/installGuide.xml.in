@@ -1,0 +1,294 @@
+<?xml version="1.0"encoding="ISO-5589-1"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                         "/local/qgar/outils/docbook-4.2/docbookx.dtd">
+
+
+<article lang="en" revision="$Revision: 1.8 $" userlevel="USER">
+
+
+<title>Qgar Software installation guide</title>
+
+  
+<articleinfo>
+
+<author>
+  <firstname>Jan</firstname>
+  <surname>Rendek</surname>
+  <email>Jan.Rendek@loria.fr</email>
+</author>
+
+<author>
+  <firstname>Gerald</firstname>
+  <surname>Masini</surname>
+  <email>Gerald.Masini@loria.fr</email>
+</author>
+
+<author>
+  <firstname>Vitor</firstname>
+  <surname>Vasconcelos</surname>
+  <email>Vitor.Vasconcelos@loria.fr</email>
+</author>
+
+<releaseinfo>
+Qgar version @qgar_version@
+</releaseinfo>
+
+<orgname>Qgar Project, LORIA</orgname>
+    
+<abstract>
+  <simpara>
+This document describes how to install the Qgar software platform on Linux,
+either from RPM and Debian binary packages, or, for users who cannot/wish not packages,
+from its sources.
+  </simpara>
+</abstract>   
+
+</articleinfo>
+
+
+<!-- INTRODUCTION =========================================================== -->
+
+
+<section>
+
+<!--   ============     -->
+<title>Introduction</title>
+<!--   ============     -->
+
+<para>
+The Qgar platform can be installed in three ways:
+
+<itemizedlist>
+
+<listitem>
+<simpara>
+For Fedora Linux users, a binary distribution using RPM is provided.
+As a matter of fact, this distribution should also work on most Linux
+distributions supporting RPM, such as Mandrake or SuSE,
+<emphasis>although it has not been tested.</emphasis>
+</simpara>
+</listitem>
+
+<listitem>
+<simpara>
+Another format available is the DEB package. Debian and Ubuntu users are the main 
+audience, although any distribution able to work with DEB format can be used. 
+Keep in mind the <emphasis>tests were made only with Ubuntu.</emphasis>
+</simpara>
+</listitem>
+
+<listitem>
+<simpara>
+Users of other Linux distributions may either try the RPM or DEB installation if their
+OS is compatible, or may install the platform from its sources.
+</simpara> 
+</listitem>
+</itemizedlist>
+
+</para>
+
+</section>
+
+
+<!-- RPM INSTALLATION ======================================================= -->
+
+
+<section>
+
+<!--   ================     -->   
+<title>RPM installation</title>
+<!--   ================     -->
+
+  <para>	
+The version 4.0 is not distributed in RPM format
+due to constraints in automatization of package generation. 
+We suggest users from RPM based Linux distributions to download 
+the tar.gz package and install it from sources.
+  </para>
+
+  <para>
+We are sorry for this inconvenience and hope to add an RPM 
+package from next version.
+  </para>
+
+</section>
+
+<!-- DEB INSTALLATION ======================================================= -->
+<section>
+
+<!--   ================     -->   
+<title>DEB installation</title>
+<!--   ================     -->
+
+  <section>
+
+  <title>Retrieve the DEB packages</title>
+  <!--   =========================     -->
+
+  <para>	
+The platform is distributed as one package embedding the main library (QgarLib), some 
+applications (QgarApps), the development library (QgarDevLib), the Qgar Graphical Interface (QgarGui)
+and the Qgar source code.
+  </para>
+
+  <para>
+The documentation in format <emphasis>html</emphasis> is distributed in separate packages in 
+zip and tar.gz formats.
+  </para>
+
+  <para>
+The latest version (and older) versions of QGAR can be downloaded from
+<ulink url="http://www.qgar.org/download.php">www.qgar.org/download.php</ulink>.
+  </para>
+
+  </section>
+
+
+  <section>
+
+  <title>Install the DEB</title>
+  <!--   ================     -->
+
+     <simplesect>
+     <title>Required packages</title>
+     <!--   .................     -->
+
+     <para>
+The installation of packages <emphasis>qgar</emphasis> does not require any special 
+library but the standard libraries used by GCC compiler.
+     </para>
+
+     </simplesect>
+
+
+     <simplesect>
+     <title>Default installation</title>
+     <!--   ....................     -->
+
+     <para>
+The DEB installation of Qgar packages is rather straightforward. 
+Using a graphical interface is enough to double click the Qgar package and 
+the system default installer (<emphasis>Synaptic</emphasis> or <emphasis>Adept</emphasis> 
+depending on the Linux distribution) will be launched.
+It requires to be logged-in as the root user on the host computer.
+     </para>
+
+     <itemizedlist>
+
+       <listitem>
+       <simpara>
+Installation of the applications:
+the installation default base directory, <emphasis>[prefix]</emphasis>,
+is <emphasis>/usr/local</emphasis>, but it may be changed
+(see <link linkend="relocation">next section</link>).
+       </simpara>
+
+<programlisting>dpkg -i Qgar_4.0.0-1_i386.deb</programlisting>
+
+       <simpara>
+The installation spreads over 4 directories:
+       </simpara>
+
+       <itemizedlist>
+         <listitem>
+         <simpara>
+<emphasis>[prefix]/bin</emphasis>
+contains the Qgar applications.
+         </simpara>
+         </listitem>
+
+         <listitem>
+         <simpara>
+<emphasis>[prefix]/lib</emphasis>
+contains both qgar libraries: the main library and the 
+development library.
+         </simpara>
+         </listitem>
+
+      <!--   *******************     -->
+         <listitem>
+         <simpara>
+<emphasis>[prefix]/share/qgar</emphasis>,
+contains the (XML) description files of the Qgar applications.
+         </simpara>
+         </listitem>
+
+         <listitem>
+         <simpara>
+<emphasis>[prefix]/share/doc</emphasis>,
+contains all Qgar documentation. The subdirectory <emphasis>src</emphasis> contains 
+the documentation source (XML and other files). The <emphasis>html</emphasis> subdirectory contains the 
+reference documentation of Qgar libraries, applications, guides, etc. 
+         </simpara>
+         </listitem>
+
+
+       </itemizedlist>
+
+       <simpara>
+The uninstall process exiges the name of the distribution - <emphasis>qgar</emphasis> - and not 
+the name of the package. To erase this installation:
+       </simpara>
+
+<programlisting>dpkg -r qgar</programlisting>
+       </listitem>
+
+     </itemizedlist>
+
+     </simplesect>
+
+
+     <simplesect id="relocation">
+     <title>Installation in a different base directory</title>
+     <!--   ..........................................     -->
+
+	<para>
+The Qgar packages are relocatable (i.e. can be installed in a directory
+different from the default base directory, <emphasis>/usr/local</emphasis>),
+using the <emphasis>--instdir</emphasis> option to introduce the destination
+directory when invoking <emphasis>dpkg</emphasis>:
+        </para>
+
+<programlisting>dpkg -i --instdir=[destination_directory] Qgar-4.0.0-1.i386.rpm</programlisting>
+
+      </simplesect>
+
+    </section>
+
+
+    <section>
+    <title>Generate your own binary packages</title>
+    <!--   ......................     -->
+
+     <para>
+If the host computer environment is not completely compatible with the required Linux 
+versions, new binary packages may be generated from the Qgar sources. Please, check the 
+<emphasis>packaging guide</emphasis> in Qgar available documentation.
+     </para>
+
+     </section>
+
+</section>
+
+<!-- SOURCE INSTALLATION ==================================================== -->
+
+
+<section id="source">
+
+<!--   ===================     -->
+<title>Source installation</title>    
+<!--   ===================     -->
+
+  <para>
+When the platform cannot be installed using the ready-made binary packages, or
+when a customized version is required, the platform can be entirely
+(re)constructed from its sources. 
+  </para>
+
+  <para> 
+Please, check the <emphasis>Compilation Guide</emphasis> in Qgar available documentation.
+  </para>
+
+</section>
+
+</article>

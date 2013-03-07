@@ -1,0 +1,137 @@
+<qgarguicfg>
+
+  <qgarapps>
+
+    <entry>
+      <name>Canny Edges Detection</name>
+      <descr-path>
+         @xml_install_dir@/QAedgesCanny_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAedgesCanny
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Deriche Edges Detection</name>
+      <descr-path>
+         @xml_install_dir@/QAedgesDeriche_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAedgesDeriche
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Kanungo Degradation</name>
+      <descr-path>
+         @xml_install_dir@/QAkanungoDegrade_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAkanungoDegrade
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>(3,4)-distance-based skeletonization</name>
+      <descr-path>
+         @xml_install_dir@/QAdist34Skeletonization_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAdist34Skeletonization
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Close Image</name>
+      <descr-path>
+         @xml_install_dir@/QAmorphoClosing_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAmorphoClosing
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Open Image</name>
+      <descr-path>
+         @xml_install_dir@/QAmorphoOpening_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAmorphoOpening
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Prune Small Connected Component</name>
+      <descr-path>
+         @xml_install_dir@/QApruneSmallCC_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QApruneSmallCC
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Text Extraction</name>
+      <descr-path>
+         @xml_install_dir@/QAtextExtraction_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAtextExtraction
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Text/Graphic Separation</name>
+      <descr-path>
+         @xml_install_dir@/QAtextGraphicSeparation_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAtextGraphicSeparation
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Thick/Thin Separation</name>
+      <descr-path>
+         @xml_install_dir@/QAthickThinSeparation_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAthickThinSeparation
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Thresholded Binarization</name>
+      <descr-path>
+         @xml_install_dir@/QAthrsBinarization_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAthrsBinarization
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Trier Binarization</name>
+      <descr-path>
+         @xml_install_dir@/QAtrierBinarization_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAtrierBinarization
+      </application-path>
+    </entry>
+
+    <entry>
+      <name>Rosin-West Vectorization</name>
+      <descr-path>
+         @xml_install_dir@/QAvectorizationRW_descr.xml
+      </descr-path>
+      <application-path>
+        @bin_install_dir@/QAvectorizationRW
+      </application-path>
+    </entry>
+
+  </qgarapps>
+
+</garguicfg>

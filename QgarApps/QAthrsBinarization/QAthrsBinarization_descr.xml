@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<application>
+
+
+  <descr>
+    <name>Binarization using a constant threshold</name>
+    <author>Qgar OProject, LORIA</author>
+    <copyright>2004 - Qgar Project, LORIA</copyright>
+  </descr>
+
+
+  <documentation>
+    <doc>
+      <brief>
+Binarization using a constant threshold.
+      </brief>
+      <long>
+      </long>
+    </doc>
+  </documentation>
+
+
+  <paramlist>
+
+
+    <param name="source image" flag="in" required="true" passing-mode="in"
+	   type="grayscale" format="PGM">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file containing the source grey-level image.
+	  </brief>
+	  <long>
+The file must be in PGM format.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="result image" flag="out" required="true" passing-mode="out"
+           type="binary" format="PBM" default="_.bin.pbm">
+      <documentation>
+	<doc>
+	  <brief>
+Full pathname of the file to store the binarized image.
+	  </brief>
+	  <long>
+The format of the file is raw PBM.
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+    <param name="binarization threshold" flag="t" required="true" passing-mode="in"
+	   type="numeric" format="int" default="127" min="0" max="255">
+      <documentation>
+	<doc>
+	  <brief>
+Binarization threshold (grey-level number).
+	  </brief>
+	  <long>
+All pixels having a grey-level number greater than the given threshold
+are turned to 0 (white), the others are turned to 1 (black).
+	  </long>
+	</doc>
+      </documentation>
+    </param>
+
+
+  </paramlist>
+
+
+</application>
