@@ -12,10 +12,11 @@
 /*/Makefile
 /*/cmake_install.cmake
 
-/QgarApps/*/CMakeFiles/*
-/QgarApps/*/CTestTestfile.cmake
-/QgarApps/*/cmake_install.cmake
-/QgarApps/*/Makefile
+/QgarApps/QA*/CMakeFiles/*
+/QgarApps/QA*/CTestTestfile.cmake
+/QgarApps/QA*/cmake_install.cmake
+/QgarApps/QA*/Makefile
+/QgarApps/QA*/QA*
 /QgarApps/qgarguicfg.xml
 
 /QgarDoc/src/api/*/Doxyfile*
