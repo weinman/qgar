@@ -20,6 +20,7 @@
 /QgarApps/qgarguicfg.xml
 
 /QgarDoc/src/api/*/Doxyfile*
+/QgarDoc/html/*
 /QgarDoc/src/main/leftMenu.html
 
 /QgarGui/qgar
