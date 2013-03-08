@@ -25,7 +25,11 @@
 
 /QgarGui/qgar
 
+/qgardevlib/libqgardev.a
+
+/qgarlib/libqgar.a
 /qgarlib/testsuite/CMakeFiles/*
 /qgarlib/testsuite/CTestTestfile.cmake
 /qgarlib/testsuite/Makefile
 /qgarlib/testsuite/cmake_install.cmake
+/qgarlib/testsuite/unitTester
