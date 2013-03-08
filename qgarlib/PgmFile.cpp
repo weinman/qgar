@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - équipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+ |   LORIA - Ð¹quipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/
@@ -32,7 +32,7 @@
  *
  * See file PgmFile.h for the interface.
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Karl Tombre & Gérald Masini</a>
+ * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">Karl Tombre & GÐ¹rald Masini</a>
  * @date   Jul 3, 2001  16:57
  * @since  Qgar 1.0
  */
@@ -99,10 +99,12 @@ const unsigned char  PgmFile::s_pgm_magic_raw_   = '5';
 PgmFile::PgmFile(const char* aFileName, QGEpbm aPbm)
 
   : AbstractPbmPlusFile(aFileName, aPbm),
-    inBuf_(new char[s_pgm_header_line_size_ + 1])
-
+    inBuf_(new char[s_pgm_header_line_size_ + 1]),
+    maxPixel_(0),
+    rowCnt_(0),
+    colCnt_(0)
 {
-  // VOID
+  // VOID  
 }
 
 
@@ -254,6 +256,66 @@ PgmFile::write(const GreyLevelImage& anImg)
 }
 
 
+void
+PgmFile::write(const IntImage& anImg)
+{
+  // Open file in write-only mode
+  openWONLY();
+
+  // Get image characteristics
+  colCnt_   = anImg.width();
+  rowCnt_   = anImg.height();
+  maxPixel_ = numeric_limits<unsigned short>::max();
+
+  // Write file header
+  writeHeader();
+
+  
+  IntImage::pointer pMap = anImg.pPixMap();   // pointer to pixel map
+  int               size = colCnt_ * rowCnt_; // image size
+
+  if (format_ == QGE_PBM_RAW)
+
+    {
+      // _____________________________________________________________
+      //
+      // FILE FORMAT IS raw
+      // _____________________________________________________________
+
+      for (int iCnt = 0 ; iCnt < size ; ++iCnt, ++pMap)
+	{          
+          unsigned short px = (unsigned short)(*pMap % maxPixel_);
+          // Write in big endian
+          fstream_.put((px & 0xFF00) >> 8);
+          fstream_.put((px & 0x00FF));
+	}
+      // _____________________________________________________________
+    }
+
+  else
+
+    {
+      // _____________________________________________________________
+      //
+      // FILE FORMAT IS plain
+      // _____________________________________________________________
+
+      for (int iCnt = 0 ; iCnt < (size - 1) ; ++iCnt, ++pMap)
+	{
+	  fstream_ << (int) (*pMap % maxPixel_) << ' ';
+	}
+
+      fstream_ << (int) (*pMap % maxPixel_) << endl;
+      // _____________________________________________________________
+      //
+    } // END if format_
+
+
+  // Close file
+  close();
+}
+
+
 // -------------------------------------------------------------------
 // H E A D E R
 // -------------------------------------------------------------------
@@ -265,12 +327,38 @@ PgmFile::write(const GreyLevelImage& anImg)
 
 void
 PgmFile::readHeader()
-{
+{  
+
   // READ THE FIRST LINE AND GET THE MAGIC NUMBER
 
   fstream_.getline(inBuf_, s_pgm_header_line_size_);
+  int charsRead = fstream_.gcount();
+  bool imDimReadFlag = false;
+
   unsigned char m1 = inBuf_[0];
   unsigned char m2 = inBuf_[1];
+
+  // Check if there is more than the Magic Number in the first line
+  if (charsRead > 4)
+    {
+      fstream_.seekg(0);
+      istringstream iss(string((const char*)inBuf_), istringstream::in);
+
+      string tmp;
+      iss >> tmp; // Re-read the Magic Number and discard it
+
+      iss >> colCnt_;
+      iss >> rowCnt_;
+      iss >> maxPixel_;
+      //////////////////////////////////////////////////////////////////////////////
+      std::cout << "--> NB col = " << colCnt_
+		<< "    NB lig = " << rowCnt_ 
+                << "    NB max = " << maxPixel_ << std::endl;
+      //////////////////////////////////////////////////////////////////////////////
+
+      // SET the dimensions read FLAG
+      imDimReadFlag = true;
+    }
 
   // CHECK MAGIC NUMBER
 
@@ -301,48 +389,53 @@ PgmFile::readHeader()
   do
     {
       fstream_.getline(inBuf_, s_pgm_header_line_size_);
+//////////////////////////////////////////////////////////////////////////////
+      std::cout << "--> line (" << inBuf_
+		<< ") inBuf_[0] = (" << inBuf_[0] << ')' << std::endl;
+//////////////////////////////////////////////////////////////////////////////
     }
   while (inBuf_[0] == s_pbm_comment_);
 
 
-  // GET IMAGE SIZE
+  // GET IMAGE SIZE if it's not yet gotten
+  if(!imDimReadFlag)
+    {
+      // Store current line in a string stream
+      istringstream iss(string((const char*)inBuf_));
+      iss >> colCnt_;
+      iss >> rowCnt_;
 
-  // Store current line in a string stream
-  istringstream iss(string((const char*)inBuf_));
-  iss >> colCnt_;
-  iss >> rowCnt_;
+      // GET MAX PIXEL VALUE
 
-  // GET MAX PIXEL VALUE
+      // Next line
+      fstream_.getline(inBuf_, s_pgm_header_line_size_);
 
-  // Next line
-  fstream_.getline(inBuf_, s_pgm_header_line_size_);
+      // Store current line in the string stream
+      // WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+      // WARNING: the last read from the stream may have hit the end
+      // of the stream and put the stream in an EOF state. In this case,
+      // nothing more will work on the stream until state EOF is cleared.
+      // WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+      iss.clear();
+      // WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+      iss.str(string((const char*)inBuf_));
+  
+      iss >> maxPixel_;
+    }
 
-  // Store current line in the string stream
-  // WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-  // WARNING: the last read from the stream may have hit the end
-  // of the stream and put the stream in an EOF state. In this case,
-  // nothing more will work on the stream until state EOF is cleared.
-  // WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-   iss.clear();
-  // WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-   iss.str(string((const char*)inBuf_));
-
-  int maxPx;
-  iss >> maxPx;
 
   // CHECK MAX PIXEL VALUE
 
-  if (maxPx > (int) numeric_limits<GreyLevelPixel>::max())
+  if (maxPixel_ > (int) numeric_limits<GreyLevelPixel>::max())
     {
       ostringstream os;
       os << "Bad max pixel value in header of file "
 	 << name_
-	 << ": " << maxPx;
+	 << ": " << maxPixel_;
       throw QgarErrorIO(__FILE__, __LINE__,
 			"void qgar::PgmFile::readHeader()", os.str());
     }
-
-  maxPixel_ = (GreyLevelPixel) maxPx;
+  
 }
 
 
@@ -380,7 +473,7 @@ PgmFile::writeHeader()
 	   << ' '
 	   << rowCnt_    // image height
 	   << endl
-	   << static_cast<unsigned int>(maxPixel_)  // max pixel value
+	   << maxPixel_  // max pixel value
 	   << endl;
 }
 
