@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - équipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+ |   LORIA - Ð¹quipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/
@@ -34,7 +34,7 @@
  *
  * @brief  Header file of class qgar::AbstractPbmPlusFile.
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Karl Tombre & Gérald Masini</a>
+ * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">Karl Tombre & GÐ¹rald Masini</a>
  * @date   Jul, 3  2001  16:25
  * @since  Qgar 1.0
  */
@@ -100,13 +100,11 @@ enum QGEpbm
  *  <a href="http://www.bath.ac.uk/BUCS/Software/graphics/pbm/pbm.html">PBMPLUS home page</a>.
  *
  * This is an abstract class. Pure virtual functions:
- * - qgar::AbstractPbmPlusFile::read
- * - qgar::AbstractPbmPlusFile::write
  * - qgar::AbstractPbmPlusFile::readHeader
  * - qgar::AbstractPbmPlusFile::writeHeader
  *
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Karl Tombre & Gérald Masini</a>
+ * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">Karl Tombre & GÐ¹rald Masini</a>
  * @date   Jul, 3  2001  16:25
  * @since  Qgar 1.0
  */
