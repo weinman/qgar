@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - équipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+ |   LORIA - Ð¹quipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/
@@ -41,6 +41,7 @@
 // STD
 #include <cstdlib>
 #include <iostream>
+#include <iomanip>
 #include <list>
 // QGAR
 #include <qgarlib/CleanedBinaryImage.h>
@@ -93,20 +94,13 @@ main(int argc, char *argv[])
 		   QgarArgs::REQPARAM,
 		   QgarArgs::FILEOUTD,
 		   "image of vectors:",
-		   ".dxf");
+		   ".dxf");  
 
-  // File to store resulting chains of points
-  app.addParameter("-outch",
-		   QgarArgs::OPTPARAM,
-		   QgarArgs::FILEOUT,
-		   "image of chains:",
-		   ".chains.dxf");
-
-  // Maximum size of black CC which are pruned
+  // Maximum number of peripheral rows and/or columns which may be missed
   app.addParameter("-prune",
 		   QgarArgs::OPTPARAM,
 		   QgarArgs::INT,
-		   "small CC max size:",
+		   "peripheral rows max number:",
 		   0,
 		   "5");
 
@@ -159,10 +153,7 @@ main(int argc, char *argv[])
 
   cout << "Performing skeletonization..." << endl;
 
-  LabeledSkeletonImage skelImg(dist34Img,
-			      (app.isOptionSet("-prune"))
-			        ? atoi(app.getStringOption("-prune"))
-			        : 5);
+  LabeledSkeletonImage skelImg(dist34Img, (app.isOptionSet("-prune")) ? atoi(app.getStringOption("-prune")) : 5);
 
   app.setProgressBar(40);
 
@@ -172,6 +163,8 @@ main(int argc, char *argv[])
   cout << "Chaining skeleton points..." << endl;
 
   LinkedChainList chainsList(skelImg);
+
+  cout << setw(5) << chainsList.size() << " chains found" << endl;
 
   app.setProgressBar(50);
 
@@ -186,32 +179,24 @@ main(int argc, char *argv[])
 
   DxfFile segResFile((char*) app.getStringOption("-out"));
   segResFile.openWONLY();
-  segResFile.writeHeader();
+  segResFile.writeHeader();  
 
-  DxfFile *chainResFile;
-  bool chains = app.isOptionSet("-outch");
-  if (chains)
-    {
-      chainResFile = new DxfFile((char*) app.getStringOption("-outch"));
-      chainResFile->openWONLY();
-      chainResFile->writeHeader();
-    }
-
+  int chCnt = 1;
 
   // PERFORM POLYGONAL APPROXIMATION ON EACH CHAIN
 
   while (itChain != chainsList.end())
     {
 
-      // Save the chain (if required)
-      if (chains)
-	{
-	  chainResFile->write(*itChain);
-	}
+      cout << setw(5) << chCnt << " chain. ";
+      cout << setw(5) << itChain->size() << " points. ";      
 
       // Polygonal approximation
-      RWSegmentVector* aPolygApprox = new RWSegmentVector(*itChain); 
-      RWSegmentVector::iterator itSeg = aPolygApprox->begin();
+      RWSegmentVector aPolygApprox(*itChain);
+
+      cout << setw(5) << aPolygApprox.size() << " segments.";
+
+      RWSegmentVector::iterator itSeg = aPolygApprox.begin();
 
       // Access the beginning of the list of points
       list<Point>::iterator itPoint = (itChain->pointList()).begin();
@@ -221,6 +206,7 @@ main(int argc, char *argv[])
       int numPixel = 1;
       long int totalWidth;
       int totalNumPixels;
+      int thickness;
 
       while ((*itPoint) != itSeg->target())
 	{
@@ -239,12 +225,12 @@ main(int argc, char *argv[])
 			 myw,
 			 QGE_COLOR_DEFAULT);
 
-      QgarPolyline* myPol = new QgarPolyline(tmpSeg);
+      QgarPolyline myPol(tmpSeg);
       ++itSeg;
 
       // Complete it with the remaining segments
 
-      while (itSeg != aPolygApprox->end())
+      while (itSeg != aPolygApprox.end())
 	{
 	  // Compute line width
       
@@ -264,18 +250,20 @@ main(int argc, char *argv[])
 
 	  // Expand the polyline
 	
-	  myPol->appendTarget(itSeg->target());
+	  myPol.appendTarget(itSeg->target());
 	  ++itSeg;
 	}
 
       // Set the final width, and save the Qgar polyline
 
-      myPol->setThickness(totalWidth / totalNumPixels);
-      segResFile.write(*myPol);
+      thickness = totalWidth / totalNumPixels;
+      
+      cout << setw(5) << thickness << " points thick." << endl;
 
-      delete myPol;
-      delete aPolygApprox;
+      myPol.setThickness(thickness);
+      segResFile.write(myPol);        
 
+      ++chCnt;
       ++itChain;
     } // END while
 
@@ -283,14 +271,7 @@ main(int argc, char *argv[])
   // CLOSE FILES
 
   segResFile.writeFooter();
-  segResFile.close();
-
-  if (chains)
-    {
-      chainResFile->writeFooter();
-      chainResFile->close();
-      delete chainResFile;
-    }
+  segResFile.close();  
 
   // DISPLAY RESULT
   // ==============
@@ -299,12 +280,7 @@ main(int argc, char *argv[])
   cout << "Vectorization done." << endl;
   app.closeProgressBar();
 
-  app.showPicture((char*)app.getStringOption("-out"));
-
-  if(chains)
-    {
-      app.showPicture((char*)app.getStringOption("-outch"));
-    }
+  app.showPicture((char*)app.getStringOption("-out"));  
 
   // EXIT THE PROGRAM
   // ================
