@@ -188,8 +188,8 @@ public:
   virtual void write(const GreyLevelImage& anImg);
 
   /**
-   * @brief Write the given grey-level image in the file
-   * using a PGM format.
+   * @brief Write the given integer grey-level image in the file
+   * using 16 bit PGM format.
    *
    * The file is opened in <b>write-only</b> mode at the call,
    * and closed before returning.
