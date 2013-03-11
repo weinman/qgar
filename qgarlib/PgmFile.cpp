@@ -256,6 +256,11 @@ PgmFile::write(const GreyLevelImage& anImg)
 }
 
 
+// ===========================
+// WRITE INT IMAGE IN THE FILE
+// ===========================
+
+
 void
 PgmFile::write(const IntImage& anImg)
 {
