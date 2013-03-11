@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - équipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+ |   LORIA - Ð¹quipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/
@@ -33,7 +33,7 @@
  * @file   AbstractFile.h
  * @brief  Header file of class qgar::AbstractFile.
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Gérald Masini</a>
+ * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">GÐ¹rald Masini</a>
  * @date   Jul 02, 2001  17:13
  * @since  Qgar 1.0
  */
@@ -101,13 +101,10 @@ enum QGEfileMode
  * @warning
  * This is an abstract class.
  * Pure virtual functions:
- * - qgar::AbstractFile::readHeader
- * - qgar::AbstractFile::writeHeader
- * - qgar::AbstractFile::readFooter
- * - qgar::AbstractFile::writeFooter
+ * - none
  *
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Gérald Masini</a>
+ * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">GÐ¹rald Masini</a>
  * @date   Jul 02, 2001  17:13
  * @since  Qgar 1.0
  */
