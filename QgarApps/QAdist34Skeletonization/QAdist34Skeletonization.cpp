@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - équipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+ |   LORIA - Ð¹quipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/
@@ -41,6 +41,7 @@
 // STL
 #include <list>
 #include <iostream>
+#include <iomanip>
 
 // QGAR
 #include <qgarlib/CleanedBinaryImage.h>
@@ -94,17 +95,38 @@ main(int argc, char* argv[])
 		   "source image:");
 
   // Output file
-  app.addParameter("-out",
+  app.addParameter("-outdist",
+		   QgarArgs::REQPARAM,
+		   QgarArgs::FILEOUT,
+		   "distance image:",
+		   ".34dist.pgm");
+
+  // Output file
+  app.addParameter("-outlab",
+		   QgarArgs::REQPARAM,
+		   QgarArgs::FILEOUT,
+		   "labeled skeleton image:",
+		   ".34lab.pgm");
+
+  // Output file
+  app.addParameter("-outch",
+		   QgarArgs::REQPARAM,
+		   QgarArgs::FILEOUT,
+		   "chains of skeleton image:",
+		   ".34ch.pgm");
+
+  // Output file
+  app.addParameter("-outskel",
 		   QgarArgs::REQPARAM,
 		   QgarArgs::FILEOUTD,
-		   "result image:",
+		   "binary skeleton image:",
 		   ".34skel.pbm");
 
-  // Maximum size of black CC which are pruned
+  // Maximum number of peripheral rows and/or columns which may be missed
   app.addParameter("-prune",
 		   QgarArgs::OPTPARAM,
 		   QgarArgs::INT,
-		   "small CC max size:",
+		   "peripheral rows max number:",
 		   0,
 		   "3");
 
@@ -154,6 +176,12 @@ main(int argc, char* argv[])
 
   Dist34BlackCCImage dist34Img(cleanedImg);
 
+  // SAVE RESULT
+  // ===========
+
+  PgmFile distFile((char*) app.getStringOption("-outdist"));
+  distFile.write(dist34Img);
+
   app.setProgressBar(30);
 
   // SKELETONIZATION
@@ -161,10 +189,13 @@ main(int argc, char* argv[])
 
   cout << "Performing skeletonization..." << endl;
 
-  LabeledSkeletonImage chImg(dist34Img,
-			     (app.isOptionSet("-prune"))
-			        ? atoi(app.getStringOption("-prune"))
-			        : 3);
+  LabeledSkeletonImage labImg(dist34Img, (app.isOptionSet("-prune")) ? atoi(app.getStringOption("-prune")) : 3);
+
+  // SAVE RESULT
+  // ===========
+
+  PgmFile labFile((char*) app.getStringOption("-outlab"));
+  labFile.write(labImg);
 
   app.setProgressBar(60);
 
@@ -173,33 +204,40 @@ main(int argc, char* argv[])
 
   cout << "Chaining skeleton points..." << endl;
 
-  LinkedChainList chainsList(chImg);
+  LinkedChainList chainsList(labImg);
+
+  cout << setw(5) << chainsList.size() << " chains found" << endl;
 
   app.setProgressBar(70);
-
 
   // WRITE RESULT IMAGE
   // ==================
   
   cout << "Extracting skeleton..." << endl;
   
+  IntImage chImg(sourceImg.width(), sourceImg.height());
+  memset(chImg.pPixMap(), 0, sizeof(IntImage::value_type) * chImg.width() * chImg.height());
   BinaryImage skelImg(sourceImg.width(), sourceImg.height());
-  memset(skelImg.pPixMap(),
-	 0, 
-	 sizeof(BinaryImage::value_type) * skelImg.width() * skelImg.height());
+  memset(skelImg.pPixMap(), 0, sizeof(BinaryImage::value_type) * skelImg.width() * skelImg.height());  
 
+  IntImage::value_type chCnt = 1;
   LinkedChainList::iterator itChain = chainsList.begin();
 
   while (itChain != chainsList.end())
     {
-      // Access the beginning of the list of points
+      cout << setw(5) << chCnt << " chain. ";
+      cout << setw(5) << itChain->size() << " points." << endl;
+
+      // Access the beginning of the list of points      
       list<Point>::iterator itPoint = (itChain->pointList()).begin();
 
       for(/* EMPTY */ ; itPoint != (itChain->pointList()).end() ; ++itPoint)
 	{
-	  skelImg.setPixel((*itPoint).x(), (*itPoint).y(), 255);
+          chImg.setPixel((*itPoint).x(), (*itPoint).y(), chCnt);
+	  skelImg.setPixel((*itPoint).x(), (*itPoint).y(), 1);
 	}
 
+      ++chCnt;
       ++itChain;
     }
 
@@ -208,14 +246,16 @@ main(int argc, char* argv[])
   // SAVE RESULT
   // ===========
 
-  PbmFile resultFile((char*) app.getStringOption("-out"));
-  resultFile.write(skelImg);
+  PgmFile chFile((char*) app.getStringOption("-outch"));
+  chFile.write(chImg);
+  PbmFile skelFile((char*) app.getStringOption("-outskel"));
+  skelFile.write(skelImg);
 
   app.setProgressBar(100);
   cout << "Skeletonization done." << endl;
   app.closeProgressBar();
 
-  app.showPicture((char*)app.getStringOption("-out"));
+  app.showPicture((char*)app.getStringOption("-outskel"));
 
   // EXIT THE PROGRAM
   // ================
