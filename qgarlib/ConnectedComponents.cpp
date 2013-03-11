@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - équipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+ |   LORIA - Ð¹quipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/
@@ -33,7 +33,7 @@
  * See file ConnectedComponents.h for the interface.
  *
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Gérald Masini</a>
+ * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">GÐ¹rald Masini</a>
  * @date   April 21, 2004  12:58
  * @since  Qgar 2.1.1
  */
@@ -252,17 +252,15 @@ ConnectedComponents::makeBinaryImg
 	  std::vector<Component::label_type>::const_iterator it =
 	    find(aLabSet.begin(), aLabSet.end(), currLab);
 
-	  if (   (it == aLabSet.end())
-	      || ((*this)[currLab].color() == QGE_BW_WHITE))
+	  if (it != aLabSet.end())	      
 	    {
-	      // Current label does not belong to the given set
-	      // or belongs to a WHITE component
-	      currColor = QGE_BW_WHITE;
+              // Current label belongs to a BLACK component
+	      currColor = QGE_BW_BLACK;	      
 	    }
 	  else
 	    {
-	      // Current label belongs to a BLACK component
-	      currColor = QGE_BW_BLACK;
+	      // Current label does not belong to the given set	      
+	      currColor = QGE_BW_WHITE;
 	    }
 	}
 
