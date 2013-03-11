@@ -41,7 +41,7 @@
 
 // STD
 #include <algorithm>
-#include <limits>
+#include <climits>
 // QGAR
 #include <qgarlib/Dist34Image.h>
 #include <qgarlib/GenImage.h>
