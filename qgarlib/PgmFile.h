@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - équipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+ |   LORIA - Ð¹quipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/
@@ -35,7 +35,7 @@
  * @brief  Header file of class qgar::PgmFile.
  *
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Karl Tombre & Gérald Masini</a>
+ * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">Karl Tombre & GÐ¹rald Masini</a>
  * @date   July 3,  2001  16:56
  * @since  Qgar 1.0
  */
@@ -113,7 +113,7 @@ max_pixel_value
  * or <b>read-append</b> mode.
  *
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Karl Tombre & Gérald Masini</a>
+ * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">Karl Tombre & GÐ¹rald Masini</a>
  * @date   Jul, 3  2001  16:25
  * @since  Qgar 1.0
  */
@@ -186,6 +186,18 @@ public:
    * @param anImg  image to be stored in the file
    */
   virtual void write(const GreyLevelImage& anImg);
+
+  /**
+   * @brief Write the given grey-level image in the file
+   * using a PGM format.
+   *
+   * The file is opened in <b>write-only</b> mode at the call,
+   * and closed before returning.
+   * The inital content of the file, if any, is lost.
+   *
+   * @param anImg  image to be stored in the file
+   */
+  virtual void write(const IntImage& anImg);
 
   //@}
 
@@ -262,7 +274,7 @@ private:
   /**
    * @brief Maximum value of a pixel of the current image.
    */
-  GreyLevelPixel maxPixel_;
+  int maxPixel_;
 
   /**
    * @brief Number of rows of the current image.
