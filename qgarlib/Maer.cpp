@@ -31,9 +31,9 @@
  *
  * See file Maer.h for the interface.
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gйrald Masini">Gйrald Masini</a>
- * @date   May 13, 2004  11:30
- * @since  Qgar 2.1
+ * @author <a href="mailto:chesnokov.yuriy@gmail.com?subject=Qgar fwd Chesnokov Yuriy">Chesnokov Yuriy</a>
+ * @date   Mar 12, 2013 10:00
+ * @since  Qgar 4.0.0 
  */
 
 
@@ -54,6 +54,87 @@
 
 namespace qgar
 {
+
+
+/**
+ * @ingroup TOOL_MAER
+ *
+ * @class ThetasComparer Maer.cpp "qgarlib/Maer.cpp"
+ *
+ * @brief Thetas comparer functor
+ *
+ * Compares thetas at a given error tolerance
+ *
+ * @author <a href="mailto:chesnokov.yuriy@gmail.com?subject=Qgar fwd Chesnokov Yuriy">Chesnokov Yuriy</a>
+ * @date   Mar 12, 2013 10:00
+ * @since  Qgar 4.0.0
+ */
+class ThetasComparer : public std::unary_function<double, bool>
+{
+// -------------------------------------------------------------------
+// P U B L I C    M E M B E R S
+// -------------------------------------------------------------------
+public:
+
+  /** @name Constructors */
+  //        ============
+  //@{
+
+  /**
+   * @brief Create thetas comparer functor
+   *
+   * @param aTheta      angle to compare to
+   * @param aTolerance  comparison error tolerance
+   */
+  ThetasComparer(double aTheta, double aTolerance = Math::epsilonRadian())
+    {
+      theta_ = aTheta;
+      tolerance_ = aTolerance;
+    }
+
+  //@}
+
+  /** @name Operators */
+  //        =========
+  //@{
+
+  /**
+   * @brief 
+   *
+   * @param aValue  a theta value to compare to
+   */
+  bool operator()(double aValue)
+    {
+      return qgEqRadian(theta_, aValue);
+    }
+
+  //@}
+
+// -------------------------------------------------------------------
+// P R I V A T E    M E M B E R S
+// -------------------------------------------------------------------
+private:
+
+  /** @name Private data */
+  //        ============
+  //@{
+
+  /**
+   * @brief Theta angle to compare to.
+   */
+  double theta_;
+
+  /**
+   * @brief Comparison error tolerance.
+   */
+  double tolerance_;
+
+  //@}
+
+// -------------------------------------------------------------------
+};  // class ThetaComparer
+
+
 
 // -------------------------------------------------------------------
 // -------------------------------------------------------------------
@@ -214,9 +295,8 @@ Maer::PRIVATEcomputeMaer(const std::list<DPoint>& aPtList)
       // Move the angle into the first quadrant with matlab mod implementation
       theta = theta - floor(theta / Math::QG_PI_2) * Math::QG_PI_2;
 
-      // Check if similar angle was not processed before
-      std::list<double>::iterator itTheta = std::find_if(thetas.begin(), thetas.end(), [=](double value) -> bool { return qgEqRadian(theta, value); });
-      if (itTheta == thetas.end())
+      // Check if similar angle was not processed before      
+      if (!IsThetaPresent(theta, thetas))
         {
           thetas.push_back(theta);
 
@@ -284,6 +364,17 @@ Maer::PRIVATEcomputeMaer(const std::list<DPoint>& aPtList)
     }
   while (itPrev != vList.begin());
 }
+
+
+// CHECKS THETA ANGLE PRESENSE
+
+
+bool
+Maer::IsThetaPresent(double aTheta, const std::list<double>& aThetasList, double aTolerance)
+{
+  return std::find_if(aThetasList.cbegin(), aThetasList.cend(), ThetasComparer(aTheta, aTolerance)) != aThetasList.end();
+}
+
 
 // -------------------------------------------------------------------
 
