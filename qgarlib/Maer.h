@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - équipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
+ |   LORIA - Ð¹quipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/
@@ -34,7 +34,7 @@
  * @brief Header file of template class qgar::Maer.
  *
  *
- * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Gérald Masini</a>
+ * @author <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">GÐ¹rald Masini</a>
  * @date   May 13, 2004  11:30
  * @since  Qgar 2.1
  */
@@ -104,7 +104,7 @@ namespace qgar
  * @warning No default constructor is provided.
  *
  *
- * @author   <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd Gérald Masini">Gérald Masini</a>
+ * @author   <a href="mailto:qgar-develop@loria.fr?subject=Qgar fwd GÐ¹rald Masini">GÐ¹rald Masini</a>
  * @date     May 13, 2004  11:30
  * @since    Qgar 2.1
  */
@@ -253,7 +253,24 @@ private:
    *
    * @param aPtList  a list of <b>double</b> points
    */
-  void PRIVATEcomputeMaer(const std::list<DPoint>& aPtList);
+  void PRIVATEcomputeMaer(const std::list<DPoint>& aPtList);  
+
+  //@}
+
+
+  /** @name Auxiliary functions */
+  //        ===================
+  //@{
+
+  /**  
+   *
+   * @brief Checks if theta angle present in a list within a given error tolerance
+   *
+   * @param aTheta       theta angle to find
+   * @param aThetasList  list with theta angles
+   */
+  bool
+  IsThetaPresent(double aTheta, const std::list<double>& aThetasList, double aTolerance = Math::epsilonRadian());
 
   //@}
 
