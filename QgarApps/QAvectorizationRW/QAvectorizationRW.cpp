@@ -46,7 +46,7 @@
 // QGAR
 #include <qgarlib/CleanedBinaryImage.h>
 #include <qgarlib/Dist34BlackCCImage.h>
-#include <qgarlib/DxfFile.h>
+#include <qgarlib/SvgFile.h>
 #include <qgarlib/GenImage.h>
 #include <qgarlib/LabeledSkeletonImage.h>
 #include <qgarlib/LinkedChainList.h>
@@ -94,7 +94,7 @@ main(int argc, char *argv[])
 		   QgarArgs::REQPARAM,
 		   QgarArgs::FILEOUTD,
 		   "image of vectors:",
-		   ".dxf");  
+		   ".svg");  
 
   // Maximum number of peripheral rows and/or columns which may be missed
   app.addParameter("-prune",
@@ -175,9 +175,9 @@ main(int argc, char *argv[])
 
   LinkedChainList::iterator itChain = chainsList.begin();
 
-  // OPEN REQUIRED (DXF) FILES
+  // OPEN REQUIRED (SVG) FILES
 
-  DxfFile segResFile((char*) app.getStringOption("-out"));
+  SvgFile segResFile((char*) app.getStringOption("-out"));
   segResFile.openWONLY();
   segResFile.writeHeader();  
 
