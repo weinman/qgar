@@ -123,7 +123,7 @@ ENABLE_TESTING()
 	      RWSegmentVector.cpp			StandardDeviationImage.cpp
 	      TgifFile.cpp			ThresBinaryImage.cpp
 	      TTBinaryImage.cpp			UltimateErodedBinaryImage.cpp
-	      WDSegmentList.cpp
+	      WDSegmentList.cpp	SvgFile.cpp
 	)
 
 # The command below stores all header files names to a variable
@@ -187,7 +187,8 @@ ENABLE_TESTING()
 	_QGAR_primitiveTypes.h		QgarArgs.h
 	LinErodedImage.h		DilatedImage.h
 	_QGAR_GenQgarPolyline.h		QgarErrorDeveloper.h
-	Dist34BlackCCImage.h		DericheGradientImage.h )
+	Dist34BlackCCImage.h		DericheGradientImage.h 
+	SvgFile.h )
 
 # The command below stores all header files names to a variable
 # ${LIBSOURCE_TCC} to be used later on

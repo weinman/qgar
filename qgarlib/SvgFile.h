@@ -1209,7 +1209,7 @@ SvgFile::writeSvgAttribute(const char* aCode, const deque<GenPoint<T> >& aAttrib
   fstream_ << aCode
 	   << "=\"";
 	
-  for (deque<GenPoint<T> >::const_iterator attributeIter = aAttribute.begin();
+  for (typename deque<GenPoint<T> >::const_iterator attributeIter = aAttribute.begin();
        attributeIter != aAttribute.end();
        ++attributeIter)
     {
