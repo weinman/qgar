@@ -372,7 +372,7 @@ Maer::PRIVATEcomputeMaer(const std::list<DPoint>& aPtList)
 bool
 Maer::IsThetaPresent(double aTheta, const std::list<double>& aThetasList, double aTolerance)
 {
-  return std::find_if(aThetasList.cbegin(), aThetasList.cend(), ThetasComparer(aTheta, aTolerance)) != aThetasList.end();
+  return std::find_if(aThetasList.begin(), aThetasList.end(), ThetasComparer(aTheta, aTolerance)) != aThetasList.end();
 }
 
 
