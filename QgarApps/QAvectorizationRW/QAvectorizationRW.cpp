@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - Ð¹quipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
+ |   LORIA - équipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/

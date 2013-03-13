@@ -18,8 +18,8 @@
  | Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.       |
  |                                                                     |
  | Contact Project Qgar for any information:                           |
- |   LORIA - Ð¹quipe Qgar                                               |
- |   B.P. 239, 54506 Vandoeuvre-lÐ¸s-Nancy Cedex, France                |
+ |   LORIA - équipe Qgar                                               |
+ |   B.P. 239, 54506 Vandoeuvre-lès-Nancy Cedex, France                |
  |   email: qgar-contact@loria.fr                                      |
  |   http://www.qgar.org/                                              |
  *---------------------------------------------------------------------*/
@@ -362,7 +362,7 @@ public:
    * @param aColor      color of the drawing     (default qgar::QGE_COLOR_DEFAULT)
    */
   virtual void write(AbstractGenPointChain<int>& aChain,
-  	     int aThickness  = 3,
+		     int aThickness  = 3,
 		     QGEcolor aColor = QGE_COLOR_DEFAULT);
 
   /**
@@ -1209,14 +1209,14 @@ SvgFile::writeSvgAttribute(const char* aCode, const deque<GenPoint<T> >& aAttrib
   fstream_ << aCode
 	   << "=\"";
 	
-  for (deque<GenPoint<T> >::const_iterator attributeIter = aAttribute.cbegin();
-       attributeIter != aAttribute.cend();
+  for (deque<GenPoint<T> >::const_iterator attributeIter = aAttribute.begin();
+       attributeIter != aAttribute.end();
        ++attributeIter)
     {
       fstream_ << (int)(*attributeIter).x()
                << ","
                << (int)(*attributeIter).y();
-      if (attributeIter < aAttribute.cend() - 1)
+      if (attributeIter < aAttribute.end() - 1)
         {
           fstream_ << " "; 
         }
