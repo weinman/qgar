@@ -3,14 +3,7 @@
 
 ## Qgar specific
 
-/PrimedaApps
 
-/CPackConfig.cmake
-/CPackSourceConfig.cmake
-/CTestTestfile.cmake
-/*/CTestTestfile.cmake
-
-/QgarApps/QA*/CTestTestfile.cmake
 /QgarApps/QA*/QA*
 /QgarApps/qgarguicfg.xml
 
@@ -20,7 +13,6 @@
 
 /QgarGui/qgar
 
-/qgarlib/testsuite/CTestTestfile.cmake
 /qgarlib/testsuite/unitTester
 
 
@@ -68,6 +60,9 @@
 
 ## CMake.gitignore
 
+CPackConfig.cmake
+CPackSourceConfig.cmake
+CTestTestfile.cmake
 CMakeCache.txt
 CMakeFiles
 Makefile
