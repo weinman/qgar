@@ -481,15 +481,15 @@ main(int argc, char* argv[])
   int sizThres = (int) sqrt((double) areaThres);
 
 
-//////////////////////////////////////////////////////////////////////////////
-  cout <<endl
-       << endl << "SAMPLING RATE = 10000"
+//////////////////////////////////////////////////////////////////////////////  
+  cout << endl << "SAMPLING RATE = 10000"
        << endl << "MAX BLACK CC AREA = " << maxBlackArea
        << endl << "NB OF CC IN HISTOGRAM = " << ccNb
        << endl << "MOST POPULATED AREA = " << mostFrequentBboxArea
        << endl << "AVERAGE AREA = " << averageBboxArea
        << endl << "THRESHOLD FOR BOUNDING BOX AREAS FILTERING = " << areaThres
        << endl << "THRESHOLD FOR BOUNDING BOX LENGTHS FILTERING = " << sizThres
+       << endl
        << endl;
 //////////////////////////////////////////////////////////////////////////////
 

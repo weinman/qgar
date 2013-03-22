@@ -389,7 +389,7 @@ PgmFile::readHeader()
       format_ = QGE_PBM_RAW;
     }
 
-  // SKIP POSSIBLE COMMENTS
+  // SKIP POSSIBLE COMMENTS AND BLANK LINES
 
   do
     {
@@ -399,7 +399,8 @@ PgmFile::readHeader()
 		<< ") inBuf_[0] = (" << inBuf_[0] << ')' << std::endl;
 //////////////////////////////////////////////////////////////////////////////
     }
-  while (inBuf_[0] == s_pbm_comment_);
+  while (inBuf_[0] == s_pbm_comment_ ||
+         inBuf_[0] == '\0');
 
 
   // GET IMAGE SIZE if it's not yet gotten
