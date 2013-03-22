@@ -239,7 +239,7 @@ qaFilter(QGTnode* aPNode,
 
       if (cc.color() == QGE_BW_BLACK)
  	{
-	  const BoundingBox& bbox = cc.accessBoundingBox();          
+	  const BoundingBox& bbox = cc.accessBoundingBox();
 
 	  // IMHO at least the test (bbox.area() < anAreaThrs) is
 	  // unnecessary, since it is included in the other ones.
