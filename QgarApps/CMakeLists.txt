@@ -110,6 +110,8 @@ ENDIF (WIN32)
 
 MESSAGE(STATUS "QGARLIB_FOUND " ${QGARLIB_FOUND})
 
+SET ( CMAKE_CXX_FLAGS "-fpermissive" )
+
 IF (QGARLIB_FOUND)
 
   # After all configurations, call the subdirectories
@@ -141,4 +143,3 @@ CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/qgarguicfg.xml.in
 # Install (copy) the qgarguicfg.xml file in the right directory
 INSTALL ( FILES ${PROJECT_BINARY_DIR}/qgarguicfg.xml
 	  DESTINATION ${CMAKE_INSTALL_PREFIX}${XML_INSTALL_DIR} )
-

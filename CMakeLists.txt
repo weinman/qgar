@@ -148,6 +148,8 @@ ENDIF(WIN32)
 # This command MUST be in root directory source
 ENABLE_TESTING()
 
+SET ( CMAKE_CXX_FLAGS "-fpermissive" )
+
 # Calls all project subdirectories
 ADD_SUBDIRECTORY(qgarlib)
 ADD_SUBDIRECTORY(qgardevlib)

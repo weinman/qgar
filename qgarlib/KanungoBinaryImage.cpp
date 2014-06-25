@@ -45,6 +45,9 @@
 #include <cstdlib>
 #include <sstream>
 
+#include <sys/types.h>
+#include <unistd.h>
+
 #ifdef _WIN32
   #include <ctime>
   #include <process.h>
